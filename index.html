@@ -60,12 +60,6 @@
       border: 1.5px solid #cbd5e1;
     }
 
-    .dark .lotto-ball.unmatched {
-      background-color: #1e293b;
-      color: #cbd5e1;
-      border: 1.5px solid #334155;
-    }
-
     /* Custom scrollbars for spreadsheet tables */
     ::-webkit-scrollbar {
       height: 8px;
@@ -105,25 +99,30 @@
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Player View
             </span>
           </div>
-          <p class="text-xs text-slate-400">50 Players • 50/50 Pot ($25 Entry) • 6 Weekly Draws</p>
+          <p class="text-xs text-slate-400">Unlimited Players • 50/50 Pot ($20 Entry) • 6 Weekly Draws</p>
         </div>
       </div>
 
       <!-- Mode Controls (Player View vs Admin Login/Logout) -->
-      <div class="flex items-center gap-2.5 flex-wrap">
-        <div id="player-mode-actions" class="flex items-center gap-2">
-          <button onclick="openPlayerSubmissionModal()" class="px-3.5 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold rounded-xl text-xs shadow-md transition flex items-center gap-1.5 animate-pulse">
-            <i class="fa-solid fa-file-signature"></i> Submit Your Numbers ($25)
+      <div class="flex items-center gap-3 flex-wrap">
+        <div id="player-mode-actions" class="flex items-center gap-3">
+          <!-- Prominent Submit Numbers button -->
+          <button onclick="openPlayerSubmissionModal()" class="min-w-[260px] sm:min-w-[290px] px-6 py-2.5 bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-extrabold rounded-full text-sm shadow-lg shadow-emerald-900/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2.5 border-2 border-emerald-400/40">
+            <i class="fa-solid fa-file-signature text-base text-emerald-100"></i>
+            <span>Submit Your Numbers ($20)</span>
           </button>
-          <button onclick="openAdminLoginModal()" class="px-3.5 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold rounded-xl text-xs shadow-md transition flex items-center gap-1.5">
+          <button onclick="openAdminLoginModal()" class="px-4 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold rounded-xl text-xs shadow-md transition flex items-center gap-1.5">
             <i class="fa-solid fa-lock"></i> Admin Portal
           </button>
         </div>
 
-        <div id="admin-mode-actions" class="hidden flex items-center gap-2">
+        <div id="admin-mode-actions" class="hidden flex items-center gap-2 flex-wrap">
           <span class="text-xs bg-amber-500/20 text-amber-300 px-2.5 py-1 rounded-lg border border-amber-500/40 font-semibold flex items-center gap-1.5">
             <i class="fa-solid fa-shield-halved text-amber-400"></i> Admin Signed In
           </span>
+          <button onclick="openChangePinModal()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 rounded-lg text-xs font-medium transition flex items-center gap-1.5" title="Change Admin PIN / Password">
+            <i class="fa-solid fa-key text-amber-400"></i> Edit Password
+          </button>
           <button onclick="exportToCSV()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-xs font-medium transition flex items-center gap-1.5">
             <i class="fa-solid fa-file-excel text-emerald-400"></i> Export CSV
           </button>
@@ -138,7 +137,7 @@
     <div id="admin-nav-bar" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex overflow-x-auto gap-1 border-t border-slate-800 pt-1">
       <button onclick="switchAdminTab('payment-tracker')" id="admin-tab-payment-tracker" class="admin-tab-btn px-4 py-2.5 text-xs font-semibold border-b-2 border-amber-500 text-amber-400 flex items-center gap-2 transition whitespace-nowrap">
         <i class="fa-solid fa-receipt"></i> 50/50 Payment Ledger & Player Names
-        <span id="paid-badge-counter" class="bg-emerald-950 text-emerald-300 text-[10px] px-1.5 py-0.5 rounded-full border border-emerald-700/50">0/50</span>
+        <span id="paid-badge-counter" class="bg-emerald-950 text-emerald-300 text-[10px] px-1.5 py-0.5 rounded-full border border-emerald-700/50">0/0</span>
       </button>
       <button onclick="switchAdminTab('draw-manager')" id="admin-tab-draw-manager" class="admin-tab-btn px-4 py-2.5 text-xs font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition whitespace-nowrap">
         <i class="fa-solid fa-list-check"></i> Enter 6 Weekly Draws
@@ -150,6 +149,9 @@
       <button onclick="switchAdminTab('stats-prizes')" id="admin-tab-stats-prizes" class="admin-tab-btn px-4 py-2.5 text-xs font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition whitespace-nowrap">
         <i class="fa-solid fa-trophy"></i> 50/50 Financial Pot Breakdown
       </button>
+      <button onclick="switchAdminTab('pool-rules')" id="admin-tab-pool-rules" class="admin-tab-btn px-4 py-2.5 text-xs font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition whitespace-nowrap">
+        <i class="fa-solid fa-scroll text-amber-400"></i> Edit Rules & Schedule
+      </button>
     </div>
   </header>
 
@@ -160,102 +162,193 @@
     <!-- ========================================== -->
     <div id="section-player-view" class="space-y-6">
 
-      <!-- Official Drawn Numbers Display (Public & Read-Only) -->
-      <section class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          <div>
+      <!-- Navigation tabs between Bingo Board and Rules -->
+      <div class="flex items-center justify-between gap-3 border-b border-slate-200 pb-3 flex-wrap">
+        <div class="flex items-center gap-2">
+          <button onclick="switchPlayerViewTab('sheet')" id="player-tab-sheet-btn" class="px-4 py-2 text-xs font-bold rounded-xl bg-slate-900 text-white shadow-sm transition flex items-center gap-2">
+            <i class="fa-solid fa-table-cells"></i> Bingo Master Sheet & Draws
+          </button>
+          <button onclick="switchPlayerViewTab('rules')" id="player-tab-rules-btn" class="px-4 py-2 text-xs font-semibold rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 shadow-sm transition flex items-center gap-2">
+            <i class="fa-solid fa-scroll text-amber-500"></i> Pool Rules & Schedule
+            <span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full border border-amber-200">Start / End Dates</span>
+          </button>
+        </div>
+
+        <!-- Quick Schedule Pill -->
+        <div class="text-xs bg-white border border-slate-200 text-slate-600 px-3.5 py-1.5 rounded-xl flex items-center gap-2 shadow-sm">
+          <i class="fa-regular fa-calendar-days text-emerald-600"></i>
+          <span>Schedule: <strong id="quick-start-date" class="text-slate-900 font-bold">--</strong> &ndash; <strong id="quick-end-date" class="text-slate-900 font-bold">--</strong></span>
+        </div>
+      </div>
+
+      <!-- SUBVIEW 1: Bingo Master Sheet & Live Draws -->
+      <div id="player-subview-sheet" class="space-y-6">
+        <!-- Official Drawn Numbers Display (Public & Read-Only) -->
+        <section class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-xs uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-md bg-rose-100 text-rose-700 flex items-center gap-1.5">
+                  <i class="fa-solid fa-bullseye"></i> Official 6/49 Drawn Numbers
+                </span>
+                <div id="player-draw-tabs-selector" class="flex items-center gap-1 bg-slate-100 p-1 rounded-lg">
+                  <!-- Rendered by JS -->
+                </div>
+              </div>
+              <h2 class="text-lg font-bold text-slate-900 mt-1" id="player-active-draw-title">All 6 Draws Cumulative View</h2>
+              <p class="text-xs text-slate-500" id="player-active-draw-subtitle">Numbers drawn across all 6 weekly draws are automatically circled in gold on each player card.</p>
+            </div>
+
+            <!-- Winning Numbers Display Row (6 Numbers Only - Bonus Ball Removed) -->
             <div class="flex items-center gap-2 flex-wrap">
-              <span class="text-xs uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-md bg-rose-100 text-rose-700 flex items-center gap-1.5">
-                <i class="fa-solid fa-bullseye"></i> Official 6/49 Drawn Numbers
+              <div id="player-drawn-balls-container" class="flex items-center gap-2 flex-wrap">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+
+            <!-- Pot & Bingo Hits Quick Stats for Players -->
+            <div class="flex items-center gap-3 bg-slate-50 rounded-xl p-3 border border-slate-200 text-xs">
+              <div>
+                <p class="text-slate-400 text-[10px] font-semibold uppercase">50% Winner Pot</p>
+                <p id="player-stat-winner-pot" class="text-lg font-extrabold text-emerald-600">$0.00</p>
+              </div>
+              <div class="h-6 w-px bg-slate-200"></div>
+              <div>
+                <p class="text-slate-400 text-[10px] font-semibold uppercase">6/6 Bingo Hits</p>
+                <p id="player-stat-match-6" class="text-lg font-extrabold text-amber-600">0</p>
+              </div>
+              <div class="h-6 w-px bg-slate-200"></div>
+              <div>
+                <p class="text-slate-400 text-[10px] font-semibold uppercase">5/6 Hits</p>
+                <p id="player-stat-match-5" class="text-lg font-extrabold text-blue-600">0</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Player Bingo Master Sheet Table -->
+        <section class="space-y-4">
+          <!-- Search and Filter Bar -->
+          <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-3 flex-1 min-w-[260px]">
+              <div class="relative w-full max-w-sm">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+                <input type="text" id="player-bingo-search" oninput="renderPlayerBingoSheet()" placeholder="Search slot or player name..." class="w-full pl-9 pr-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
+              </div>
+              <select id="player-bingo-filter-status" onchange="renderPlayerBingoSheet()" class="text-xs px-3 py-2 rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-amber-500">
+                <option value="all">All Slots</option>
+                <option value="registered">Registered Players Only</option>
+                <option value="with-matches">With Matches (&gt;= 1)</option>
+                <option value="top-scorers">Top Match Leaders</option>
+              </select>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-slate-400 font-medium">Legend:</span>
+              <span class="inline-flex items-center gap-1.5 text-[11px] font-medium text-amber-800 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200">
+                <span class="w-3 h-3 rounded-full bg-amber-400 border-2 border-red-500 shadow-sm"></span> Circled Ball = 6/49 Hit!
               </span>
-              <div id="player-draw-tabs-selector" class="flex items-center gap-1 bg-slate-100 p-1 rounded-lg">
-                <!-- Rendered by JS: Cumulative button + Draw 1..6 buttons -->
+            </div>
+          </div>
+
+          <!-- Master Sheet Grid: Chosen Numbers now placed directly AFTER Player Name, Bonus Ball column removed -->
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-800 text-white text-[11px] uppercase tracking-wider font-semibold">
+                    <th class="py-3 px-4 w-16 text-center">Slot</th>
+                    <th class="py-3 px-4 min-w-[190px]">Player Name</th>
+                    <th class="py-3 px-4 text-center min-w-[340px]">Chosen 6/49 Numbers (1 - 49)</th>
+                    <th class="py-3 px-4 text-center w-28">Status</th>
+                    <th class="py-3 px-4 text-center w-24">Total Hits</th>
+                    <th class="py-3 px-4 text-center w-32">Standing</th>
+                  </tr>
+                </thead>
+                <tbody id="player-bingo-table-body" class="divide-y divide-slate-200 text-xs">
+                  <!-- Rendered via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- SUBVIEW 2: Rules & Schedule Tab -->
+      <div id="player-subview-rules" class="hidden space-y-6">
+        <section class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+            <div>
+              <span class="text-xs uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-md bg-amber-100 text-amber-800 inline-flex items-center gap-1.5">
+                <i class="fa-solid fa-scroll"></i> Official Pool Guidelines
+              </span>
+              <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-2">6/49 Bingo Pool Rules & Timeline</h2>
+              <p class="text-xs text-slate-500 mt-1">Review start and completion dates, entry criteria, and 50/50 winner pot distribution.</p>
+            </div>
+            <div id="rules-admin-quick-edit-wrapper" class="hidden">
+              <button onclick="openRulesEditModal()" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-xl shadow transition flex items-center gap-1.5">
+                <i class="fa-solid fa-pen-to-square"></i> Edit Dates & Rules
+              </button>
+            </div>
+          </div>
+
+          <!-- Important Dates & Financial Schedule Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="p-4 rounded-xl border border-emerald-200 bg-emerald-50/50">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-emerald-800 uppercase tracking-wide">Pool Start Date</span>
+                <i class="fa-regular fa-calendar-check text-emerald-600 text-lg"></i>
               </div>
+              <p id="rules-card-start-date" class="text-lg font-black text-emerald-900 mt-2">--</p>
+              <p class="text-[11px] text-emerald-700 mt-0.5">First official 6/49 draw counts</p>
             </div>
-            <h2 class="text-lg font-bold text-slate-900 mt-1" id="player-active-draw-title">All 6 Draws Cumulative View</h2>
-            <p class="text-xs text-slate-500" id="player-active-draw-subtitle">Numbers drawn across all 6 weekly draws are automatically circled in gold on each player card.</p>
-          </div>
 
-          <!-- Winning Numbers Display Row -->
-          <div class="flex items-center gap-2 flex-wrap">
-            <div id="player-drawn-balls-container" class="flex items-center gap-2 flex-wrap">
-              <!-- Rendered by JS -->
-            </div>
-            <div class="h-8 w-px bg-slate-200 mx-1 hidden sm:block"></div>
-            <div class="flex items-center gap-1.5 pl-1">
-              <span class="text-[11px] font-bold text-slate-500 uppercase">Bonus:</span>
-              <div id="player-bonus-ball-display" class="w-10 h-10 rounded-full border-2 border-indigo-400 bg-indigo-50 text-indigo-700 font-bold flex items-center justify-center text-sm font-mono-numbers">
-                --
+            <div class="p-4 rounded-xl border border-rose-200 bg-rose-50/50">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-rose-800 uppercase tracking-wide">Pool End Date</span>
+                <i class="fa-regular fa-calendar-xmark text-rose-600 text-lg"></i>
               </div>
+              <p id="rules-card-end-date" class="text-lg font-black text-rose-900 mt-2">--</p>
+              <p class="text-[11px] text-rose-700 mt-0.5">After Draw #6 completion</p>
+            </div>
+
+            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-700 uppercase tracking-wide">Entry Fee</span>
+                <i class="fa-solid fa-ticket text-slate-500 text-lg"></i>
+              </div>
+              <p class="text-lg font-black text-slate-900 mt-2">$20.00 / Slot</p>
+              <p class="text-[11px] text-slate-500 mt-0.5">Unlimited participants welcome</p>
+            </div>
+
+            <div class="p-4 rounded-xl border border-amber-200 bg-amber-50/60">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-amber-800 uppercase tracking-wide">50/50 Pot Split</span>
+                <i class="fa-solid fa-sack-dollar text-amber-600 text-lg"></i>
+              </div>
+              <p class="text-lg font-black text-amber-900 mt-2">50% Winner / 50% Org</p>
+              <p class="text-[11px] text-amber-700 mt-0.5">Equal split of all collected entry fees</p>
             </div>
           </div>
 
-          <!-- Pot & Bingo Hits Quick Stats for Players -->
-          <div class="flex items-center gap-3 bg-slate-50 rounded-xl p-3 border border-slate-200 text-xs">
+          <!-- Pool Detailed Rules Section -->
+          <div class="space-y-4 pt-2">
+            <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-indigo-600"></i> Detailed Pool Rules & How to Win
+            </h3>
+            <div id="rules-display-list" class="space-y-3 text-xs leading-relaxed text-slate-700">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-500 flex items-start gap-2.5">
+            <i class="fa-solid fa-circle-question text-slate-400 text-base mt-0.5"></i>
             <div>
-              <p class="text-slate-400 text-[10px] font-semibold uppercase">50% Winner Pot</p>
-              <p id="player-stat-winner-pot" class="text-lg font-extrabold text-emerald-600">$0.00</p>
-            </div>
-            <div class="h-6 w-px bg-slate-200"></div>
-            <div>
-              <p class="text-slate-400 text-[10px] font-semibold uppercase">6/6 Bingo Hits</p>
-              <p id="player-stat-match-6" class="text-lg font-extrabold text-amber-600">0</p>
-            </div>
-            <div class="h-6 w-px bg-slate-200"></div>
-            <div>
-              <p class="text-slate-400 text-[10px] font-semibold uppercase">5/6 Hits</p>
-              <p id="player-stat-match-5" class="text-lg font-extrabold text-blue-600">0</p>
+              <strong class="text-slate-700">Have questions about your entry?</strong> Contact the pool administrator to confirm your $20 payment or verify your registered card numbers.
             </div>
           </div>
-        </div>
-      </section>
-
-      <!-- Player Bingo Master Sheet Table -->
-      <section class="space-y-4">
-        <!-- Search and Filter Bar -->
-        <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-3">
-          <div class="flex items-center gap-3 flex-1 min-w-[260px]">
-            <div class="relative w-full max-w-sm">
-              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
-              <input type="text" id="player-bingo-search" oninput="renderPlayerBingoSheet()" placeholder="Search your slot or player name..." class="w-full pl-9 pr-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
-            </div>
-            <select id="player-bingo-filter-status" onchange="renderPlayerBingoSheet()" class="text-xs px-3 py-2 rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-amber-500">
-              <option value="all">All 50 Players</option>
-              <option value="with-matches">With Matches (>= 1)</option>
-              <option value="top-scorers">Top Match Leaders</option>
-            </select>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <span class="text-xs text-slate-400 font-medium">Legend:</span>
-            <span class="inline-flex items-center gap-1.5 text-[11px] font-medium text-amber-800 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200">
-              <span class="w-3 h-3 rounded-full bg-amber-400 border-2 border-red-500 shadow-sm"></span> Circled Ball = 6/49 Hit!
-            </span>
-          </div>
-        </div>
-
-        <!-- Master Sheet Grid -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-              <thead>
-                <tr class="bg-slate-800 text-white text-[11px] uppercase tracking-wider font-semibold">
-                  <th class="py-3 px-4 w-20 text-center">Slot</th>
-                  <th class="py-3 px-4 min-w-[200px]">Player Name</th>
-                  <th class="py-3 px-4 text-center w-28">Status</th>
-                  <th class="py-3 px-4 text-center min-w-[340px]">Chosen 6/49 Numbers (1 - 49)</th>
-                  <th class="py-3 px-4 text-center w-24">Bonus Ball</th>
-                  <th class="py-3 px-4 text-center w-24">Total Hits</th>
-                  <th class="py-3 px-4 text-center w-32">Standing</th>
-                </tr>
-              </thead>
-              <tbody id="player-bingo-table-body" class="divide-y divide-slate-200 text-xs">
-                <!-- Rendered via JS -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
     </div>
 
@@ -272,11 +365,23 @@
           </div>
           <div>
             <h3 class="text-sm font-bold text-slate-900">Administrator Control Center</h3>
-            <p class="text-xs text-slate-500">Record $25 payments, assign verified player legal names, and input the 6 official 6/49 weekly draws.</p>
+            <p class="text-xs text-slate-500">Record $20 payments, assign player legal names, manage numbers, edit rules, and input the 6 weekly draws.</p>
           </div>
         </div>
-        <div class="flex items-center gap-2">
-          <button onclick="openDrawModal()" class="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold rounded-lg shadow-sm transition flex items-center gap-1.5">
+        <div class="flex items-center gap-2 flex-wrap">
+          <button onclick="addNewPlayerSlot(1)" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-lg shadow-sm transition flex items-center gap-1.5">
+            <i class="fa-solid fa-plus"></i> +1 Slot
+          </button>
+          <button onclick="addNewPlayerSlot(10)" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-semibold rounded-lg shadow-sm transition flex items-center gap-1.5">
+            <i class="fa-solid fa-layer-group"></i> +10 Slots
+          </button>
+          <button onclick="addNewPlayerSlot(25)" class="px-3 py-1.5 bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow-sm transition flex items-center gap-1.5">
+            <i class="fa-solid fa-users"></i> +25 Slots
+          </button>
+          <button onclick="openChangePinModal()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-amber-300 text-xs font-semibold rounded-lg shadow-sm transition flex items-center gap-1.5 border border-slate-700">
+            <i class="fa-solid fa-key"></i> Edit PIN
+          </button>
+          <button onclick="openDrawModal()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold rounded-lg shadow-sm transition flex items-center gap-1.5">
             <i class="fa-solid fa-bullseye"></i> Enter Draw Result
           </button>
           <button onclick="resetAllDraws()" class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold rounded-lg transition" title="Clear all drawn numbers">
@@ -292,8 +397,8 @@
           <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
             <div>
               <p class="text-xs text-slate-500 font-semibold uppercase">Total Pool Slots</p>
-              <p class="text-2xl font-extrabold text-slate-800 mt-1">50</p>
-              <span class="text-[11px] text-slate-400">Play 1 through Play 50</span>
+              <p id="total-pool-slots-count" class="text-2xl font-extrabold text-slate-800 mt-1">50</p>
+              <span id="total-pool-slots-range" class="text-[11px] text-slate-400">Play 1 through Play 50</span>
             </div>
             <div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 text-lg">
               <i class="fa-solid fa-users"></i>
@@ -306,7 +411,7 @@
               <p id="total-paid-count" class="text-2xl font-extrabold text-emerald-600 mt-1">0</p>
               <div class="flex items-center gap-1.5 flex-wrap mt-0.5">
                 <span id="paid-percent" class="text-[11px] text-emerald-700 font-medium">0% Collected</span>
-                <span class="text-[11px] text-slate-400">• <span id="total-unpaid-count" class="font-semibold text-rose-500">50</span> Unpaid</span>
+                <span class="text-[11px] text-slate-400">• <span id="total-unpaid-count" class="font-semibold text-rose-500">0</span> Unpaid</span>
               </div>
             </div>
             <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 text-lg">
@@ -318,7 +423,7 @@
             <div>
               <p class="text-xs text-slate-500 font-semibold uppercase">Total Pot Collected</p>
               <p id="total-pot-amount" class="text-2xl font-extrabold text-slate-900 mt-1">$0.00</p>
-              <span id="default-entry-fee" class="text-[11px] text-slate-400">At $25.00 / slot</span>
+              <span id="default-entry-fee" class="text-[11px] text-slate-400">At $20.00 / slot</span>
             </div>
             <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 text-lg">
               <i class="fa-solid fa-sack-dollar"></i>
@@ -337,31 +442,32 @@
           </div>
         </div>
 
-        <!-- Ledger Settings & Bulk Actions -->
+        <!-- Ledger Settings -->
         <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-3">
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-3 flex-wrap">
             <div class="flex items-center gap-2">
               <label class="text-xs font-semibold text-slate-600">Entry Fee ($):</label>
-              <input type="number" id="pool-entry-fee" value="25" min="1" max="1000" onchange="updateEntryFee(this.value)" class="w-20 px-2.5 py-1.5 text-xs font-bold rounded-lg border border-slate-300 focus:ring-2 focus:ring-amber-500">
+              <input type="number" id="pool-entry-fee" value="20" min="1" max="1000" onchange="updateEntryFee(this.value)" class="w-20 px-2.5 py-1.5 text-xs font-bold rounded-lg border border-slate-300 focus:ring-2 focus:ring-amber-500">
             </div>
             <div class="h-6 w-px bg-slate-200 hidden sm:block"></div>
             <div class="relative">
               <i class="fa-solid fa-filter absolute left-3 top-2.5 text-slate-400 text-xs"></i>
               <select id="payment-filter" onchange="renderPaymentLedger()" class="pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-300 bg-white">
-                <option value="all">Show All 50 Slots</option>
+                <option value="all">Show All Slots</option>
+                <option value="registered">Show Registered Only</option>
                 <option value="paid">Show Paid Only</option>
                 <option value="unpaid">Show Unpaid Only</option>
               </select>
             </div>
           </div>
-
-          <div class="flex items-center gap-2">
-            <button onclick="markAllPaid(true)" class="px-3 py-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-lg border border-emerald-200 transition">
-              <i class="fa-solid fa-check-double mr-1"></i> Mark All Paid ($25)
+          <div class="flex items-center gap-2 flex-wrap">
+            <button onclick="addNewPlayerSlot(1)" class="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-lg text-xs font-bold border border-emerald-300 transition flex items-center gap-1">
+              <i class="fa-solid fa-plus text-xs"></i> +1 Slot
             </button>
-            <button onclick="markAllPaid(false)" class="px-3 py-1.5 text-xs font-medium text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-lg border border-rose-200 transition">
-              <i class="fa-solid fa-xmark mr-1"></i> Reset Payments
+            <button onclick="addNewPlayerSlot(10)" class="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-lg text-xs font-bold border border-emerald-300 transition flex items-center gap-1">
+              <i class="fa-solid fa-layer-group text-xs"></i> +10 Slots
             </button>
+            <span class="text-xs text-slate-400 font-medium ml-2 hidden sm:inline">Individual Slot Payment Tracking</span>
           </div>
         </div>
 
@@ -379,7 +485,8 @@
                   <th class="py-3 px-4 w-28">Amount ($)</th>
                   <th class="py-3 px-4 w-36">Method</th>
                   <th class="py-3 px-4 w-36">Date Paid</th>
-                  <th class="py-3 px-4 min-w-[200px]">Notes / Receipt #</th>
+                  <th class="py-3 px-4 min-w-[180px]">Notes / Receipt #</th>
+                  <th class="py-3 px-4 text-center w-28">Manage</th>
                 </tr>
               </thead>
               <tbody id="payment-table-body" class="divide-y divide-slate-200 text-xs">
@@ -417,14 +524,14 @@
         <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4">
           <div>
             <h3 class="text-base font-bold text-slate-800">Administrator Number Entry & Player Profiles</h3>
-            <p class="text-xs text-slate-500">Directly enter, revise, or quick-pick the 6 lottery balls (1 - 49) for all 50 player slots.</p>
+            <p class="text-xs text-slate-500">Directly enter, revise, or delete entries for all registered player slots.</p>
           </div>
           <div class="flex items-center gap-2 flex-wrap">
+            <button onclick="addNewPlayerSlot(1)" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg text-xs font-bold transition flex items-center gap-1.5 border border-slate-300">
+              <i class="fa-solid fa-plus"></i> Add Slot
+            </button>
             <button onclick="openPlayerModal(getFirstUnfilledPlayerId())" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
               <i class="fa-solid fa-plus-circle"></i> Enter Next Player Numbers
-            </button>
-            <button onclick="randomizeAllPlayerNumbers()" class="px-3.5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
-              <i class="fa-solid fa-wand-magic-sparkles"></i> Quick-Pick Empty Slots
             </button>
           </div>
         </div>
@@ -439,10 +546,10 @@
                   <th class="py-3 px-4 w-32">Phone</th>
                   <th class="py-3 px-4 text-center">Selected 6/49 Lottery Balls</th>
                   <th class="py-3 px-4 text-center w-28">Payment</th>
-                  <th class="py-3 px-4 text-center w-36">Actions</th>
+                  <th class="py-3 px-4 text-center w-48">Actions</th>
                 </tr>
               </thead>
-              <tbody id="admin-player-numbers-table-body" class="divide-y divide-slate-200 text-xs">
+              <tbody id="admin-player-numbers-table-body" class="divide-y border-slate-200 text-xs">
                 <!-- Rendered via JS -->
               </tbody>
             </table>
@@ -457,14 +564,14 @@
             <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
               <i class="fa-solid fa-hand-holding-dollar text-emerald-600"></i> 50/50 Pool Financial Split
             </h3>
-            <p class="text-xs text-slate-500">Based on $25 entry per player across 50 slots ($1,250 max pot):</p>
+            <p class="text-xs text-slate-500">Calculated dynamically at $20 entry per paid slot:</p>
             <div class="space-y-3 text-xs pt-2">
               <div class="p-3 bg-amber-50 rounded-xl border border-amber-200">
                 <div class="flex items-center justify-between">
                   <span class="font-bold text-amber-900">Winner(s) Share (50%)</span>
                   <span id="prize-calc-winner" class="font-extrabold text-amber-700 text-sm">$0.00</span>
                 </div>
-                <p class="text-[11px] text-amber-700 mt-1">Goes to player(s) with the most matches or 6/6 Bingo across all 6 draws.</p>
+                <p class="text-[11px] text-amber-700 mt-1">Awarded to player(s) with the most matches or 6/6 Bingo after all 6 draws.</p>
               </div>
 
               <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-200">
@@ -472,7 +579,7 @@
                   <span class="font-bold text-emerald-900">Organization / House (50%)</span>
                   <span id="prize-calc-org" class="font-extrabold text-emerald-700 text-sm">$0.00</span>
                 </div>
-                <p class="text-[11px] text-emerald-700 mt-1">Retained by the organization hosting the pool.</p>
+                <p class="text-[11px] text-emerald-700 mt-1">Retained by the host organization.</p>
               </div>
 
               <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
@@ -481,8 +588,8 @@
                   <span id="prize-calc-total" class="font-bold text-slate-800">$0.00</span>
                 </div>
                 <div class="flex items-center justify-between mt-1 text-[11px] text-slate-500">
-                  <span>Slots Sold:</span>
-                  <span id="prize-calc-slots" class="font-semibold text-slate-700">0 / 50</span>
+                  <span>Slots Paid:</span>
+                  <span id="prize-calc-slots" class="font-semibold text-slate-700">0 paid</span>
                 </div>
               </div>
             </div>
@@ -490,12 +597,58 @@
 
           <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3 md:col-span-2">
             <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
-              <i class="fa-solid fa-chart-column text-indigo-500"></i> 50-Player Number Frequency & Heatmap (1-49)
+              <i class="fa-solid fa-chart-column text-indigo-500"></i> Player Number Frequency & Heatmap (1-49)
             </h3>
-            <p class="text-xs text-slate-500">Distribution of player numbers chosen across all 50 cards.</p>
+            <p class="text-xs text-slate-500">Distribution of player numbers chosen across all active cards.</p>
             <div id="number-heatmap" class="grid grid-cols-7 sm:grid-cols-10 md:grid-cols-10 gap-1.5 pt-2">
               <!-- Rendered by JS -->
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADMIN TAB 5: Edit Rules & Schedule -->
+      <div id="admin-view-pool-rules" class="admin-tab-view hidden space-y-5">
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-5">
+          <div class="flex items-center justify-between flex-wrap gap-3 border-b border-slate-100 pb-4">
+            <div>
+              <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-scroll text-amber-500"></i> Edit Pool Rules & Official Dates
+              </h3>
+              <p class="text-xs text-slate-500">Updates here immediately reflect on the public "Rules & Schedule" tab for all players.</p>
+            </div>
+            <button onclick="resetRulesToDefault()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+              <i class="fa-solid fa-rotate-left"></i> Reset to Default Rules
+            </button>
+          </div>
+
+          <!-- Schedule Inputs -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Pool Start Date</label>
+              <input type="date" id="admin-rules-start-date" class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 focus:border-amber-500 focus:ring-1 focus:ring-amber-500">
+              <p class="text-[11px] text-slate-400 mt-1">Date when the 1st weekly 6/49 draw takes place.</p>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Pool End Date</label>
+              <input type="date" id="admin-rules-end-date" class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 focus:border-amber-500 focus:ring-1 focus:ring-amber-500">
+              <p class="text-[11px] text-slate-400 mt-1">Expected date of the final (6th) weekly draw.</p>
+            </div>
+          </div>
+
+          <!-- Rules Textarea -->
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide">Pool Rules & Instructions</label>
+              <span class="text-[11px] text-slate-400">Put each rule on a new line</span>
+            </div>
+            <textarea id="admin-rules-textarea" rows="10" class="w-full text-xs font-medium p-3.5 rounded-xl border border-slate-300 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 font-mono leading-relaxed"></textarea>
+          </div>
+
+          <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+            <button onclick="saveAdminRules()" class="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold rounded-xl text-xs shadow-md transition flex items-center gap-1.5">
+              <i class="fa-solid fa-save"></i> Save Rules & Schedule
+            </button>
           </div>
         </div>
       </div>
@@ -524,9 +677,8 @@
 
       <div class="p-6 space-y-4">
         <div>
-          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Enter Administrator PIN</label>
-          <input type="password" id="admin-pin-input" placeholder="Default PIN: 1234" class="w-full text-center tracking-widest text-lg font-bold px-3 py-2.5 rounded-xl border-2 border-slate-300 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500" onkeydown="if(event.key === 'Enter') submitAdminLogin()">
-          <p class="text-[11px] text-slate-400 text-center mt-1.5">Default PIN is <span class="font-mono font-bold text-slate-600">1234</span></p>
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Enter Administrator PIN / Password</label>
+          <input type="password" id="admin-pin-input" placeholder="Enter PIN or Password" class="w-full text-center tracking-widest text-lg font-bold px-3 py-2.5 rounded-xl border-2 border-slate-300 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500" onkeydown="if(event.key === 'Enter') submitAdminLogin()">
         </div>
 
         <div id="admin-login-error" class="hidden p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium text-center"></div>
@@ -543,7 +695,55 @@
     </div>
   </div>
 
-  <!-- Draw Modal -->
+  <!-- Change PIN / Password Modal -->
+  <div id="change-pin-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl border border-slate-200 overflow-hidden transform transition-all">
+      <div class="bg-slate-900 text-white p-5 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-sm">
+            <i class="fa-solid fa-key"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold">Edit Admin Password / PIN</h3>
+            <p class="text-[11px] text-slate-400">Update your secret access code</p>
+          </div>
+        </div>
+        <button onclick="closeChangePinModal()" class="text-slate-400 hover:text-white text-lg p-1">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Current PIN / Password</label>
+          <input type="password" id="cur-pin-input" placeholder="Current PIN" class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 focus:border-amber-500 focus:ring-1 focus:ring-amber-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">New PIN / Password</label>
+          <input type="password" id="new-pin-input" placeholder="New PIN / Password (min 4 characters)" class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 focus:border-amber-500 focus:ring-1 focus:ring-amber-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Confirm New PIN / Password</label>
+          <input type="password" id="confirm-pin-input" placeholder="Re-type new PIN" class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 focus:border-amber-500 focus:ring-1 focus:ring-amber-500">
+        </div>
+
+        <div id="change-pin-error" class="hidden p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium text-center"></div>
+
+        <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+          <button onclick="closeChangePinModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 rounded-xl transition">
+            Cancel
+          </button>
+          <button onclick="submitChangePin()" class="px-5 py-2 text-xs font-bold text-slate-950 bg-amber-500 hover:bg-amber-400 rounded-xl shadow-md transition flex items-center gap-1.5">
+            <i class="fa-solid fa-save"></i> Save New Password
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Draw Modal (6 Numbers Only - Bonus Removed) -->
   <div id="draw-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200 overflow-hidden transform transition-all">
       <div class="bg-slate-900 text-white p-5 flex items-center justify-between">
@@ -582,7 +782,7 @@
 
         <div>
           <div class="flex items-center justify-between mb-2">
-            <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">6 Main Drawn Numbers (1 to 49)</label>
+            <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">6 Winning Drawn Numbers (1 to 49)</label>
             <button onclick="randomizeDrawNumbersModal()" class="text-[11px] font-semibold text-rose-600 hover:text-rose-700 flex items-center gap-1">
               <i class="fa-solid fa-dice text-xs"></i> Simulate Random Draw
             </button>
@@ -594,13 +794,6 @@
             <input type="number" id="draw-num-4" min="1" max="49" placeholder="#" class="draw-modal-input text-center font-bold text-base py-2.5 rounded-xl border-2 border-slate-200 focus:border-rose-500 focus:outline-none focus:ring-1 focus:ring-rose-500">
             <input type="number" id="draw-num-5" min="1" max="49" placeholder="#" class="draw-modal-input text-center font-bold text-base py-2.5 rounded-xl border-2 border-slate-200 focus:border-rose-500 focus:outline-none focus:ring-1 focus:ring-rose-500">
             <input type="number" id="draw-num-6" min="1" max="49" placeholder="#" class="draw-modal-input text-center font-bold text-base py-2.5 rounded-xl border-2 border-slate-200 focus:border-rose-500 focus:outline-none focus:ring-1 focus:ring-rose-500">
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Bonus Ball (Optional)</label>
-          <div class="w-24">
-            <input type="number" id="draw-bonus-num" min="1" max="49" placeholder="Bonus" class="text-center font-bold text-base py-2.5 rounded-xl border-2 border-indigo-200 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 w-full">
           </div>
         </div>
 
@@ -618,7 +811,7 @@
     </div>
   </div>
 
-  <!-- Player Modal -->
+  <!-- Admin Player Edit Modal -->
   <div id="player-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200 overflow-hidden transform transition-all max-h-[95vh] flex flex-col">
       <div class="bg-slate-900 text-white p-5 flex items-center justify-between flex-shrink-0">
@@ -645,17 +838,19 @@
           </div>
         </div>
 
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Email Address</label>
+          <input type="email" id="p-modal-email" placeholder="e.g. player@example.com" class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 focus:border-amber-500 focus:ring-1 focus:ring-amber-500">
+        </div>
+
         <div class="flex items-center justify-between pt-1">
           <div>
             <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">6 Chosen Numbers (1 - 49)</label>
             <p class="text-[11px] text-slate-400">Type in boxes or click balls in grid below</p>
           </div>
           <div class="flex items-center gap-2">
-            <button type="button" onclick="generateRandomPicksForCurrentModal()" class="text-xs text-amber-600 hover:text-amber-700 font-bold flex items-center gap-1 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
-              <i class="fa-solid fa-wand-magic-sparkles"></i> Quick Pick 6
-            </button>
-            <button type="button" onclick="clearModalNumbers('admin')" class="text-xs text-slate-500 hover:text-slate-700 bg-slate-100 px-2 py-1 rounded-lg">
-              Clear
+            <button type="button" onclick="clearModalNumbers('admin')" class="text-xs text-slate-500 hover:text-slate-700 bg-slate-100 px-2.5 py-1 rounded-lg">
+              Clear All Numbers
             </button>
           </div>
         </div>
@@ -670,7 +865,7 @@
           <input type="number" id="p-num-6" min="1" max="49" onchange="syncAdminGridFromInputs()" class="p-num-input text-center font-bold text-sm py-2 rounded-xl border-2 border-slate-300 focus:border-amber-500 focus:ring-1 focus:ring-amber-500">
         </div>
 
-        <!-- Quick Visual Clicker Grid for Admin -->
+        <!-- Visual Clicker Grid for Admin -->
         <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
           <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wide block mb-2">Click to select/unselect numbers:</span>
           <div id="admin-interactive-picker-grid" class="grid grid-cols-7 sm:grid-cols-10 gap-1.5 max-h-44 overflow-y-auto p-1">
@@ -702,7 +897,7 @@
           </div>
           <div>
             <h3 class="text-base font-bold">50/50 Bingo Pool Entry Form</h3>
-            <p class="text-xs text-emerald-100">$25 Entry • Pick 6 Lucky Numbers (1 to 49)</p>
+            <p class="text-xs text-emerald-100">$20 Entry • Pick 6 Lucky Numbers (1 to 49)</p>
           </div>
         </div>
         <button onclick="closePlayerSubmissionModal()" class="text-white/80 hover:text-white text-lg p-1">
@@ -711,15 +906,20 @@
       </div>
 
       <div class="p-6 space-y-4 overflow-y-auto flex-1">
+        <!-- Assigned Slot Display -->
+        <div class="p-3.5 bg-emerald-50 rounded-xl border border-emerald-200 flex items-center justify-between">
+          <div>
+            <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-wide block">Assigned Pool Slot</span>
+            <p id="pub-assigned-slot-display" class="text-base font-extrabold text-emerald-950 mt-0.5">Play 1</p>
+          </div>
+          <span class="text-xs font-semibold px-2.5 py-1 bg-emerald-200/70 text-emerald-900 rounded-lg">
+            <i class="fa-solid fa-arrow-down-short-wide text-[11px] mr-1"></i> Auto-Assigned Next Open Spot
+          </span>
+          <input type="hidden" id="pub-assigned-slot-id" value="1">
+        </div>
+
         <!-- Player Info Fields -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div class="sm:col-span-2">
-            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Select Your Pool Slot <span class="text-rose-500">*</span></label>
-            <select id="pub-slot-select" class="w-full text-xs font-semibold px-3 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
-              <!-- Rendered by JS -->
-            </select>
-          </div>
-
           <div>
             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Your Full Legal Name <span class="text-rose-500">*</span></label>
             <input type="text" id="pub-player-name" placeholder="First & Last Name" class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500">
@@ -728,6 +928,11 @@
           <div>
             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Phone Number <span class="text-rose-500">*</span></label>
             <input type="tel" id="pub-player-phone" placeholder="e.g. (555) 123-4567" class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+          </div>
+
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Email Address <span class="text-rose-500">*</span></label>
+            <input type="email" id="pub-player-email" placeholder="e.g. name@example.com" class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500">
           </div>
         </div>
 
@@ -765,7 +970,7 @@
         <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-[11px] text-amber-900 flex items-start gap-2">
           <i class="fa-solid fa-circle-info text-amber-600 text-sm mt-0.5"></i>
           <div>
-            <strong>Important 50/50 Rules:</strong> Entry fee is <strong>$25.00</strong>. Your entry will be officially locked once payment is confirmed with the pool administrator. 50% of the total pot goes to the winner(s) after 6 draws!
+            <strong>Important 50/50 Rules:</strong> Entry fee is exactly <strong>$20.00</strong>. Your entry will be officially marked on the public ledger and locked once payment is confirmed with the pool administrator.
           </div>
         </div>
 
@@ -776,8 +981,8 @@
         <button onclick="closePlayerSubmissionModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800 bg-white border border-slate-200 rounded-xl transition">
           Cancel
         </button>
-        <button onclick="submitPlayerRegistrationForm()" class="px-6 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 rounded-xl shadow-md transition flex items-center gap-2">
-          <i class="fa-solid fa-paper-plane"></i> Submit Entry ($25)
+        <button id="pub-submit-entry-btn" onclick="submitPlayerRegistrationForm()" class="px-6 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 rounded-xl shadow-md transition flex items-center gap-2">
+          <i class="fa-solid fa-paper-plane"></i> Submit Entry ($20)
         </button>
       </div>
     </div>
@@ -791,79 +996,192 @@
   <script>
     const STORAGE_KEY = '649_bingo_pool_v2';
     const DRAWS_KEY = '649_bingo_draws_v2';
-    const ADMIN_PIN = '1234';
+    const PIN_STORAGE_KEY = '649_bingo_admin_pin_v2';
+    const RULES_STORAGE_KEY = '649_bingo_rules_v2';
+    const DEFAULT_PIN = '1234';
 
     let isAdminLoggedIn = false;
     let currentAdminTab = 'payment-tracker';
-    let entryFee = 25;
+    let currentPlayerViewTab = 'sheet'; // 'sheet' or 'rules'
+    let entryFee = 20; // $20 entry fee
     let selectedDrawView = 'cumulative'; // 'cumulative' or 0, 1, 2, 3, 4, 5
-    
-    // Exactly 6 6/49 entries
-    let draws = [
-      { id: 1, name: 'Draw #1', date: '', numbers: [], bonus: null },
-      { id: 2, name: 'Draw #2', date: '', numbers: [], bonus: null },
-      { id: 3, name: 'Draw #3', date: '', numbers: [], bonus: null },
-      { id: 4, name: 'Draw #4', date: '', numbers: [], bonus: null },
-      { id: 5, name: 'Draw #5', date: '', numbers: [], bonus: null },
-      { id: 6, name: 'Draw #6', date: '', numbers: [], bonus: null },
-    ];
 
     let players = [];
+    let draws = [];
 
-    // Helper: generate 6 unique random numbers between 1 and 49
-    function generateQuickPick() {
-      const set = new Set();
-      while (set.size < 6) {
-        set.add(Math.floor(Math.random() * 49) + 1);
+    // Default Rules and Schedule
+    const DEFAULT_RULES = {
+      startDate: '2026-10-10',
+      endDate: '2026-11-14',
+      rulesText: `1. Entry Fee: Exactly $20.00 per slot (unlimited players welcome - no cap on participation).
+2. 50/50 Pot Allocation: 50% of all collected entry fees forms the Winner Prize Pot. The remaining 50% is retained by the organization hosting the pool.
+3. Card Selection: Each player picks 6 unique numbers between 1 and 49 for their card.
+4. Duration: The pool runs across exactly 6 official weekly 6/49 draws.
+5. Automatic Hit Matching: As each official draw is entered, numbers matching your card are stamped in gold/red.
+6. How to Win (Bingo):
+   - Any player who matches all 6/6 numbers on their card achieves BINGO!
+   - If no player matches 6/6 after all 6 draws, the player(s) with the highest total match count wins the entire 50% prize pot.
+7. Tie Breaker: If multiple players tie with the same highest number of hits, the 50% prize pot is split equally between them.
+8. Registration & Payment: Your slot and legal name are locked into the ledger once payment has been verified by the administrator.`
+    };
+
+    let poolRules = { ...DEFAULT_RULES };
+
+    function formatDisplayDate(dateStr) {
+      if (!dateStr) return '--';
+      try {
+        const parts = dateStr.split('-');
+        if (parts.length === 3) {
+          const d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+          return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+        return dateStr;
+      } catch (e) {
+        return dateStr;
       }
-      return Array.from(set).sort((a, b) => a - b);
     }
 
-    // Initialize 50 players labeled "Play 1", "Play 2" ... "Play 50"
+    function getAdminPin() {
+      return localStorage.getItem(PIN_STORAGE_KEY) || DEFAULT_PIN;
+    }
+
+    function setAdminPin(newPin) {
+      localStorage.setItem(PIN_STORAGE_KEY, newPin);
+    }
+
+    function generateQuickPick() {
+      const picks = new Set();
+      while (picks.size < 6) {
+        picks.add(Math.floor(Math.random() * 49) + 1);
+      }
+      return Array.from(picks).sort((a, b) => a - b);
+    }
+
+    function initializeDefaultDraws() {
+      return [
+        { id: 1, name: 'Draw #1', date: '', numbers: [] },
+        { id: 2, name: 'Draw #2', date: '', numbers: [] },
+        { id: 3, name: 'Draw #3', date: '', numbers: [] },
+        { id: 4, name: 'Draw #4', date: '', numbers: [] },
+        { id: 5, name: 'Draw #5', date: '', numbers: [] },
+        { id: 6, name: 'Draw #6', date: '', numbers: [] }
+      ];
+    }
+
     function initializeDefaultPlayers() {
       const list = [];
       for (let i = 1; i <= 50; i++) {
         list.push({
           id: i,
           label: `Play ${i}`,
-          name: '', // Added after payment or player submission
+          name: '',
           phone: '',
+          email: '',
           paid: false,
           amountPaid: 0,
           paymentMethod: 'Cash',
           paymentDate: '',
           notes: '',
-          numbers: generateQuickPick()
+          numbers: []
         });
       }
       return list;
+    }
+
+    function getNextAvailablePlayerSlot() {
+      let openSlot = players.find(p => (!p.name || p.name.trim() === '') && (!p.numbers || p.numbers.length === 0));
+      if (openSlot) {
+        return openSlot;
+      }
+
+      const nextId = players.length + 1;
+      const newSlot = {
+        id: nextId,
+        label: `Play ${nextId}`,
+        name: '',
+        phone: '',
+        email: '',
+        paid: false,
+        amountPaid: 0,
+        paymentMethod: 'Cash',
+        paymentDate: '',
+        notes: '',
+        numbers: []
+      };
+      players.push(newSlot);
+      saveState();
+      return newSlot;
+    }
+
+    function addNewPlayerSlot(count = 1) {
+      const addedSlots = [];
+      for (let i = 0; i < count; i++) {
+        const nextId = players.length + 1;
+        const newSlot = {
+          id: nextId,
+          label: `Play ${nextId}`,
+          name: '',
+          phone: '',
+          email: '',
+          paid: false,
+          amountPaid: 0,
+          paymentMethod: 'Cash',
+          paymentDate: '',
+          notes: '',
+          numbers: []
+        };
+        players.push(newSlot);
+        addedSlots.push(newSlot);
+      }
+      saveState();
+      if (isAdminLoggedIn) {
+        renderPaymentLedger();
+        renderAdminPlayerNumbersTable();
+      }
+      renderPlayerBingoSheet();
+      if (count === 1) {
+        showToast(`Added new slot ${addedSlots[0].label}!`);
+      } else {
+        showToast(`Added ${count} new slots (now up to Play ${players.length})!`);
+      }
     }
 
     function loadState() {
       try {
         const savedPlayers = localStorage.getItem(STORAGE_KEY);
         if (savedPlayers) {
-          players = JSON.parse(savedPlayers);
-          // ensure backwards compatibility for phone field and array count
-          players.forEach((p, idx) => {
-            if (p.phone === undefined) p.phone = '';
-            if (!p.numbers || p.numbers.length === 0) p.numbers = generateQuickPick();
-          });
-          if (players.length < 50) {
-            for (let i = players.length + 1; i <= 50; i++) {
-              players.push({
-                id: i,
-                label: `Play ${i}`,
-                name: '',
-                phone: '',
-                paid: false,
-                amountPaid: 0,
-                paymentMethod: 'Cash',
-                paymentDate: '',
-                notes: '',
-                numbers: generateQuickPick()
-              });
+          const parsed = JSON.parse(savedPlayers);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            players = parsed;
+            players.forEach((p) => {
+              if (p.phone === undefined) p.phone = '';
+              if (p.email === undefined) p.email = '';
+              if (!Array.isArray(p.numbers)) {
+                p.numbers = [];
+              }
+              if (!p.name || p.name.trim() === '') {
+                p.numbers = [];
+              }
+            });
+            if (players.length < 50) {
+              for (let i = players.length + 1; i <= 50; i++) {
+                players.push({
+                  id: i,
+                  label: `Play ${i}`,
+                  name: '',
+                  phone: '',
+                  email: '',
+                  paid: false,
+                  amountPaid: 0,
+                  paymentMethod: 'Cash',
+                  paymentDate: '',
+                  notes: '',
+                  numbers: []
+                });
+              }
             }
+          } else {
+            players = initializeDefaultPlayers();
           }
         } else {
           players = initializeDefaultPlayers();
@@ -874,11 +1192,25 @@
           const parsed = JSON.parse(savedDraws);
           if (Array.isArray(parsed) && parsed.length === 6) {
             draws = parsed;
+          } else {
+            draws = initializeDefaultDraws();
           }
+        } else {
+          draws = initializeDefaultDraws();
+        }
+
+        const savedRules = localStorage.getItem(RULES_STORAGE_KEY);
+        if (savedRules) {
+          const parsedRules = JSON.parse(savedRules);
+          poolRules = { ...DEFAULT_RULES, ...parsedRules };
+        } else {
+          poolRules = { ...DEFAULT_RULES };
         }
       } catch (e) {
         console.error('Error loading saved state:', e);
         players = initializeDefaultPlayers();
+        draws = initializeDefaultDraws();
+        poolRules = { ...DEFAULT_RULES };
       }
     }
 
@@ -886,6 +1218,7 @@
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(players));
         localStorage.setItem(DRAWS_KEY, JSON.stringify(draws));
+        localStorage.setItem(RULES_STORAGE_KEY, JSON.stringify(poolRules));
       } catch (e) {
         console.error('Failed to save to localStorage:', e);
       }
@@ -895,6 +1228,7 @@
       const toast = document.getElementById('toast');
       const toastMsg = document.getElementById('toast-message');
       const toastIcon = document.getElementById('toast-icon');
+      if (!toast || !toastMsg || !toastIcon) return;
 
       toastMsg.textContent = message;
       if (type === 'success') {
@@ -912,10 +1246,12 @@
     }
 
     function openAdminLoginModal() {
-      document.getElementById('admin-pin-input').value = '';
-      document.getElementById('admin-login-error').classList.add('hidden');
+      const input = document.getElementById('admin-pin-input');
+      const err = document.getElementById('admin-login-error');
+      if (input) input.value = '';
+      if (err) err.classList.add('hidden');
       document.getElementById('admin-login-modal').classList.remove('hidden');
-      setTimeout(() => document.getElementById('admin-pin-input').focus(), 100);
+      setTimeout(() => input && input.focus(), 100);
     }
 
     function closeAdminLoginModal() {
@@ -925,13 +1261,13 @@
     function submitAdminLogin() {
       const pin = document.getElementById('admin-pin-input').value.trim();
       const err = document.getElementById('admin-login-error');
-      if (pin === ADMIN_PIN) {
+      if (pin === getAdminPin()) {
         isAdminLoggedIn = true;
         closeAdminLoginModal();
         applyViewMode();
-        showToast('Admin Mode Unlocked! You can now manage payments, names and draws.');
+        showToast('Admin Mode Unlocked!');
       } else {
-        err.textContent = 'Incorrect PIN. Please enter "1234".';
+        err.textContent = 'Incorrect PIN or Password. Please try again.';
         err.classList.remove('hidden');
       }
     }
@@ -942,6 +1278,174 @@
       showToast('Returned to Public Player View', 'info');
     }
 
+    function openChangePinModal() {
+      document.getElementById('cur-pin-input').value = '';
+      document.getElementById('new-pin-input').value = '';
+      document.getElementById('confirm-pin-input').value = '';
+      document.getElementById('change-pin-error').classList.add('hidden');
+      document.getElementById('change-pin-modal').classList.remove('hidden');
+    }
+
+    function closeChangePinModal() {
+      document.getElementById('change-pin-modal').classList.add('hidden');
+    }
+
+    function submitChangePin() {
+      const cur = document.getElementById('cur-pin-input').value.trim();
+      const newP = document.getElementById('new-pin-input').value.trim();
+      const confirmP = document.getElementById('confirm-pin-input').value.trim();
+      const err = document.getElementById('change-pin-error');
+
+      if (cur !== getAdminPin()) {
+        err.textContent = 'Current PIN/Password is incorrect.';
+        err.classList.remove('hidden');
+        return;
+      }
+      if (!newP || newP.length < 4) {
+        err.textContent = 'New PIN/Password must be at least 4 characters long.';
+        err.classList.remove('hidden');
+        return;
+      }
+      if (newP !== confirmP) {
+        err.textContent = 'The new passwords do not match.';
+        err.classList.remove('hidden');
+        return;
+      }
+
+      setAdminPin(newP);
+      closeChangePinModal();
+      showToast('Admin password/PIN updated successfully!');
+    }
+
+    function deletePlayer(playerId) {
+      const player = players.find(p => p.id === playerId);
+      if (!player) return;
+
+      const playerDesc = player.name ? `"${player.name}" (${player.label})` : player.label;
+      const confirmed = confirm(`Are you sure you want to delete and reset ${playerDesc}?\n\nThis will wipe their name, phone, email, chosen numbers, and payment records ($20), opening the slot for a new player.`);
+      if (!confirmed) return;
+
+      player.name = '';
+      player.phone = '';
+      player.email = '';
+      player.paid = false;
+      player.amountPaid = 0;
+      player.paymentDate = '';
+      player.paymentMethod = 'Cash';
+      player.notes = '';
+      player.numbers = [];
+
+      saveState();
+      renderPaymentLedger();
+      renderAdminPlayerNumbersTable();
+      renderPlayerBingoSheet();
+      showToast(`${player.label} has been deleted and reset. Slot is open with no numbers.`);
+    }
+
+    function switchPlayerViewTab(tab) {
+      currentPlayerViewTab = tab;
+      const sheetView = document.getElementById('player-subview-sheet');
+      const rulesView = document.getElementById('player-subview-rules');
+      const sheetBtn = document.getElementById('player-tab-sheet-btn');
+      const rulesBtn = document.getElementById('player-tab-rules-btn');
+
+      if (tab === 'sheet') {
+        sheetView.classList.remove('hidden');
+        rulesView.classList.add('hidden');
+        sheetBtn.className = 'px-4 py-2 text-xs font-bold rounded-xl bg-slate-900 text-white shadow-sm transition flex items-center gap-2';
+        rulesBtn.className = 'px-4 py-2 text-xs font-semibold rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 shadow-sm transition flex items-center gap-2';
+      } else {
+        sheetView.classList.add('hidden');
+        rulesView.classList.remove('hidden');
+        rulesBtn.className = 'px-4 py-2 text-xs font-bold rounded-xl bg-slate-900 text-white shadow-sm transition flex items-center gap-2';
+        sheetBtn.className = 'px-4 py-2 text-xs font-semibold rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 shadow-sm transition flex items-center gap-2';
+        renderRulesTab();
+      }
+    }
+
+    function renderRulesTab() {
+      const qStart = document.getElementById('quick-start-date');
+      const qEnd = document.getElementById('quick-end-date');
+      const cardStart = document.getElementById('rules-card-start-date');
+      const cardEnd = document.getElementById('rules-card-end-date');
+      const rulesList = document.getElementById('rules-display-list');
+      const editWrap = document.getElementById('rules-admin-quick-edit-wrapper');
+
+      const startFmt = formatDisplayDate(poolRules.startDate);
+      const endFmt = formatDisplayDate(poolRules.endDate);
+
+      if (qStart) qStart.textContent = startFmt;
+      if (qEnd) qEnd.textContent = endFmt;
+      if (cardStart) cardStart.textContent = startFmt;
+      if (cardEnd) cardEnd.textContent = endFmt;
+
+      if (editWrap) {
+        if (isAdminLoggedIn) editWrap.classList.remove('hidden');
+        else editWrap.classList.add('hidden');
+      }
+
+      if (rulesList) {
+        const lines = (poolRules.rulesText || '').split('\n').filter(line => line.trim() !== '');
+        rulesList.innerHTML = lines.map(line => {
+          return `
+            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 flex items-start gap-3">
+              <span class="w-6 h-6 rounded-lg bg-amber-100 text-amber-900 font-bold text-xs flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i class="fa-solid fa-check text-[10px]"></i>
+              </span>
+              <p class="font-medium text-slate-800">${escapeHtml(line)}</p>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    function renderAdminRulesEditor() {
+      const startDateInput = document.getElementById('admin-rules-start-date');
+      const endDateInput = document.getElementById('admin-rules-end-date');
+      const rulesTextarea = document.getElementById('admin-rules-textarea');
+
+      if (startDateInput) startDateInput.value = poolRules.startDate || '';
+      if (endDateInput) endDateInput.value = poolRules.endDate || '';
+      if (rulesTextarea) rulesTextarea.value = poolRules.rulesText || '';
+    }
+
+    function saveAdminRules() {
+      const startDate = document.getElementById('admin-rules-start-date').value;
+      const endDate = document.getElementById('admin-rules-end-date').value;
+      const rulesText = document.getElementById('admin-rules-textarea').value.trim();
+
+      if (!rulesText) {
+        showToast('Please provide rules text before saving.', 'error');
+        return;
+      }
+
+      poolRules.startDate = startDate;
+      poolRules.endDate = endDate;
+      poolRules.rulesText = rulesText;
+
+      saveState();
+      renderRulesTab();
+      showToast('Pool Rules & Schedule updated successfully!');
+    }
+
+    function resetRulesToDefault() {
+      if (confirm('Are you sure you want to reset all pool rules to the original default format?')) {
+        poolRules = { ...DEFAULT_RULES };
+        saveState();
+        renderAdminRulesEditor();
+        renderRulesTab();
+        showToast('Rules reset to defaults!', 'info');
+      }
+    }
+
+    function openRulesEditModal() {
+      if (isAdminLoggedIn) {
+        switchAdminTab('pool-rules');
+      } else {
+        openAdminLoginModal();
+      }
+    }
+
     function applyViewMode() {
       const playerContainer = document.getElementById('section-player-view');
       const adminContainer = document.getElementById('section-admin-view');
@@ -949,6 +1453,8 @@
       const adminActions = document.getElementById('admin-mode-actions');
       const adminNavBar = document.getElementById('admin-nav-bar');
       const headerBadge = document.getElementById('header-mode-badge');
+
+      renderRulesTab();
 
       if (isAdminLoggedIn) {
         playerContainer.classList.add('hidden');
@@ -999,9 +1505,11 @@
         renderHeatmap();
         renderPrizeStats();
       }
+      if (tabId === 'pool-rules') {
+        renderAdminRulesEditor();
+      }
     }
 
-    // Returns a set of all drawn numbers depending on view
     function getActiveDrawnNumbers() {
       if (selectedDrawView === 'cumulative') {
         const cumulativeSet = new Set();
@@ -1015,19 +1523,6 @@
       }
     }
 
-    function getActiveBonusNumbers() {
-      if (selectedDrawView === 'cumulative') {
-        const bSet = new Set();
-        draws.forEach(d => {
-          if (d.bonus) bSet.add(d.bonus);
-        });
-        return Array.from(bSet);
-      } else {
-        const idx = parseInt(selectedDrawView, 10);
-        return draws[idx] && draws[idx].bonus ? [draws[idx].bonus] : [];
-      }
-    }
-
     function setDrawView(val) {
       selectedDrawView = val;
       renderPlayerHeader();
@@ -1038,10 +1533,10 @@
       const container = document.getElementById('player-drawn-balls-container');
       const titleEl = document.getElementById('player-active-draw-title');
       const subtitleEl = document.getElementById('player-active-draw-subtitle');
-      const bonusEl = document.getElementById('player-bonus-ball-display');
       const tabsSelector = document.getElementById('player-draw-tabs-selector');
 
-      // Update Draw Switcher Buttons for Players
+      if (!container || !titleEl || !subtitleEl || !tabsSelector) return;
+
       let tabsHtml = `
         <button onclick="setDrawView('cumulative')" class="px-2.5 py-1 text-xs font-bold rounded ${selectedDrawView === 'cumulative' ? 'bg-white shadow text-rose-700' : 'text-slate-600 hover:text-slate-900'}">
           All 6 Draws
@@ -1060,23 +1555,16 @@
       tabsSelector.innerHTML = tabsHtml;
 
       const activeNums = getActiveDrawnNumbers();
-      const activeBonuses = getActiveBonusNumbers();
 
       if (selectedDrawView === 'cumulative') {
         const completedCount = draws.filter(d => d.numbers && d.numbers.length === 6).length;
         titleEl.textContent = `All 6 Draws Cumulative View (${completedCount}/6 Entered)`;
         subtitleEl.textContent = `Numbers drawn across all 6 weekly draws are automatically circled in gold on each player card.`;
-        if (activeBonuses.length > 0) {
-          bonusEl.textContent = activeBonuses.join(', ');
-        } else {
-          bonusEl.textContent = '--';
-        }
       } else {
         const idx = parseInt(selectedDrawView, 10);
         const d = draws[idx];
         titleEl.textContent = `${d.name} ${d.date ? '(' + d.date + ')' : '(Awaiting Draw Entry)'}`;
         subtitleEl.textContent = `Displaying matches strictly for ${d.name}.`;
-        bonusEl.textContent = d.bonus || '--';
       }
 
       if (activeNums.length === 0) {
@@ -1099,33 +1587,36 @@
         `).join('');
       }
 
-      // Calculate matches summary based on active drawn numbers
       let count6 = 0, count5 = 0;
       players.forEach(p => {
-        if (!p.numbers || p.numbers.length === 0) return;
+        if (!p.numbers || p.numbers.length !== 6) return;
         const matches = p.numbers.filter(num => activeNums.includes(num)).length;
         if (matches === 6) count6++;
         else if (matches === 5) count5++;
       });
 
-      document.getElementById('player-stat-match-6').textContent = count6;
-      document.getElementById('player-stat-match-5').textContent = count5;
+      const match6El = document.getElementById('player-stat-match-6');
+      const match5El = document.getElementById('player-stat-match-5');
+      const potEl = document.getElementById('player-stat-winner-pot');
 
-      // Calculate 50/50 Pot
+      if (match6El) match6El.textContent = count6;
+      if (match5El) match5El.textContent = count5;
+
       const paidPlayers = players.filter(p => p.paid);
       const totalCollected = paidPlayers.reduce((acc, p) => acc + (p.amountPaid || entryFee), 0);
       const winnerPot = totalCollected * 0.5;
 
-      document.getElementById('player-stat-winner-pot').textContent = `$${winnerPot.toFixed(2)}`;
+      if (potEl) potEl.textContent = `$${winnerPot.toFixed(2)}`;
     }
 
     function renderPlayerBingoSheet() {
       const tbody = document.getElementById('player-bingo-table-body');
+      if (!tbody) return;
+
       const searchQuery = (document.getElementById('player-bingo-search')?.value || '').toLowerCase();
       const filterStatus = document.getElementById('player-bingo-filter-status')?.value || 'all';
 
       const activeNums = getActiveDrawnNumbers();
-      const activeBonuses = getActiveBonusNumbers();
 
       let filtered = [...players];
 
@@ -1136,22 +1627,29 @@
         );
       }
 
-      if (filterStatus === 'with-matches') {
+      if (filterStatus === 'registered') {
+        filtered = filtered.filter(p => (p.name && p.name.trim() !== '') || (p.numbers && p.numbers.length === 6));
+      } else if (filterStatus === 'with-matches') {
         filtered = filtered.filter(p => {
+          if (!p.numbers || p.numbers.length !== 6) return false;
           return p.numbers.filter(n => activeNums.includes(n)).length > 0;
         });
       } else if (filterStatus === 'top-scorers') {
         filtered.sort((a, b) => {
-          const matchA = a.numbers.filter(n => activeNums.includes(n)).length;
-          const matchB = b.numbers.filter(n => activeNums.includes(n)).length;
+          const matchA = (pHasNums(a)) ? a.numbers.filter(n => activeNums.includes(n)).length : -1;
+          const matchB = (pHasNums(b)) ? b.numbers.filter(n => activeNums.includes(n)).length : -1;
           return matchB - matchA;
         });
+      }
+
+      function pHasNums(p) {
+        return p.numbers && Array.isArray(p.numbers) && p.numbers.length === 6;
       }
 
       if (filtered.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="7" class="text-center py-10 text-slate-400">
+            <td colspan="6" class="text-center py-10 text-slate-400">
               <i class="fa-solid fa-filter text-2xl mb-2 text-slate-300"></i>
               <p>No players matched your search.</p>
             </td>
@@ -1161,12 +1659,13 @@
       }
 
       tbody.innerHTML = filtered.map(p => {
-        const matchesCount = p.numbers ? p.numbers.filter(num => activeNums.includes(num)).length : 0;
-        const bonusMatched = activeBonuses.some(b => p.numbers.includes(b));
+        const hasNumbers = p.numbers && Array.isArray(p.numbers) && p.numbers.length === 6;
+        const matchesCount = hasNumbers ? p.numbers.filter(num => activeNums.includes(num)).length : 0;
 
-        // Standing Badge
         let standingBadge = '<span class="text-slate-400 text-[11px] font-medium">-</span>';
-        if (activeNums.length > 0) {
+        if (!hasNumbers) {
+          standingBadge = '<span class="text-slate-400 text-[11px] italic">Awaiting entry</span>';
+        } else if (activeNums.length > 0) {
           if (matchesCount === 6) {
             standingBadge = '<span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-sm animate-pulse">BINGO 6/6!</span>';
           } else if (matchesCount === 5) {
@@ -1180,30 +1679,39 @@
           }
         }
 
-        // Player Name formatting
         const nameDisplay = p.name ? escapeHtml(p.name) : '<span class="text-slate-400 italic font-normal">Awaiting entry</span>';
 
-        // Render lottery numbers with CIRCLED match logic
-        const numbersHtml = (p.numbers || []).map(num => {
-          const isMatched = activeNums.includes(num);
-          const isBonusMatch = activeBonuses.includes(num);
-          let extraClass = 'unmatched';
-          let title = `Number ${num}`;
+        let numbersHtml = '';
+        if (hasNumbers) {
+          numbersHtml = p.numbers.map(num => {
+            const isMatched = activeNums.includes(num);
+            let extraClass = 'unmatched';
+            let title = `Number ${num}`;
 
-          if (isMatched) {
-            extraClass = 'matched';
-            title = `HIT: Number ${num} drawn!`;
-          } else if (isBonusMatch) {
-            extraClass = 'bg-indigo-100 text-indigo-700 border-2 border-indigo-400 font-bold';
-            title = `Bonus Hit: ${num}`;
-          }
+            if (isMatched) {
+              extraClass = 'matched';
+              title = `HIT: Number ${num} drawn!`;
+            }
 
-          return `
-            <span class="lotto-ball ${extraClass} font-mono-numbers" title="${title}">
-              ${num}
-            </span>
+            return `
+              <span class="lotto-ball ${extraClass} font-mono-numbers" title="${title}">
+                ${num}
+              </span>
+            `;
+          }).join('');
+        } else {
+          numbersHtml = `
+            <div class="flex items-center justify-center gap-1.5 text-slate-300 py-1">
+              <span class="w-8 h-8 rounded-full border border-dashed border-slate-300 flex items-center justify-center font-mono-numbers text-xs text-slate-400">-</span>
+              <span class="w-8 h-8 rounded-full border border-dashed border-slate-300 flex items-center justify-center font-mono-numbers text-xs text-slate-400">-</span>
+              <span class="w-8 h-8 rounded-full border border-dashed border-slate-300 flex items-center justify-center font-mono-numbers text-xs text-slate-400">-</span>
+              <span class="w-8 h-8 rounded-full border border-dashed border-slate-300 flex items-center justify-center font-mono-numbers text-xs text-slate-400">-</span>
+              <span class="w-8 h-8 rounded-full border border-dashed border-slate-300 flex items-center justify-center font-mono-numbers text-xs text-slate-400">-</span>
+              <span class="w-8 h-8 rounded-full border border-dashed border-slate-300 flex items-center justify-center font-mono-numbers text-xs text-slate-400">-</span>
+              <span class="ml-2 text-xs italic text-slate-400">Awaiting player numbers</span>
+            </div>
           `;
-        }).join('');
+        }
 
         return `
           <tr class="hover:bg-slate-50 transition border-b border-slate-100">
@@ -1218,12 +1726,7 @@
               </div>
             </td>
 
-            <td class="py-3 px-4 text-center">
-              ${p.paid 
-                ? '<span class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200"><i class="fa-solid fa-circle-check text-emerald-500 text-[10px]"></i> Confirmed</span>' 
-                : '<span class="inline-flex items-center gap-1 text-[11px] font-medium text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full"><i class="fa-solid fa-clock text-[10px]"></i> Unpaid</span>'}
-            </td>
-
+            <!-- Chosen 6/49 Numbers positioned directly AFTER Player Name -->
             <td class="py-3 px-4">
               <div class="flex items-center justify-center gap-2 flex-wrap">
                 ${numbersHtml}
@@ -1231,16 +1734,19 @@
             </td>
 
             <td class="py-3 px-4 text-center">
-              ${bonusMatched 
-                ? '<span class="px-2 py-0.5 bg-indigo-100 text-indigo-700 font-bold text-[10px] rounded-full border border-indigo-300">★ Bonus</span>' 
-                : '<span class="text-slate-300 text-[11px] font-mono-numbers">--</span>'
-              }
+              ${p.paid 
+                ? '<span class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200"><i class="fa-solid fa-circle-check text-emerald-500 text-[10px]"></i> Paid ($20)</span>' 
+                : '<span class="inline-flex items-center gap-1 text-[11px] font-medium text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full"><i class="fa-solid fa-clock text-[10px]"></i> Unpaid</span>'}
             </td>
 
             <td class="py-3 px-4 text-center">
-              <span class="inline-flex items-center justify-center font-extrabold text-sm px-2.5 py-1 rounded-lg ${matchesCount >= 4 ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-slate-100 text-slate-700'}">
-                ${matchesCount} / 6
-              </span>
+              ${hasNumbers ? `
+                <span class="inline-flex items-center justify-center font-extrabold text-sm px-2.5 py-1 rounded-lg ${matchesCount >= 4 ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-slate-100 text-slate-700'}">
+                  ${matchesCount} / 6
+                </span>
+              ` : `
+                <span class="text-slate-300 text-xs font-mono-numbers">-- / 6</span>
+              `}
             </td>
 
             <td class="py-3 px-4 text-center">
@@ -1253,10 +1759,13 @@
 
     function renderPaymentLedger() {
       const tbody = document.getElementById('payment-table-body');
+      if (!tbody) return;
+
       const filter = document.getElementById('payment-filter')?.value || 'all';
 
       let paidCount = 0;
       let totalAmountCollected = 0;
+      const totalSlots = players.length;
 
       players.forEach(p => {
         if (p.paid) {
@@ -1265,10 +1774,16 @@
         }
       });
 
-      const unpaidCount = 50 - paidCount;
-      const percentPaid = Math.round((paidCount / 50) * 100);
+      const unpaidCount = totalSlots - paidCount;
+      const percentPaid = totalSlots > 0 ? Math.round((paidCount / totalSlots) * 100) : 0;
       const winnerShare = totalAmountCollected * 0.5;
       const orgShare = totalAmountCollected * 0.5;
+
+      const totalPoolSlotsCount = document.getElementById('total-pool-slots-count');
+      if (totalPoolSlotsCount) totalPoolSlotsCount.textContent = totalSlots;
+
+      const totalPoolSlotsRange = document.getElementById('total-pool-slots-range');
+      if (totalPoolSlotsRange) totalPoolSlotsRange.textContent = `Play 1 through Play ${totalSlots} (Unlimited)`;
 
       const paidCountEl = document.getElementById('total-paid-count');
       if (paidCountEl) paidCountEl.textContent = paidCount;
@@ -1277,7 +1792,7 @@
       if (unpaidCountEl) unpaidCountEl.textContent = unpaidCount;
 
       const paidPercentEl = document.getElementById('paid-percent');
-      if (paidPercentEl) paidPercentEl.textContent = `${percentPaid}% Collected (${paidCount}/50)`;
+      if (paidPercentEl) paidPercentEl.textContent = `${percentPaid}% Collected (${paidCount}/${totalSlots})`;
 
       const totalPotEl = document.getElementById('total-pot-amount');
       if (totalPotEl) totalPotEl.textContent = `$${totalAmountCollected.toFixed(2)}`;
@@ -1295,9 +1810,10 @@
       if (defaultEntryFeeEl) defaultEntryFeeEl.textContent = `At $${entryFee.toFixed(2)} / slot`;
 
       const paidBadge = document.getElementById('paid-badge-counter');
-      if (paidBadge) paidBadge.textContent = `${paidCount}/50`;
+      if (paidBadge) paidBadge.textContent = `${paidCount}/${totalSlots}`;
 
       let filtered = [...players];
+      if (filter === 'registered') filtered = filtered.filter(p => (p.name && p.name.trim() !== '') || (p.numbers && p.numbers.length === 6));
       if (filter === 'paid') filtered = filtered.filter(p => p.paid);
       if (filter === 'unpaid') filtered = filtered.filter(p => !p.paid);
 
@@ -1342,7 +1858,7 @@
                 class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 w-full ${p.paid ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm' : 'bg-rose-100 hover:bg-rose-200 text-rose-700'}"
               >
                 <i class="fa-solid ${p.paid ? 'fa-check-circle' : 'fa-circle-xmark'}"></i>
-                ${p.paid ? 'PAID ($25)' : 'MARK PAID'}
+                ${p.paid ? 'PAID ($20)' : 'MARK PAID'}
               </button>
             </td>
 
@@ -1395,6 +1911,12 @@
                 class="w-full text-xs px-2 py-1 rounded border border-slate-200 ${!p.paid ? 'bg-slate-100 text-slate-400' : 'bg-white'}"
               >
             </td>
+
+            <td class="py-3 px-4 text-center">
+              <button onclick="deletePlayer(${p.id})" class="px-2.5 py-1 text-xs font-semibold text-rose-600 hover:text-white hover:bg-rose-600 rounded-lg border border-rose-200 transition" title="Delete & Reset this Player Slot">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </td>
           </tr>
         `;
       }).join('');
@@ -1402,6 +1924,8 @@
 
     function renderDrawManager() {
       const container = document.getElementById('six-draws-cards-grid');
+      if (!container) return;
+
       const completedDrawsCount = draws.filter(d => d.numbers && d.numbers.length === 6).length;
       const drawsBadge = document.getElementById('draws-completed-badge');
       if (drawsBadge) drawsBadge.textContent = `${completedDrawsCount}/6 Drawn`;
@@ -1441,13 +1965,6 @@
                 ${ballsHtml}
               </div>
             </div>
-
-            ${d.bonus ? `
-              <div class="flex items-center gap-2 pt-1 text-xs">
-                <span class="text-slate-400 font-semibold">Bonus Ball:</span>
-                <span class="w-7 h-7 rounded-full bg-indigo-600 text-white font-bold text-xs flex items-center justify-center font-mono-numbers">${d.bonus}</span>
-              </div>
-            ` : ''}
           </div>
         `;
       }).join('');
@@ -1455,12 +1972,15 @@
 
     function renderAdminPlayerNumbersTable() {
       const tbody = document.getElementById('admin-player-numbers-table-body');
+      if (!tbody) return;
+
       tbody.innerHTML = players.map(p => {
-        const balls = (p.numbers || []).map(n => `
+        const hasNumbers = p.numbers && Array.isArray(p.numbers) && p.numbers.length === 6;
+        const balls = hasNumbers ? p.numbers.map(n => `
           <span class="w-7 h-7 rounded-full bg-slate-100 border border-slate-300 font-bold text-xs flex items-center justify-center font-mono-numbers text-slate-800 shadow-sm">
             ${n}
           </span>
-        `).join('');
+        `).join('') : '<span class="text-xs text-slate-400 italic">No numbers entered yet (awaiting entry)</span>';
 
         return `
           <tr class="hover:bg-slate-50 transition border-b border-slate-100">
@@ -1468,8 +1988,8 @@
               #${String(p.id).padStart(2, '0')}
             </td>
             <td class="py-3 px-4">
-              <div class="font-bold text-slate-800">${p.name || '<span class="text-slate-400 italic">No Name</span>'}</div>
-              <div class="text-[11px] text-slate-400">${p.label}</div>
+              <div class="font-bold text-slate-800">${p.name ? escapeHtml(p.name) : '<span class="text-slate-400 italic">No Name (Open Slot)</span>'}</div>
+              <div class="text-[11px] text-slate-400">${escapeHtml(p.label)}</div>
             </td>
             <td class="py-3 px-4 text-slate-600 font-mono text-[11px]">
               ${p.phone ? escapeHtml(p.phone) : '<span class="text-slate-300">--</span>'}
@@ -1481,16 +2001,16 @@
             </td>
             <td class="py-3 px-4 text-center">
               ${p.paid 
-                ? '<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold text-[10px] rounded-full">PAID ($25)</span>' 
+                ? '<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold text-[10px] rounded-full">PAID ($20)</span>' 
                 : '<span class="px-2 py-0.5 bg-rose-100 text-rose-800 font-medium text-[10px] rounded-full">UNPAID</span>'}
             </td>
             <td class="py-3 px-4 text-center">
               <div class="flex items-center justify-center gap-1.5">
                 <button onclick="openPlayerModal(${p.id})" class="px-2.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-sm transition flex items-center gap-1">
-                  <i class="fa-solid fa-pen-to-square"></i> Enter/Edit
+                  <i class="fa-solid fa-pen-to-square"></i> Edit
                 </button>
-                <button onclick="quickPickSinglePlayer(${p.id})" class="px-2 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition" title="Randomize Numbers">
-                  <i class="fa-solid fa-dice"></i>
+                <button onclick="deletePlayer(${p.id})" class="px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold border border-rose-200 transition" title="Delete & Reset Player Slot">
+                  <i class="fa-solid fa-trash-can"></i>
                 </button>
               </div>
             </td>
@@ -1510,10 +2030,15 @@
       const winner50 = total * 0.5;
       const org50 = total * 0.5;
 
-      document.getElementById('prize-calc-winner').textContent = `$${winner50.toFixed(2)}`;
-      document.getElementById('prize-calc-org').textContent = `$${org50.toFixed(2)}`;
-      document.getElementById('prize-calc-total').textContent = `$${total.toFixed(2)}`;
-      document.getElementById('prize-calc-slots').textContent = `${paidPlayers.length} / 50 paid`;
+      const winEl = document.getElementById('prize-calc-winner');
+      const orgEl = document.getElementById('prize-calc-org');
+      const totalEl = document.getElementById('prize-calc-total');
+      const slotsEl = document.getElementById('prize-calc-slots');
+
+      if (winEl) winEl.textContent = `$${winner50.toFixed(2)}`;
+      if (orgEl) orgEl.textContent = `$${org50.toFixed(2)}`;
+      if (totalEl) totalEl.textContent = `$${total.toFixed(2)}`;
+      if (slotsEl) slotsEl.textContent = `${paidPlayers.length} / ${players.length} paid`;
     }
 
     function togglePayment(playerId) {
@@ -1536,6 +2061,7 @@
       saveState();
       renderPaymentLedger();
       renderPlayerBingoSheet();
+      renderPlayerHeader();
     }
 
     function updatePlayerName(playerId, newName) {
@@ -1588,20 +2114,6 @@
       }
     }
 
-    function markAllPaid(status) {
-      const today = new Date().toISOString().split('T')[0];
-      players.forEach(p => {
-        p.paid = status;
-        if (status) {
-          p.amountPaid = entryFee;
-          p.paymentDate = today;
-        }
-      });
-      saveState();
-      renderPaymentLedger();
-      showToast(status ? `All 50 players marked as PAID at $${entryFee}!` : 'Reset all 50 players to UNPAID.', status ? 'success' : 'info');
-    }
-
     function updateEntryFee(val) {
       const fee = parseFloat(val);
       if (fee > 0) {
@@ -1634,7 +2146,6 @@
       for (let i = 1; i <= 6; i++) {
         document.getElementById(`draw-num-${i}`).value = (d.numbers && d.numbers[i - 1]) || '';
       }
-      document.getElementById('draw-bonus-num').value = d.bonus || '';
     }
 
     function closeDrawModal() {
@@ -1646,11 +2157,6 @@
       for (let i = 1; i <= 6; i++) {
         document.getElementById(`draw-num-${i}`).value = picks[i - 1];
       }
-      let bonus;
-      do {
-        bonus = Math.floor(Math.random() * 49) + 1;
-      } while (picks.includes(bonus));
-      document.getElementById('draw-bonus-num').value = bonus;
     }
 
     function submitDrawNumbers() {
@@ -1675,55 +2181,38 @@
         return;
       }
 
-      const bonusVal = parseInt(document.getElementById('draw-bonus-num').value, 10);
-      let bonusNum = null;
-      if (!isNaN(bonusVal)) {
-        if (bonusVal < 1 || bonusVal > 49) {
-          errorDiv.textContent = 'Bonus number must be between 1 and 49.';
-          errorDiv.classList.remove('hidden');
-          return;
-        }
-        if (values.includes(bonusVal)) {
-          errorDiv.textContent = 'Bonus ball cannot be identical to any of the 6 main numbers.';
-          errorDiv.classList.remove('hidden');
-          return;
-        }
-        bonusNum = bonusVal;
-      }
-
       draws[idx].numbers = values.sort((a, b) => a - b);
-      draws[idx].bonus = bonusNum;
       draws[idx].date = document.getElementById('modal-draw-date').value || new Date().toISOString().split('T')[0];
 
       saveState();
       closeDrawModal();
       renderDrawManager();
+      renderPlayerHeader();
+      renderPlayerBingoSheet();
       showToast(`Saved official winning numbers for ${draws[idx].name}!`);
     }
 
     function randomizeAll6Draws() {
       draws.forEach((d, i) => {
         d.numbers = generateQuickPick();
-        let bonus;
-        do {
-          bonus = Math.floor(Math.random() * 49) + 1;
-        } while (d.numbers.includes(bonus));
-        d.bonus = bonus;
         d.date = new Date(Date.now() - (5 - i) * 7 * 86400000).toISOString().split('T')[0];
       });
       saveState();
       renderDrawManager();
+      renderPlayerHeader();
+      renderPlayerBingoSheet();
       showToast('Generated sample results for all 6 6/49 draws!');
     }
 
     function resetAllDraws() {
       draws.forEach(d => {
         d.numbers = [];
-        d.bonus = null;
         d.date = '';
       });
       saveState();
       renderDrawManager();
+      renderPlayerHeader();
+      renderPlayerBingoSheet();
       showToast('All 6 draws cleared.', 'info');
     }
 
@@ -1733,9 +2222,10 @@
 
       document.getElementById('edit-player-id').value = p.id;
       document.getElementById('player-modal-title').textContent = `Admin Number Entry: ${p.label}`;
-      document.getElementById('player-modal-subtitle').textContent = `Slot #${p.id} • ${p.paid ? 'PAID ($25)' : 'UNPAID'}`;
+      document.getElementById('player-modal-subtitle').textContent = `Slot #${p.id} • ${p.paid ? 'PAID ($20)' : 'UNPAID'}`;
       document.getElementById('p-modal-name').value = p.name || '';
       document.getElementById('p-modal-phone').value = p.phone || '';
+      document.getElementById('p-modal-email').value = p.email || '';
       document.getElementById('player-modal-error').classList.add('hidden');
 
       const existingNums = (p.numbers && p.numbers.length === 6) ? [...p.numbers] : [];
@@ -1749,6 +2239,7 @@
 
     function renderAdminInteractivePickerGrid(selectedList) {
       const grid = document.getElementById('admin-interactive-picker-grid');
+      if (!grid) return;
       let html = '';
       for (let num = 1; num <= 49; num++) {
         const isSelected = selectedList.includes(num);
@@ -1764,7 +2255,6 @@
     function toggleAdminNumberSelection(num) {
       const current = getAdminModalSelectedNumbers();
       if (current.includes(num)) {
-        // remove
         const updated = current.filter(x => x !== num);
         setAdminModalNumbers(updated);
       } else {
@@ -1811,11 +2301,6 @@
       document.getElementById('player-modal').classList.add('hidden');
     }
 
-    function generateRandomPicksForCurrentModal() {
-      const picks = generateQuickPick();
-      setAdminModalNumbers(picks);
-    }
-
     function savePlayerNumbersModal() {
       const pid = parseInt(document.getElementById('edit-player-id').value, 10);
       const player = players.find(x => x.id === pid);
@@ -1842,6 +2327,7 @@
 
       player.name = document.getElementById('p-modal-name').value.trim();
       player.phone = document.getElementById('p-modal-phone').value.trim();
+      player.email = document.getElementById('p-modal-email').value.trim();
       player.numbers = nums.sort((a, b) => a - b);
 
       saveState();
@@ -1861,27 +2347,19 @@
 
     function openPlayerSubmissionModal() {
       publicSelectedNumbers = [];
-      const selectEl = document.getElementById('pub-slot-select');
       const errEl = document.getElementById('pub-modal-error');
-      errEl.classList.add('hidden');
+      const displayEl = document.getElementById('pub-assigned-slot-display');
+      const idEl = document.getElementById('pub-assigned-slot-id');
+      
+      if (errEl) errEl.classList.add('hidden');
       document.getElementById('pub-player-name').value = '';
       document.getElementById('pub-player-phone').value = '';
+      document.getElementById('pub-player-email').value = '';
 
-      // Populate slot select options
-      selectEl.innerHTML = players.map(p => {
-        const isOccupied = p.name && p.name.trim() !== '';
-        return `
-          <option value="${p.id}">
-            ${p.label} ${isOccupied ? `(${escapeHtml(p.name)} - Occupied)` : '• Available'} ${p.paid ? '[PAID]' : ''}
-          </option>
-        `;
-      }).join('');
+      const nextSlot = getNextAvailablePlayerSlot();
 
-      // Auto-select first slot that has no assigned name
-      const openSlot = players.find(p => !p.name || p.name.trim() === '');
-      if (openSlot) {
-        selectEl.value = openSlot.id;
-      }
+      if (displayEl) displayEl.textContent = nextSlot.label;
+      if (idEl) idEl.value = nextSlot.id;
 
       renderPublicGrid();
       updatePublicSelectedDisplay();
@@ -1894,6 +2372,7 @@
 
     function renderPublicGrid() {
       const grid = document.getElementById('pub-picker-grid');
+      if (!grid) return;
       let html = '';
       for (let n = 1; n <= 49; n++) {
         const isSel = publicSelectedNumbers.includes(n);
@@ -1924,6 +2403,8 @@
     function updatePublicSelectedDisplay() {
       const display = document.getElementById('pub-selected-balls-display');
       const counter = document.getElementById('pub-counter-badge');
+      if (!display || !counter) return;
+
       counter.textContent = `${publicSelectedNumbers.length}/6 selected`;
       counter.className = publicSelectedNumbers.length === 6 
         ? 'ml-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800' 
@@ -1934,7 +2415,7 @@
         const val = publicSelectedNumbers[i];
         if (val) {
           html += `
-            <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-extrabold text-sm flex items-center justify-center font-mono-numbers shadow-sm border-2 border-white animate-bounce-once">
+            <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-extrabold text-sm flex items-center justify-center font-mono-numbers shadow-sm border-2 border-white">
               ${val}
             </div>
           `;
@@ -1964,10 +2445,18 @@
 
     function submitPlayerRegistrationForm() {
       const errEl = document.getElementById('pub-modal-error');
-      const slotId = parseInt(document.getElementById('pub-slot-select').value, 10);
+      const slotId = parseInt(document.getElementById('pub-assigned-slot-id').value, 10);
       const name = document.getElementById('pub-player-name').value.trim();
       const phone = document.getElementById('pub-player-phone').value.trim();
+      const email = document.getElementById('pub-player-email').value.trim();
 
+      if (isNaN(slotId) || slotId < 1) {
+        errEl.textContent = 'Could not allocate a valid slot. Please refresh and try again.';
+        errEl.classList.remove('hidden');
+        return;
+      }
+
+      let player = players.find(p => p.id === slotId);
       if (!name) {
         errEl.textContent = 'Please enter your full legal name.';
         errEl.classList.remove('hidden');
@@ -1978,59 +2467,47 @@
         errEl.classList.remove('hidden');
         return;
       }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email || !emailRegex.test(email)) {
+        errEl.textContent = 'Please enter a valid email address (e.g. name@example.com).';
+        errEl.classList.remove('hidden');
+        return;
+      }
       if (publicSelectedNumbers.length !== 6) {
         errEl.textContent = 'Please select exactly 6 lottery numbers (1 to 49) before submitting.';
         errEl.classList.remove('hidden');
         return;
       }
 
-      const player = players.find(p => p.id === slotId);
-      if (!player) return;
+      if (!player || (player.name && player.name.trim() !== '')) {
+        player = getNextAvailablePlayerSlot();
+      }
 
       player.name = name;
       player.phone = phone;
+      player.email = email;
       player.numbers = [...publicSelectedNumbers];
 
       saveState();
       closePlayerSubmissionModal();
       renderPlayerBingoSheet();
-      showToast(`Success! Your 6 numbers for ${player.label} are saved. Remember to submit your $25 entry!`);
-    }
-
-    function quickPickSinglePlayer(playerId) {
-      const p = players.find(x => x.id === playerId);
-      if (p) {
-        p.numbers = generateQuickPick();
-        saveState();
-        if (isAdminLoggedIn) {
-          renderAdminPlayerNumbersTable();
-        }
-        showToast(`Quick picked 6 random numbers for ${p.label}`);
-      }
-    }
-
-    function randomizeAllPlayerNumbers() {
-      players.forEach(p => {
-        if (!p.numbers || p.numbers.length === 0) {
-          p.numbers = generateQuickPick();
-        }
-      });
-      saveState();
-      if (isAdminLoggedIn) {
-        renderAdminPlayerNumbersTable();
-      }
-      showToast('Generated numbers for blank slots!');
+      renderPlayerHeader();
+      showToast(`Success! You have been assigned ${player.label}. Remember to submit your $20 entry fee!`);
     }
 
     function renderHeatmap() {
       const container = document.getElementById('number-heatmap');
+      if (!container) return;
+
       const counts = {};
       for (let i = 1; i <= 49; i++) counts[i] = 0;
 
       players.forEach(p => {
-        (p.numbers || []).forEach(num => {
-          if (counts[num] !== undefined) counts[num]++;
-        });
+        if (p.numbers && Array.isArray(p.numbers) && p.numbers.length === 6) {
+          p.numbers.forEach(num => {
+            if (counts[num] !== undefined) counts[num]++;
+          });
+        }
       });
 
       let max = 1;
@@ -2061,16 +2538,18 @@
 
     function exportToCSV() {
       const activeNums = getActiveDrawnNumbers();
-      let csv = 'Slot ID,Label,Real Name,Phone,Paid Status,Amount Paid,Payment Method,Payment Date,Notes,Ball 1,Ball 2,Ball 3,Ball 4,Ball 5,Ball 6,Matches (Active View)\n';
+      let csv = 'Slot ID,Label,Real Name,Phone,Email,Paid Status,Amount Paid,Payment Method,Payment Date,Notes,Ball 1,Ball 2,Ball 3,Ball 4,Ball 5,Ball 6,Matches (Active View)\n';
 
       players.forEach(p => {
-        const matches = (p.numbers || []).filter(n => activeNums.includes(n)).length;
+        const hasNumbers = p.numbers && Array.isArray(p.numbers) && p.numbers.length === 6;
+        const matches = hasNumbers ? p.numbers.filter(n => activeNums.includes(n)).length : 0;
         const nums = (p.numbers || []).concat(['', '', '', '', '', '']).slice(0, 6);
         const row = [
           p.id,
           `"${p.label}"`,
           `"${(p.name || '').replace(/"/g, '""')}"`,
           `"${(p.phone || '').replace(/"/g, '""')}"`,
+          `"${(p.email || '').replace(/"/g, '""')}"`,
           p.paid ? 'PAID' : 'UNPAID',
           p.amountPaid || 0,
           `"${p.paymentMethod || 'Cash'}"`,
