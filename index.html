@@ -150,7 +150,7 @@
         <i class="fa-solid fa-trophy"></i> 50/50 Financial Pot Breakdown
       </button>
       <button onclick="switchAdminTab('pool-rules')" id="admin-tab-pool-rules" class="admin-tab-btn px-4 py-2.5 text-xs font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition whitespace-nowrap">
-        <i class="fa-solid fa-scroll text-amber-400"></i> Edit Rules & Schedule
+        <i class="fa-solid fa-scroll text-amber-400"></i> Edit Rules & Pool Start/End Date
       </button>
     </div>
   </header>
@@ -261,7 +261,7 @@
               <table class="w-full text-left border-collapse">
                 <thead>
                   <tr class="bg-slate-800 text-white text-[11px] uppercase tracking-wider font-semibold">
-                    <th class="py-3 px-4 w-16 text-center">Slot</th>
+                    <th class="py-3 px-4 w-16 text-center">Card</th>
                     <th class="py-3 px-4 min-w-[190px]">Player Name</th>
                     <th class="py-3 px-4 text-center min-w-[340px]">Chosen 6/49 Numbers (1 - 49)</th>
                     <th class="py-3 px-4 text-center w-28">Status</th>
@@ -369,18 +369,18 @@
           </div>
           <div>
             <h3 class="text-sm font-bold text-slate-900">Administrator Control Center</h3>
-            <p class="text-xs text-slate-500">Record $20 payments, assign player legal names, manage numbers, edit rules, and input the 6 weekly draws.</p>
+            <p class="text-xs text-slate-500">Record $20 payments, assign player legal names, manage numbers, edit rules, and input the 10 draws.</p>
           </div>
         </div>
         <div class="flex items-center gap-2 flex-wrap">
           <button onclick="addNewPlayerSlot(1)" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-lg shadow-sm transition flex items-center gap-1.5">
-            <i class="fa-solid fa-plus"></i> +1 Slot
+            <i class="fa-solid fa-plus"></i> +1 Card
           </button>
           <button onclick="addNewPlayerSlot(10)" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-semibold rounded-lg shadow-sm transition flex items-center gap-1.5">
-            <i class="fa-solid fa-layer-group"></i> +10 Slots
+            <i class="fa-solid fa-layer-group"></i> +10 Cards
           </button>
           <button onclick="addNewPlayerSlot(25)" class="px-3 py-1.5 bg-emerald-800 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow-sm transition flex items-center gap-1.5">
-            <i class="fa-solid fa-users"></i> +25 Slots
+            <i class="fa-solid fa-users"></i> +25 Cards
           </button>
           <button onclick="openChangePinModal()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-amber-300 text-xs font-semibold rounded-lg shadow-sm transition flex items-center gap-1.5 border border-slate-700">
             <i class="fa-solid fa-key"></i> Edit PIN
@@ -400,9 +400,9 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
             <div>
-              <p class="text-xs text-slate-500 font-semibold uppercase">Total Pool Slots</p>
+              <p class="text-xs text-slate-500 font-semibold uppercase">Total Bingo Cards</p>
               <p id="total-pool-slots-count" class="text-2xl font-extrabold text-slate-800 mt-1">50</p>
-              <span id="total-pool-slots-range" class="text-[11px] text-slate-400">Play 1 through Play 50</span>
+              <span id="total-pool-slots-range" class="text-[11px] text-slate-400">Bingo Card 1 through Bingo Card 50</span>
             </div>
             <div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 text-lg">
               <i class="fa-solid fa-users"></i>
@@ -457,7 +457,7 @@
             <div class="relative">
               <i class="fa-solid fa-filter absolute left-3 top-2.5 text-slate-400 text-xs"></i>
               <select id="payment-filter" onchange="renderPaymentLedger()" class="pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-300 bg-white">
-                <option value="all">Show All Slots</option>
+                <option value="all">Show All Bingo Cards</option>
                 <option value="registered">Show Registered Only</option>
                 <option value="paid">Show Paid Only</option>
                 <option value="unpaid">Show Unpaid Only</option>
@@ -466,12 +466,12 @@
           </div>
           <div class="flex items-center gap-2 flex-wrap">
             <button onclick="addNewPlayerSlot(1)" class="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-lg text-xs font-bold border border-emerald-300 transition flex items-center gap-1">
-              <i class="fa-solid fa-plus text-xs"></i> +1 Slot
+              <i class="fa-solid fa-plus text-xs"></i> +1 Card
             </button>
             <button onclick="addNewPlayerSlot(10)" class="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-lg text-xs font-bold border border-emerald-300 transition flex items-center gap-1">
-              <i class="fa-solid fa-layer-group text-xs"></i> +10 Slots
+              <i class="fa-solid fa-layer-group text-xs"></i> +10 Cards
             </button>
-            <span class="text-xs text-slate-400 font-medium ml-2 hidden sm:inline">Individual Slot Payment Tracking</span>
+            <span class="text-xs text-slate-400 font-medium ml-2 hidden sm:inline">Individual Bingo Card Payment Tracking</span>
           </div>
         </div>
 
@@ -481,16 +481,17 @@
             <table class="w-full text-left border-collapse">
               <thead>
                 <tr class="bg-slate-800 text-white text-[11px] uppercase tracking-wider font-semibold">
-                  <th class="py-3 px-4 w-20 text-center">Slot</th>
-                  <th class="py-3 px-4 w-28">Slot ID</th>
+                  <th class="py-3 px-4 w-20 text-center">Card</th>
+                  <th class="py-3 px-4 w-28">Card ID</th>
                   <th class="py-3 px-4 min-w-[200px]">Assigned Player Legal Name <span class="text-amber-300 font-normal">(Unlocked when Paid)</span></th>
-                  <th class="py-3 px-4 w-32">Phone #</th>
+                  <th class="py-3 px-4 min-w-[190px]">Phone #</th>
+                    <th class="py-3 px-4 min-w-[230px]">Team Member You're Supporting</th>
                   <th class="py-3 px-4 text-center w-36">Payment Action</th>
                   <th class="py-3 px-4 w-28">Amount ($)</th>
                   <th class="py-3 px-4 w-36">Method</th>
                   <th class="py-3 px-4 w-36">Date Paid</th>
                   <th class="py-3 px-4 min-w-[180px]">Notes / Receipt #</th>
-                  <th class="py-3 px-4 text-center w-28">Manage</th>
+                  <th class="py-3 px-4 text-center min-w-[150px]">Manage</th>
                 </tr>
               </thead>
               <tbody id="payment-table-body" class="divide-y divide-slate-200 text-xs">
@@ -519,7 +520,7 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="six-draws-cards-grid">
-          <!-- Rendered via JS for Draws 1 through 6 -->
+          <!-- Rendered via JS for Draws 1 through 10 -->
         </div>
       </div>
 
@@ -528,14 +529,11 @@
         <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4">
           <div>
             <h3 class="text-base font-bold text-slate-800">Administrator Number Entry & Player Profiles</h3>
-            <p class="text-xs text-slate-500">Directly enter, revise, or delete entries for all registered player slots.</p>
+            <p class="text-xs text-slate-500">Directly enter, revise, or delete entries for all registered bingo cards.</p>
           </div>
           <div class="flex items-center gap-2 flex-wrap">
             <button onclick="addNewPlayerSlot(1)" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg text-xs font-bold transition flex items-center gap-1.5 border border-slate-300">
-              <i class="fa-solid fa-plus"></i> Add Slot
-            </button>
-            <button onclick="openPlayerModal(getFirstUnfilledPlayerId())" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
-              <i class="fa-solid fa-plus-circle"></i> Enter Next Player Numbers
+              <i class="fa-solid fa-plus"></i> Add Bingo Card
             </button>
           </div>
         </div>
@@ -545,7 +543,7 @@
             <table class="w-full text-left border-collapse">
               <thead>
                 <tr class="bg-slate-800 text-white text-[11px] uppercase tracking-wider font-semibold">
-                  <th class="py-3 px-4 w-20 text-center">Slot</th>
+                  <th class="py-3 px-4 w-20 text-center">Card</th>
                   <th class="py-3 px-4 w-44">Assigned Player</th>
                   <th class="py-3 px-4 w-32">Phone</th>
                   <th class="py-3 px-4 text-center">Selected 6/49 Lottery Balls</th>
@@ -592,7 +590,7 @@
                   <span id="prize-calc-total" class="font-bold text-slate-800">$0.00</span>
                 </div>
                 <div class="flex items-center justify-between mt-1 text-[11px] text-slate-500">
-                  <span>Slots Paid:</span>
+                  <span>Cards Paid:</span>
                   <span id="prize-calc-slots" class="font-semibold text-slate-700">0 paid</span>
                 </div>
               </div>
@@ -611,13 +609,13 @@
         </div>
       </div>
 
-      <!-- ADMIN TAB 5: Edit Rules & Schedule -->
+      <!-- ADMIN TAB 5: Edit Rules & Pool Start/End Date -->
       <div id="admin-view-pool-rules" class="admin-tab-view hidden space-y-5">
         <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-5">
           <div class="flex items-center justify-between flex-wrap gap-3 border-b border-slate-100 pb-4">
             <div>
               <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                <i class="fa-solid fa-scroll text-amber-500"></i> Edit Pool Rules & Official Dates
+                <i class="fa-solid fa-scroll text-amber-500"></i> Edit Rules & Pool Start/End Date
               </h3>
               <p class="text-xs text-slate-500">Updates here immediately reflect on the public "Rules & Schedule" tab for all players.</p>
             </div>
@@ -636,11 +634,26 @@
             <div>
               <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Pool End Date</label>
               <input type="date" id="admin-rules-end-date" class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 focus:border-amber-500 focus:ring-1 focus:ring-amber-500">
-              <p class="text-[11px] text-slate-400 mt-1">Expected date of the final (6th) weekly draw.</p>
+              <p class="text-[11px] text-slate-400 mt-1">Expected date of the final (10th) draw.</p>
             </div>
           </div>
 
-          <!-- Rules Textarea -->
+          <div class="border-t border-slate-100 pt-5">
+              <h4 class="text-sm font-bold text-slate-800 mb-3">Public Registration Window</h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Registration Start Date</label>
+                  <input type="date" id="admin-registration-start-date" class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 focus:border-amber-500 focus:ring-1 focus:ring-amber-500">
+                  <p class="text-[11px] text-slate-400 mt-1">Public entries are accepted beginning on this date.</p>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Registration End Date</label>
+                  <input type="date" id="admin-registration-end-date" class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 focus:border-amber-500 focus:ring-1 focus:ring-amber-500">
+                  <p class="text-[11px] text-slate-400 mt-1">Public entries are locked after this date.</p>
+                </div>
+              </div>
+            </div>
+            <!-- Rules Textarea -->
           <div>
             <div class="flex items-center justify-between mb-1">
               <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide">Pool Rules & Instructions</label>
@@ -651,7 +664,7 @@
 
           <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
             <button onclick="saveAdminRules()" class="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold rounded-xl text-xs shadow-md transition flex items-center gap-1.5">
-              <i class="fa-solid fa-save"></i> Save Rules & Schedule
+              <i class="fa-solid fa-save"></i> Save Rules & Pool Dates
             </button>
           </div>
         </div>
@@ -761,7 +774,7 @@
           </div>
           <div>
             <h3 class="text-base font-bold" id="modal-draw-header">Enter 6/49 Draw</h3>
-            <p class="text-[11px] text-slate-400">Select which draw (1 to 6) to enter official winning numbers</p>
+            <p class="text-[11px] text-slate-400">Select which draw (1 to 10) to enter official winning numbers</p>
           </div>
         </div>
         <button onclick="closeDrawModal()" class="text-slate-400 hover:text-white text-lg p-1">
@@ -772,7 +785,7 @@
       <div class="p-6 space-y-5">
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Target Draw (1 - 6)</label>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Target Draw (1 - 10)</label>
             <select id="modal-draw-index" onchange="onModalDrawIndexChange()" class="w-full text-xs font-bold px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-rose-500">
               <option value="0">Draw #1</option>
               <option value="1">Draw #2</option>
@@ -854,6 +867,24 @@
           <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Email Address</label>
           <input type="email" id="p-modal-email" placeholder="e.g. player@example.com" class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 focus:border-amber-500 focus:ring-1 focus:ring-amber-500">
         </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Team Member You're Supporting</label>
+            <select id="p-modal-supporting-player" class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 bg-white focus:border-amber-500 focus:ring-1 focus:ring-amber-500">
+              <option value="">Select a team member</option>
+              <option value="Aisha Ferguson (#13)">Aisha Ferguson (#13)</option>
+              <option value="Caleigh Callison (#24)">Caleigh Callison (#24)</option>
+              <option value="Emma Leite (#6)">Emma Leite (#6)</option>
+              <option value="Evelyn Yoon (#4)">Evelyn Yoon (#4)</option>
+              <option value="Karlee Ross (#11)">Karlee Ross (#11)</option>
+              <option value="Kayleigh Tsuyuki (#17)">Kayleigh Tsuyuki (#17)</option>
+              <option value="Maya Koutoulas (#12)">Maya Koutoulas (#12)</option>
+              <option value="Mckinley Toye (#8)">Mckinley Toye (#8)</option>
+              <option value="Serena Segovia (#22)">Serena Segovia (#22)</option>
+              <option value="Siena Duric (#86)">Siena Duric (#86)</option>
+              <option value="Sylvie Tanaka (#15)">Sylvie Tanaka (#15)</option>
+              <option value="FULL TEAM SUPPORTER">FULL TEAM SUPPORTER</option>
+            </select>
+          </div>
 
         <div class="flex items-center justify-between pt-1">
           <div>
@@ -921,11 +952,11 @@
         <!-- Assigned Slot Display -->
         <div class="p-3.5 bg-emerald-50 rounded-xl border border-emerald-200 flex items-center justify-between">
           <div>
-            <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-wide block">Assigned Pool Slot</span>
-            <p id="pub-assigned-slot-display" class="text-base font-extrabold text-emerald-950 mt-0.5">Play 1</p>
+            <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-wide block">Assigned Bingo Card</span>
+            <p id="pub-assigned-slot-display" class="text-base font-extrabold text-emerald-950 mt-0.5">Bingo Card 1</p>
           </div>
           <span class="text-xs font-semibold px-2.5 py-1 bg-emerald-200/70 text-emerald-900 rounded-lg">
-            <i class="fa-solid fa-arrow-down-short-wide text-[11px] mr-1"></i> Auto-Assigned Next Open Spot
+            <i class="fa-solid fa-arrow-down-short-wide text-[11px] mr-1"></i> Auto-Assigned Next Open Card
           </span>
           <input type="hidden" id="pub-assigned-slot-id" value="1">
         </div>
@@ -961,6 +992,7 @@
               <option value="Serena Segovia (#22)">Serena Segovia (#22)</option>
               <option value="Siena Duric (#86)">Siena Duric (#86)</option>
               <option value="Sylvie Tanaka (#15)">Sylvie Tanaka (#15)</option>
+                <option value="FULL TEAM SUPPORTER">FULL TEAM SUPPORTER</option>
             </select>
           </div>
         </div>
@@ -1048,6 +1080,8 @@
     const DEFAULT_RULES = {
       startDate: '2026-10-10',
       endDate: '2026-11-14',
+        registrationStartDate: '',
+        registrationEndDate: '',
       rulesText: `1. Entry Fee: Exactly $20.00 per slot (unlimited players welcome - no cap on participation).
 2. 50/50 Pot Allocation: 50% of all collected entry fees forms the Winner Prize Pot. The remaining 50% is retained by the organization hosting the pool.
 3. Card Selection: Each player picks 6 unique numbers between 1 and 49 for their card.
@@ -1100,7 +1134,7 @@
       for (let i = 1; i <= 50; i++) {
         list.push({
           id: i,
-          label: `Play ${i}`,
+          label: `Bingo Card ${i}`,
           name: '',
           phone: '',
           email: '',
@@ -1125,7 +1159,7 @@
       const nextId = players.length + 1;
       const newSlot = {
         id: nextId,
-        label: `Play ${nextId}`,
+        label: `Bingo Card ${nextId}`,
         name: '',
         phone: '',
         email: '',
@@ -1147,7 +1181,7 @@
         const nextId = players.length + 1;
         const newSlot = {
           id: nextId,
-          label: `Play ${nextId}`,
+          label: `Bingo Card ${nextId}`,
           name: '',
           phone: '',
           email: '',
@@ -1171,12 +1205,12 @@
       if (count === 1) {
         showToast(`Added new slot ${addedSlots[0].label}!`);
       } else {
-        showToast(`Added ${count} new slots (now up to Play ${players.length})!`);
+        showToast(`Added ${count} new slots (now up to Bingo Card ${players.length})!`);
       }
     }
 
     function playerFromRow(row) {
-      return { id:Number(row.slot ?? row.id), label:`Play ${Number(row.slot ?? row.id)}`, name:row.name||'', phone:row.phone||'', email:row.email||'', supportingPlayer:row.supporting_player||'', paid:Boolean(row.paid), amountPaid:Number(row.amount_paid||0), paymentMethod:row.payment_method||'Cash', paymentDate:row.payment_date||'', notes:row.notes||'', numbers:Array.isArray(row.numbers)?row.numbers.map(Number):[] };
+      return { id:Number(row.slot ?? row.id), label:`Bingo Card ${Number(row.slot ?? row.id)}`, name:row.name||'', phone:row.phone||'', email:row.email||'', supportingPlayer:row.supporting_player||'', paid:Boolean(row.paid), amountPaid:Number(row.amount_paid||0), paymentMethod:row.payment_method||'Cash', paymentDate:row.payment_date||'', notes:row.notes||'', numbers:Array.isArray(row.numbers)?row.numbers.map(Number):[] };
     }
     function playerToRow(p) {
       return { id:p.id, slot:p.id, name:p.name||'', phone:p.phone||'', email:p.email||'', supporting_player:p.supportingPlayer||'', paid:Boolean(p.paid), amount_paid:Number(p.amountPaid||0), payment_method:p.paymentMethod||'Cash', payment_date:p.paymentDate||null, notes:p.notes||'', numbers:p.numbers||[] };
@@ -1188,12 +1222,12 @@
         if(pr.error) throw pr.error; if(dr.error) throw dr.error; if(rr.error) throw rr.error;
         players=(pr.data||[]).map(playerFromRow); if(!players.length) players=initializeDefaultPlayers();
         draws=(dr.data||[]).map(r=>({id:Number(r.draw_number),name:`Draw #${r.draw_number}`,date:r.draw_date||'',numbers:Array.isArray(r.numbers)?r.numbers.map(Number):[]})); if(draws.length!==10) draws=initializeDefaultDraws();
-        poolRules=rr.data?{startDate:rr.data.start_date||'',endDate:rr.data.end_date||'',rulesText:rr.data.rules_text||''}:{...DEFAULT_RULES};
+        poolRules=rr.data?{startDate:rr.data.start_date||'',endDate:rr.data.end_date||'',registrationStartDate:rr.data.registration_start_date||'',registrationEndDate:rr.data.registration_end_date||'',rulesText:rr.data.rules_text||''}:{...DEFAULT_RULES};
       } catch(e) { console.error('Supabase load failed:',e); players=initializeDefaultPlayers(); draws=initializeDefaultDraws(); poolRules={...DEFAULT_RULES}; setTimeout(()=>showToast('Could not load shared database. Check Supabase setup and RLS policies.','error'),200); }
     }
     let saveTimer=null;
     function saveState(){clearTimeout(saveTimer);saveTimer=setTimeout(syncStateToSupabase,150);}
-    async function syncStateToSupabase(){if(!supabaseSession)return;try{const results=await Promise.all([db.from('players').upsert(players.map(playerToRow),{onConflict:'slot'}),db.from('draws').upsert(draws.map(d=>({id:d.id,draw_number:d.id,draw_date:d.date||null,numbers:d.numbers||[]})),{onConflict:'draw_number'}),db.from('rules').upsert({id:1,start_date:poolRules.startDate||null,end_date:poolRules.endDate||null,rules_text:poolRules.rulesText||''},{onConflict:'id'})]);const failed=results.find(r=>r.error);if(failed)throw failed.error;}catch(e){console.error('Supabase save failed:',e);showToast('Database save failed: '+e.message,'error');}}
+    async function syncStateToSupabase(){if(!supabaseSession)return;try{const results=await Promise.all([db.from('players').upsert(players.map(playerToRow),{onConflict:'slot'}),db.from('draws').upsert(draws.map(d=>({id:d.id,draw_number:d.id,draw_date:d.date||null,numbers:d.numbers||[]})),{onConflict:'draw_number'}),db.from('rules').upsert({id:1,start_date:poolRules.startDate||null,end_date:poolRules.endDate||null,registration_start_date:poolRules.registrationStartDate||null,registration_end_date:poolRules.registrationEndDate||null,rules_text:poolRules.rulesText||''},{onConflict:'id'})]);const failed=results.find(r=>r.error);if(failed)throw failed.error;}catch(e){console.error('Supabase save failed:',e);showToast('Database save failed: '+e.message,'error');}}
     function showToast(message, type = 'success') {
       const toast = document.getElementById('toast');
       const toastMsg = document.getElementById('toast-message');
@@ -1331,16 +1365,22 @@
       const startDateInput = document.getElementById('admin-rules-start-date');
       const endDateInput = document.getElementById('admin-rules-end-date');
       const rulesTextarea = document.getElementById('admin-rules-textarea');
+        const registrationStartInput = document.getElementById('admin-registration-start-date');
+        const registrationEndInput = document.getElementById('admin-registration-end-date');
 
       if (startDateInput) startDateInput.value = poolRules.startDate || '';
       if (endDateInput) endDateInput.value = poolRules.endDate || '';
       if (rulesTextarea) rulesTextarea.value = poolRules.rulesText || '';
+        if (registrationStartInput) registrationStartInput.value = poolRules.registrationStartDate || '';
+        if (registrationEndInput) registrationEndInput.value = poolRules.registrationEndDate || '';
     }
 
     function saveAdminRules() {
       const startDate = document.getElementById('admin-rules-start-date').value;
       const endDate = document.getElementById('admin-rules-end-date').value;
       const rulesText = document.getElementById('admin-rules-textarea').value.trim();
+        const registrationStartDate = document.getElementById('admin-registration-start-date').value;
+        const registrationEndDate = document.getElementById('admin-registration-end-date').value;
 
       if (!rulesText) {
         showToast('Please provide rules text before saving.', 'error');
@@ -1349,6 +1389,8 @@
 
       poolRules.startDate = startDate;
       poolRules.endDate = endDate;
+        poolRules.registrationStartDate = registrationStartDate;
+        poolRules.registrationEndDate = registrationEndDate;
       poolRules.rulesText = rulesText;
 
       saveState();
@@ -1711,7 +1753,7 @@
       if (totalPoolSlotsCount) totalPoolSlotsCount.textContent = totalSlots;
 
       const totalPoolSlotsRange = document.getElementById('total-pool-slots-range');
-      if (totalPoolSlotsRange) totalPoolSlotsRange.textContent = `Play 1 through Play ${totalSlots} (Unlimited)`;
+      if (totalPoolSlotsRange) totalPoolSlotsRange.textContent = `Bingo Card 1 through Bingo Card ${totalSlots} (Unlimited)`;
 
       const paidCountEl = document.getElementById('total-paid-count');
       if (paidCountEl) paidCountEl.textContent = paidCount;
@@ -1776,8 +1818,15 @@
                 value="${escapeHtml(p.phone || '')}" 
                 placeholder="Phone #" 
                 onchange="updatePlayerPhone(${p.id}, this.value)"
-                class="w-full text-xs font-medium px-2 py-1 rounded border border-slate-200 bg-white focus:outline-none focus:ring-1 focus:ring-amber-500"
+                class="w-full min-w-[170px] text-xs font-medium px-2 py-1 rounded border border-slate-200 bg-white focus:outline-none focus:ring-1 focus:ring-amber-500"
               >
+            </td>
+
+            <td class="py-3 px-4">
+              <select onchange="updateSupportingPlayer(${p.id}, this.value)" class="w-full min-w-[215px] text-xs px-2 py-1.5 rounded border border-slate-200 bg-white focus:outline-none focus:ring-1 focus:ring-amber-500">
+                <option value="">Select a team member</option>
+                ${SUPPORTING_PLAYER_OPTIONS.map(name => `<option value="${escapeHtml(name)}" ${p.supportingPlayer === name ? 'selected' : ''}>${escapeHtml(name)}</option>`).join('')}
+              </select>
             </td>
 
             <td class="py-3 px-4 text-center">
@@ -1841,7 +1890,8 @@
             </td>
 
             <td class="py-3 px-4 text-center">
-              <button onclick="deletePlayer(${p.id})" class="px-2.5 py-1 text-xs font-semibold text-rose-600 hover:text-white hover:bg-rose-600 rounded-lg border border-rose-200 transition" title="Delete & Reset this Player Slot">
+              <button onclick="openPlayerModal(${p.id})" class="px-2.5 py-1 mr-1 text-xs font-semibold text-amber-700 hover:text-slate-950 hover:bg-amber-400 rounded-lg border border-amber-300 transition" title="Edit entry details"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+                <button onclick="deletePlayer(${p.id})" class="px-2.5 py-1 text-xs font-semibold text-rose-600 hover:text-white hover:bg-rose-600 rounded-lg border border-rose-200 transition" title="Delete & Reset this Player Slot">
                 <i class="fa-solid fa-trash-can"></i>
               </button>
             </td>
@@ -2009,7 +2059,11 @@
       }
     }
 
-    function updatePlayerAmount(playerId, val) {
+    function updateSupportingPlayer(playerId, val) {
+        const player = players.find(p => p.id === playerId);
+        if (player) { player.supportingPlayer = val; saveState(); showToast(`Updated supporting team member for ${player.label}`); }
+      }
+function updatePlayerAmount(playerId, val) {
       const player = players.find(p => p.id === playerId);
       if (player) {
         player.amountPaid = parseFloat(val) || 0;
@@ -2154,6 +2208,7 @@
       document.getElementById('p-modal-name').value = p.name || '';
       document.getElementById('p-modal-phone').value = p.phone || '';
       document.getElementById('p-modal-email').value = p.email || '';
+        document.getElementById('p-modal-supporting-player').value = p.supportingPlayer || '';
       document.getElementById('player-modal-error').classList.add('hidden');
 
       const existingNums = (p.numbers && p.numbers.length === 6) ? [...p.numbers] : [];
@@ -2256,6 +2311,7 @@
       player.name = document.getElementById('p-modal-name').value.trim();
       player.phone = document.getElementById('p-modal-phone').value.trim();
       player.email = document.getElementById('p-modal-email').value.trim();
+        player.supportingPlayer = document.getElementById('p-modal-supporting-player').value;
       player.numbers = nums.sort((a, b) => a - b);
 
       saveState();
@@ -2376,7 +2432,7 @@
       const errEl=document.getElementById('pub-modal-error'); const name=document.getElementById('pub-player-name').value.trim(); const phone=document.getElementById('pub-player-phone').value.trim(); const email=document.getElementById('pub-player-email').value.trim(); const supportingPlayer=document.getElementById('pub-supporting-player').value; const emailRegex=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       function fail(msg){errEl.textContent=msg;errEl.classList.remove('hidden');}
       if(!name)return fail('Please enter your full legal name.'); if(!phone)return fail('Please enter your contact phone number.'); if(!email||!emailRegex.test(email))return fail('Please enter a valid email address.'); if(!supportingPlayer)return fail("Please select the team member you're supporting."); if(publicSelectedNumbers.length!==6)return fail('Please select exactly 6 lottery numbers.');
-      const btn=document.getElementById('pub-submit-entry-btn');btn.disabled=true;btn.classList.add('opacity-60'); const {data,error}=await db.rpc('submit_player_entry',{p_name:name,p_phone:phone,p_email:email,p_supporting_player:supportingPlayer,p_numbers:publicSelectedNumbers}); btn.disabled=false;btn.classList.remove('opacity-60'); if(error)return fail('Submission failed: '+error.message); await loadState();closePlayerSubmissionModal();renderPlayerBingoSheet();renderPlayerHeader();showToast(`Success! You have been assigned Play ${data}. Remember to submit your $20 entry fee!`);
+      const btn=document.getElementById('pub-submit-entry-btn');btn.disabled=true;btn.classList.add('opacity-60'); const {data,error}=await db.rpc('submit_player_entry',{p_name:name,p_phone:phone,p_email:email,p_supporting_player:supportingPlayer,p_numbers:publicSelectedNumbers}); btn.disabled=false;btn.classList.remove('opacity-60'); if(error)return fail('Submission failed: '+error.message); await loadState();closePlayerSubmissionModal();renderPlayerBingoSheet();renderPlayerHeader();showToast(`Success! You have been assigned Bingo Card ${data}. Remember to submit your $20 entry fee!`);
     }
     function renderHeatmap() {
       const container = document.getElementById('number-heatmap');
@@ -2421,7 +2477,7 @@
 
     function exportToCSV() {
       const activeNums = getActiveDrawnNumbers();
-      let csv = 'Slot ID,Label,Real Name,Phone,Email,Supporting Player,Paid Status,Amount Paid,Payment Method,Payment Date,Notes,Ball 1,Ball 2,Ball 3,Ball 4,Ball 5,Ball 6,Matches (Active View)\n';
+      let csv = 'Card ID,Label,Real Name,Phone,Email,Supporting Player,Paid Status,Amount Paid,Payment Method,Payment Date,Notes,Ball 1,Ball 2,Ball 3,Ball 4,Ball 5,Ball 6,Matches (Active View)\n';
 
       players.forEach(p => {
         const hasNumbers = p.numbers && Array.isArray(p.numbers) && p.numbers.length === 6;
