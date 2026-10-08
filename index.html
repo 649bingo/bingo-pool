@@ -148,7 +148,7 @@
 
   </style>
 </head>
-<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
+<body class="overflow-x-hidden bg-slate-100 text-slate-800 min-h-screen flex flex-col">
 
   <!-- Main Navigation Header with Mode Switcher -->
   <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-30 border-b border-slate-800">
@@ -256,45 +256,51 @@
         </section>
         <!-- Dashboard + Official Draw Results -->
         <section id="home-dashboard-grid" class="grid grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-2 sm:gap-3 items-stretch min-w-0 max-w-full">
-          <!-- COMPACT BINGO POOL DASHBOARD: 40 percent width -->
-          <div class="overflow-hidden rounded-2xl border border-blue-200 bg-white shadow-sm min-w-0">
-            <div class="bg-gradient-to-r from-blue-950 via-blue-800 to-sky-700 px-2 py-2 sm:px-3.5 sm:py-2.5 text-white">
-              <h2 class="text-[11px] sm:text-base font-black tracking-wide leading-tight text-center">BINGO POOL DASHBOARD</h2>
+          <!-- COMPACT BINGO POOL DASHBOARD: one-third width on desktop, first on mobile -->
+          <div class="overflow-hidden rounded-2xl border border-blue-200 bg-white shadow-sm">
+            <div class="bg-gradient-to-r from-blue-950 via-blue-800 to-sky-700 px-2 py-2 sm:px-3.5 sm:py-2.5 text-white flex items-center gap-2.5">
+              <div class="hidden sm:flex w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center border border-white/20 shrink-0">
+                <i class="fa-solid fa-trophy text-sm"></i>
+              </div>
+              <div class="min-w-0">
+                <h2 class="text-[11px] sm:text-base font-black tracking-wide leading-tight">BINGO POOL DASHBOARD</h2>
+                <p class="hidden sm:block text-[10px] text-blue-100">Live totals and cumulative hits</p>
+              </div>
             </div>
-            <div class="p-1.5 sm:p-3 space-y-2">
-              <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-2 py-2 text-center">
-                <i class="fa-solid fa-sack-dollar text-xl sm:text-2xl text-emerald-700 block mx-auto mb-1"></i>
-                <p class="text-[9px] sm:text-xs font-extrabold uppercase text-emerald-800 leading-none">Total Pot</p>
-                <p id="dashboard-total-pot" class="mt-1 text-xl sm:text-3xl font-black text-emerald-700 leading-none">$0.00</p>
-              </div>
-              <div class="grid grid-cols-2 gap-1.5 sm:gap-2">
-                <div class="rounded-lg border border-blue-200 bg-blue-50 px-1.5 py-2 text-center min-w-0">
-                  <p class="text-[8px] sm:text-[11px] font-extrabold uppercase text-blue-800 leading-none">Paid Cards</p>
-                  <div class="flex items-center justify-center gap-1.5 mt-1">
-                    <i class="fa-solid fa-rectangle-list text-sm sm:text-lg text-blue-700"></i>
-                    <p id="dashboard-paid-cards" class="text-lg sm:text-2xl font-black text-blue-700 leading-none">0</p>
-                  </div>
-                  <p class="text-[9px] sm:text-[10px] text-blue-500 mt-1">$20 each</p>
+
+            <div class="p-1.5 sm:p-3 space-y-1.5 sm:space-y-2.5">
+              <!-- Compact KPI strip: always 3 columns -->
+              <div class="grid grid-cols-3 gap-1">
+                <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-1 py-1.5 sm:px-2.5 sm:py-2 text-center min-w-0">
+                  <div class="flex items-center justify-center gap-1 text-emerald-700"><i class="fa-solid fa-sack-dollar text-xs"></i><span class="text-[7px] sm:text-[10px] font-extrabold uppercase leading-none">Total Pot</span></div>
+                  <p id="dashboard-total-pot" class="mt-1 text-sm sm:text-2xl font-black text-emerald-700 leading-none truncate">$0.00</p>
                 </div>
-                <div class="rounded-lg border border-indigo-200 bg-indigo-50 px-1.5 py-2 text-center min-w-0">
-                  <p class="text-[8px] sm:text-[11px] font-extrabold uppercase text-indigo-800 leading-none">Registered</p>
-                  <div class="flex items-center justify-center gap-1.5 mt-1">
-                    <i class="fa-solid fa-users text-sm sm:text-lg text-indigo-700"></i>
-                    <p id="dashboard-registered-players" class="text-lg sm:text-2xl font-black text-indigo-700 leading-none">0</p>
-                  </div>
-                  <p class="text-[9px] sm:text-[10px] text-indigo-500 mt-1">Total Entries</p>
+                <div class="rounded-lg border border-blue-200 bg-blue-50 px-1 py-1.5 sm:px-2.5 sm:py-2 text-center min-w-0">
+                  <div class="flex items-center justify-center gap-1 text-blue-700"><i class="fa-solid fa-rectangle-list text-xs"></i><span class="text-[7px] sm:text-[10px] font-extrabold uppercase leading-none">Paid Cards</span></div>
+                  <p id="dashboard-paid-cards" class="mt-1 text-sm sm:text-2xl font-black text-blue-700 leading-none">0</p>
+                  <p class="hidden sm:block text-[9px] text-blue-500 mt-1">$20 each</p>
+                </div>
+                <div class="rounded-lg border border-indigo-200 bg-indigo-50 px-1 py-1.5 sm:px-2.5 sm:py-2 text-center min-w-0">
+                  <div class="flex items-center justify-center gap-1 text-indigo-700"><i class="fa-solid fa-users text-xs"></i><span class="text-[7px] sm:text-[10px] font-extrabold uppercase leading-none">Registered</span></div>
+                  <p id="dashboard-registered-players" class="mt-1 text-sm sm:text-2xl font-black text-indigo-700 leading-none">0</p>
+                  <p class="hidden sm:block text-[9px] text-indigo-500 mt-1">Players</p>
                 </div>
               </div>
-              <div class="rounded-lg border border-slate-200 bg-slate-50 p-1.5 sm:p-2">
-                <h3 class="text-[10px] sm:text-sm font-black text-blue-950 uppercase tracking-wide text-center mb-1.5">Bingo Hits Across All Cards</h3>
+
+              <!-- Compact hit strip; horizontal scroll on narrow phones -->
+              <div class="rounded-lg border border-slate-200 bg-slate-50 p-2">
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <h3 class="text-[10px] sm:text-xs font-black text-blue-950 uppercase tracking-wide">Bingo Hits Across All Cards</h3>
+                  <span class="hidden sm:inline text-[9px] text-slate-400">Cumulative</span>
+                </div>
                 <div class="grid grid-cols-4 gap-1 min-w-0">
-                  <div class="rounded-md bg-slate-500 text-white py-1.5 text-center"><p class="text-[10px] sm:text-xs font-bold">0/6</p><p id="dashboard-hit-0" class="text-lg sm:text-2xl font-black leading-tight">0</p></div>
-                  <div class="rounded-md bg-blue-500 text-white py-1.5 text-center"><p class="text-[10px] sm:text-xs font-bold">1/6</p><p id="dashboard-hit-1" class="text-lg sm:text-2xl font-black leading-tight">0</p></div>
-                  <div class="rounded-md bg-cyan-500 text-white py-1.5 text-center"><p class="text-[10px] sm:text-xs font-bold">2/6</p><p id="dashboard-hit-2" class="text-lg sm:text-2xl font-black leading-tight">0</p></div>
-                  <div class="rounded-md bg-green-500 text-white py-1.5 text-center"><p class="text-[10px] sm:text-xs font-bold">3/6</p><p id="dashboard-hit-3" class="text-lg sm:text-2xl font-black leading-tight">0</p></div>
-                  <div class="rounded-md bg-amber-400 text-slate-900 py-1.5 text-center"><p class="text-[10px] sm:text-xs font-bold">4/6</p><p id="dashboard-hit-4" class="text-lg sm:text-2xl font-black leading-tight">0</p></div>
-                  <div class="rounded-md bg-orange-500 text-white py-1.5 text-center"><p class="text-[10px] sm:text-xs font-bold">5/6</p><p id="dashboard-hit-5" class="text-lg sm:text-2xl font-black leading-tight">0</p></div>
-                  <div class="rounded-md bg-rose-600 text-white py-1.5 text-center col-span-2"><p class="text-[10px] sm:text-xs font-bold">6/6</p><p id="dashboard-hit-6" class="text-lg sm:text-2xl font-black leading-tight">0</p></div>
+                  <div class="rounded-md bg-slate-500 text-white py-1.5 text-center"><p class="text-[9px] font-bold">0/6</p><p id="dashboard-hit-0" class="text-xs sm:text-lg font-black leading-tight">0</p></div>
+                  <div class="rounded-md bg-blue-500 text-white py-1.5 text-center"><p class="text-[9px] font-bold">1/6</p><p id="dashboard-hit-1" class="text-base sm:text-lg font-black leading-tight">0</p></div>
+                  <div class="rounded-md bg-cyan-500 text-white py-1.5 text-center"><p class="text-[9px] font-bold">2/6</p><p id="dashboard-hit-2" class="text-base sm:text-lg font-black leading-tight">0</p></div>
+                  <div class="rounded-md bg-green-500 text-white py-1.5 text-center"><p class="text-[9px] font-bold">3/6</p><p id="dashboard-hit-3" class="text-base sm:text-lg font-black leading-tight">0</p></div>
+                  <div class="rounded-md bg-amber-400 text-slate-900 py-1.5 text-center"><p class="text-[9px] font-bold">4/6</p><p id="dashboard-hit-4" class="text-base sm:text-lg font-black leading-tight">0</p></div>
+                  <div class="rounded-md bg-orange-500 text-white py-1.5 text-center"><p class="text-[9px] font-bold">5/6</p><p id="dashboard-hit-5" class="text-base sm:text-lg font-black leading-tight">0</p></div>
+                  <div class="rounded-md bg-rose-600 text-white py-1.5 text-center"><p class="text-[9px] font-bold">6/6</p><p id="dashboard-hit-6" class="text-base sm:text-lg font-black leading-tight">0</p></div>
                 </div>
               </div>
             </div>
@@ -353,7 +359,8 @@
                     <th class="py-3 px-4 min-w-[190px]">Player Name</th>
                     <th class="py-3 px-4 text-center min-w-[340px]">Chosen 6/49 Numbers (1 - 49)</th>
                     <th class="py-3 px-4 text-center w-28">Status</th>
-                    <th class="py-3 px-4 text-center w-32">Total Hits</th>
+                    <th class="py-3 px-4 text-center w-24">Total Hits</th>
+                    <th class="py-3 px-4 text-center w-32">Standing</th>
                   </tr>
                 </thead>
                 <tbody id="player-bingo-table-body" class="divide-y divide-slate-200 text-xs">
@@ -1601,22 +1608,28 @@
 
       if (!container || !titleEl || !subtitleEl || !tabsSelector) return;
 
-      let tabsHtml = `
-        <button onclick="setDrawView('cumulative')" title="Show every unique number drawn across all 10 draws" class="px-3 py-1.5 text-[11px] font-extrabold rounded-lg whitespace-nowrap transition ${selectedDrawView === 'cumulative' ? 'bg-rose-600 shadow text-white ring-2 ring-rose-200' : 'bg-white text-rose-700 border border-rose-200 hover:bg-rose-50'}">
-          <i class="fa-solid fa-layer-group mr-1"></i> ALL 10 DRAWS
-        </button>
-      `;
-
-      draws.forEach((d, idx) => {
+      const drawOptions = draws.map((d, idx) => {
         const hasNumbers = d.numbers && d.numbers.length === 6;
-        tabsHtml += `
-          <button onclick="setDrawView(${idx})" class="px-2 py-1 text-xs font-semibold rounded flex items-center gap-1 ${selectedDrawView === idx ? 'bg-white shadow text-rose-700 font-bold' : 'text-slate-600 hover:text-slate-900'}">
-            Draw ${idx + 1}
-            ${hasNumbers ? '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>' : ''}
-          </button>
-        `;
-      });
-      tabsSelector.innerHTML = tabsHtml;
+        const selected = String(selectedDrawView) === String(idx) ? 'selected' : '';
+        const status = hasNumbers ? ' • Results entered' : ' • Awaiting results';
+        return `<option value="${idx}" ${selected}>Draw #${idx + 1}${status}</option>`;
+      }).join('');
+
+      tabsSelector.innerHTML = `
+        <label for="player-draw-selector" class="sr-only">Select draw results</label>
+        <div class="relative w-full min-w-0 max-w-full">
+          <select
+            id="player-draw-selector"
+            onchange="setDrawView(this.value === 'cumulative' ? 'cumulative' : Number(this.value))"
+            class="w-full max-w-full min-w-0 appearance-none bg-white border border-rose-200 text-slate-800 text-xs font-bold rounded-xl pl-3 pr-9 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-rose-300 focus:border-rose-400 cursor-pointer"
+            aria-label="Select draw results"
+          >
+            <option value="cumulative" ${selectedDrawView === 'cumulative' ? 'selected' : ''}>ALL 10 DRAWS</option>
+            ${drawOptions}
+          </select>
+          <i class="fa-solid fa-chevron-down pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-rose-600 text-xs"></i>
+        </div>
+      `;
 
       const activeNums = getActiveDrawnNumbers();
 
@@ -1651,26 +1664,32 @@
         `).join('');
       }
 
-      let count6 = 0, count5 = 0;
-      players.forEach(p => {
-        if (!p.numbers || p.numbers.length !== 6) return;
-        const matches = p.numbers.filter(num => activeNums.includes(num)).length;
-        if (matches === 6) count6++;
-        else if (matches === 5) count5++;
+      // Full dashboard summarizes the complete pool, independent of the selected draw view.
+      const cumulativeNumbers = new Set();
+      draws.forEach(d => (d.numbers || []).forEach(n => cumulativeNumbers.add(Number(n))));
+      const allDrawnNumbers = Array.from(cumulativeNumbers);
+      const registeredPlayers = players.filter(p =>
+        (p.name && p.name.trim()) || (Array.isArray(p.numbers) && p.numbers.length === 6)
+      );
+      const hitCounts = [0, 0, 0, 0, 0, 0, 0];
+      registeredPlayers.forEach(p => {
+        if (!Array.isArray(p.numbers) || p.numbers.length !== 6) return;
+        const matches = p.numbers.filter(num => allDrawnNumbers.includes(Number(num))).length;
+        hitCounts[Math.max(0, Math.min(6, matches))]++;
       });
 
-      const match6El = document.getElementById('player-stat-match-6');
-      const match5El = document.getElementById('player-stat-match-5');
-      const potEl = document.getElementById('player-stat-winner-pot');
-
-      if (match6El) match6El.textContent = count6;
-      if (match5El) match5El.textContent = count5;
-
       const paidPlayers = players.filter(p => p.paid);
-      const totalCollected = paidPlayers.reduce((acc, p) => acc + (p.amountPaid || entryFee), 0);
-      const winnerPot = totalCollected * 0.5;
-
-      if (potEl) potEl.textContent = `$${winnerPot.toFixed(2)}`;
+      const totalCollected = paidPlayers.reduce((acc, p) => acc + Number(p.amountPaid || entryFee), 0);
+      const totalPotEl = document.getElementById('dashboard-total-pot');
+      const paidCardsEl = document.getElementById('dashboard-paid-cards');
+      const registeredPlayersEl = document.getElementById('dashboard-registered-players');
+      if (totalPotEl) totalPotEl.textContent = `$${totalCollected.toFixed(2)}`;
+      if (paidCardsEl) paidCardsEl.textContent = paidPlayers.length;
+      if (registeredPlayersEl) registeredPlayersEl.textContent = registeredPlayers.length;
+      hitCounts.forEach((count, index) => {
+        const el = document.getElementById(`dashboard-hit-${index}`);
+        if (el) el.textContent = count;
+      });
     }
 
     function renderPlayerBingoSheet() {
@@ -1792,7 +1811,7 @@
 
             <!-- Chosen 6/49 Numbers positioned directly AFTER Player Name -->
             <td class="py-3 px-4">
-              <div class="flex items-center justify-center gap-2 flex-wrap">
+              <div class="flex items-center justify-center gap-2 flex-wrap max-w-full">
                 ${numbersHtml}
               </div>
             </td>
