@@ -81,6 +81,24 @@
       body { background: white !important; color: black !important; }
       .sheet-container { border: none !important; box-shadow: none !important; }
     }
+  
+
+    /* Keep the public Bingo Card table headings visible while scrolling the page. */
+    #player-bingo-table thead th {
+      position: sticky;
+      top: 0;
+      z-index: 12;
+      background: #1e293b;
+      box-shadow: 0 2px 0 rgba(15, 23, 42, 0.18);
+    }
+
+    /* The main navigation is sticky on desktop, so offset the table header below it. */
+    @media (min-width: 640px) {
+      #player-bingo-table thead th {
+        top: 68px;
+      }
+    }
+
   </style>
 </head>
 <body class="overflow-x-hidden bg-slate-100 text-slate-800 min-h-screen flex flex-col">
@@ -285,9 +303,9 @@
           </div>
 
           <!-- Master Sheet Grid: Chosen Numbers now placed directly AFTER Player Name, Bonus Ball column removed -->
-          <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-            <div class="overflow-x-auto">
-              <table class="w-full text-left border-collapse">
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-200">
+            <div class="overflow-x-auto rounded-2xl">
+              <table id="player-bingo-table" class="w-full text-left border-collapse">
                 <thead>
                   <tr class="bg-slate-800 text-white text-[11px] uppercase tracking-wider font-semibold">
                     <th class="py-3 px-4 w-16 text-center">Card</th>
