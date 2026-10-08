@@ -99,7 +99,7 @@
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Player View
             </span>
           </div>
-          <p class="text-xs text-slate-400">Unlimited Players • 50/50 Pot ($20 Entry) • 10 Weekly Draws</p>
+          <p class="text-xs text-slate-400">Unlimited Players • 50/50 Pot ($20 Entry) • 6/49 Bingo</p>
           <div class="mt-1 flex items-center gap-1.5 text-[11px] text-slate-300 leading-none">
             <i class="fa-regular fa-calendar-days text-emerald-400"></i>
             <span>Schedule: <strong id="quick-start-date" class="text-white font-bold">--</strong> <span class="text-slate-500">to</span> <strong id="quick-end-date" class="text-white font-bold">--</strong></span>
@@ -1517,22 +1517,28 @@
 
       if (!container || !titleEl || !subtitleEl || !tabsSelector) return;
 
-      let tabsHtml = `
-        <button onclick="setDrawView('cumulative')" title="Show every unique number drawn across all 10 draws" class="px-3 py-1.5 text-[11px] font-extrabold rounded-lg whitespace-nowrap transition ${selectedDrawView === 'cumulative' ? 'bg-rose-600 shadow text-white ring-2 ring-rose-200' : 'bg-white text-rose-700 border border-rose-200 hover:bg-rose-50'}">
-          <i class="fa-solid fa-layer-group mr-1"></i> ALL 10 DRAWS
-        </button>
-      `;
-
-      draws.forEach((d, idx) => {
+      const drawOptions = draws.map((d, idx) => {
         const hasNumbers = d.numbers && d.numbers.length === 6;
-        tabsHtml += `
-          <button onclick="setDrawView(${idx})" class="px-2 py-1 text-xs font-semibold rounded flex items-center gap-1 ${selectedDrawView === idx ? 'bg-white shadow text-rose-700 font-bold' : 'text-slate-600 hover:text-slate-900'}">
-            Draw ${idx + 1}
-            ${hasNumbers ? '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>' : ''}
-          </button>
-        `;
-      });
-      tabsSelector.innerHTML = tabsHtml;
+        const selected = String(selectedDrawView) === String(idx) ? 'selected' : '';
+        const status = hasNumbers ? ' • Results entered' : ' • Awaiting results';
+        return `<option value="${idx}" ${selected}>Draw #${idx + 1}${status}</option>`;
+      }).join('');
+
+      tabsSelector.innerHTML = `
+        <label for="player-draw-selector" class="sr-only">Select draw results</label>
+        <div class="relative min-w-[220px]">
+          <select
+            id="player-draw-selector"
+            onchange="setDrawView(this.value === 'cumulative' ? 'cumulative' : Number(this.value))"
+            class="w-full appearance-none bg-white border border-rose-200 text-slate-800 text-xs font-bold rounded-xl pl-3 pr-9 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-rose-300 focus:border-rose-400 cursor-pointer"
+            aria-label="Select draw results"
+          >
+            <option value="cumulative" ${selectedDrawView === 'cumulative' ? 'selected' : ''}>ALL 10 DRAWS</option>
+            ${drawOptions}
+          </select>
+          <i class="fa-solid fa-chevron-down pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-rose-600 text-xs"></i>
+        </div>
+      `;
 
       const activeNums = getActiveDrawnNumbers();
 
