@@ -99,7 +99,11 @@
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Player View
             </span>
           </div>
-          <p class="text-xs text-slate-400">Unlimited Players • 50/50 Pot ($20 Entry) • 10 Weekly Draws</p>
+          <p class="text-xs text-slate-400">Unlimited Players • 50/50 Pot ($20 Entry) • 10 Draws from 6/49</p>
+          <div class="mt-1 flex items-center gap-1.5 text-[11px] text-slate-300 leading-none">
+            <i class="fa-regular fa-calendar-days text-emerald-400"></i>
+            <span>Schedule: <strong id="quick-start-date" class="text-white font-bold">--</strong> <span class="text-slate-500">to</span> <strong id="quick-end-date" class="text-white font-bold">--</strong></span>
+          </div>
         </div>
       </div>
 
@@ -173,13 +177,6 @@
             <span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full border border-amber-200">Start / End Dates</span>
           </button>
         </div>
-
-        <!-- Quick Schedule Pill -->
-        <div class="text-xs bg-white border border-slate-200 text-slate-600 px-3.5 py-1.5 rounded-xl flex items-center gap-2 shadow-sm">
-          <i class="fa-regular fa-calendar-days text-emerald-600"></i>
-          <span>Schedule: <strong id="quick-start-date" class="text-slate-900 font-bold">--</strong> &ndash; <strong id="quick-end-date" class="text-slate-900 font-bold">--</strong></span>
-        </div>
-      </div>
 
       <!-- SUBVIEW 1: Bingo Master Sheet & Live Draws -->
       <div id="player-subview-sheet" class="space-y-6">
