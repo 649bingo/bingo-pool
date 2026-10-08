@@ -148,7 +148,7 @@
 
   </style>
 </head>
-<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
+<body class="overflow-x-hidden bg-slate-100 text-slate-800 min-h-screen flex flex-col">
 
   <!-- Main Navigation Header with Mode Switcher -->
   <header class="bg-slate-900 text-white shadow-lg sticky top-0 z-30 border-b border-slate-800">
@@ -446,6 +446,8 @@
     <!-- ========================================== -->
     <!-- ADMIN PORTAL CONTAINER (Restricted Tools)  -->
     <!-- ========================================== -->
+    </div>
+
     <div id="section-admin-view" class="hidden space-y-6">
 
       <!-- Admin Status Banner -->
@@ -1601,22 +1603,28 @@
 
       if (!container || !titleEl || !subtitleEl || !tabsSelector) return;
 
-      let tabsHtml = `
-        <button onclick="setDrawView('cumulative')" title="Show every unique number drawn across all 10 draws" class="px-3 py-1.5 text-[11px] font-extrabold rounded-lg whitespace-nowrap transition ${selectedDrawView === 'cumulative' ? 'bg-rose-600 shadow text-white ring-2 ring-rose-200' : 'bg-white text-rose-700 border border-rose-200 hover:bg-rose-50'}">
-          <i class="fa-solid fa-layer-group mr-1"></i> ALL 10 DRAWS
-        </button>
-      `;
-
-      draws.forEach((d, idx) => {
+      const drawOptions = draws.map((d, idx) => {
         const hasNumbers = d.numbers && d.numbers.length === 6;
-        tabsHtml += `
-          <button onclick="setDrawView(${idx})" class="px-2 py-1 text-xs font-semibold rounded flex items-center gap-1 ${selectedDrawView === idx ? 'bg-white shadow text-rose-700 font-bold' : 'text-slate-600 hover:text-slate-900'}">
-            Draw ${idx + 1}
-            ${hasNumbers ? '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>' : ''}
-          </button>
-        `;
-      });
-      tabsSelector.innerHTML = tabsHtml;
+        const selected = String(selectedDrawView) === String(idx) ? 'selected' : '';
+        const status = hasNumbers ? ' • Results entered' : ' • Awaiting results';
+        return `<option value="${idx}" ${selected}>Draw #${idx + 1}${status}</option>`;
+      }).join('');
+
+      tabsSelector.innerHTML = `
+        <label for="player-draw-selector" class="sr-only">Select draw results</label>
+        <div class="relative w-full min-w-0 max-w-full">
+          <select
+            id="player-draw-selector"
+            onchange="setDrawView(this.value === 'cumulative' ? 'cumulative' : Number(this.value))"
+            class="w-full max-w-full min-w-0 appearance-none bg-white border border-rose-200 text-slate-800 text-xs font-bold rounded-xl pl-3 pr-9 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-rose-300 focus:border-rose-400 cursor-pointer"
+            aria-label="Select draw results"
+          >
+            <option value="cumulative" ${selectedDrawView === 'cumulative' ? 'selected' : ''}>ALL 10 DRAWS</option>
+            ${drawOptions}
+          </select>
+          <i class="fa-solid fa-chevron-down pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-rose-600 text-xs"></i>
+        </div>
+      `;
 
       const activeNums = getActiveDrawnNumbers();
 
@@ -1651,26 +1659,32 @@
         `).join('');
       }
 
-      let count6 = 0, count5 = 0;
-      players.forEach(p => {
-        if (!p.numbers || p.numbers.length !== 6) return;
-        const matches = p.numbers.filter(num => activeNums.includes(num)).length;
-        if (matches === 6) count6++;
-        else if (matches === 5) count5++;
+      // Full dashboard summarizes the complete pool, independent of the selected draw view.
+      const cumulativeNumbers = new Set();
+      draws.forEach(d => (d.numbers || []).forEach(n => cumulativeNumbers.add(Number(n))));
+      const allDrawnNumbers = Array.from(cumulativeNumbers);
+      const registeredPlayers = players.filter(p =>
+        (p.name && p.name.trim()) || (Array.isArray(p.numbers) && p.numbers.length === 6)
+      );
+      const hitCounts = [0, 0, 0, 0, 0, 0, 0];
+      registeredPlayers.forEach(p => {
+        if (!Array.isArray(p.numbers) || p.numbers.length !== 6) return;
+        const matches = p.numbers.filter(num => allDrawnNumbers.includes(Number(num))).length;
+        hitCounts[Math.max(0, Math.min(6, matches))]++;
       });
 
-      const match6El = document.getElementById('player-stat-match-6');
-      const match5El = document.getElementById('player-stat-match-5');
-      const potEl = document.getElementById('player-stat-winner-pot');
-
-      if (match6El) match6El.textContent = count6;
-      if (match5El) match5El.textContent = count5;
-
       const paidPlayers = players.filter(p => p.paid);
-      const totalCollected = paidPlayers.reduce((acc, p) => acc + (p.amountPaid || entryFee), 0);
-      const winnerPot = totalCollected * 0.5;
-
-      if (potEl) potEl.textContent = `$${winnerPot.toFixed(2)}`;
+      const totalCollected = paidPlayers.reduce((acc, p) => acc + Number(p.amountPaid || entryFee), 0);
+      const totalPotEl = document.getElementById('dashboard-total-pot');
+      const paidCardsEl = document.getElementById('dashboard-paid-cards');
+      const registeredPlayersEl = document.getElementById('dashboard-registered-players');
+      if (totalPotEl) totalPotEl.textContent = `$${totalCollected.toFixed(2)}`;
+      if (paidCardsEl) paidCardsEl.textContent = paidPlayers.length;
+      if (registeredPlayersEl) registeredPlayersEl.textContent = registeredPlayers.length;
+      hitCounts.forEach((count, index) => {
+        const el = document.getElementById(`dashboard-hit-${index}`);
+        if (el) el.textContent = count;
+      });
     }
 
     function renderPlayerBingoSheet() {
@@ -1713,7 +1727,7 @@
       if (filtered.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="6" class="text-center py-10 text-slate-400">
+            <td colspan="5" class="text-center py-10 text-slate-400">
               <i class="fa-solid fa-filter text-2xl mb-2 text-slate-300"></i>
               <p>No players matched your search.</p>
             </td>
@@ -1792,7 +1806,7 @@
 
             <!-- Chosen 6/49 Numbers positioned directly AFTER Player Name -->
             <td class="py-3 px-4">
-              <div class="flex items-center justify-center gap-2 flex-wrap">
+              <div class="flex items-center justify-center gap-2 flex-wrap max-w-full">
                 ${numbersHtml}
               </div>
             </td>
@@ -1802,17 +1816,6 @@
                 ? '<span class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200"><i class="fa-solid fa-circle-check text-emerald-500 text-[10px]"></i> Paid ($20)</span>' 
                 : '<span class="inline-flex items-center gap-1 text-[11px] font-medium text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full"><i class="fa-solid fa-clock text-[10px]"></i> Unpaid</span>'}
             </td>
-
-            <td class="py-3 px-4 text-center">
-              ${hasNumbers ? `
-                <span class="inline-flex items-center justify-center font-extrabold text-sm px-2.5 py-1 rounded-lg ${matchesCount >= 4 ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-slate-100 text-slate-700'}">
-                  ${matchesCount} / 6
-                </span>
-              ` : `
-                <span class="text-slate-300 text-xs font-mono-numbers">-- / 6</span>
-              `}
-            </td>
-
             <td class="py-3 px-4 text-center">
               ${standingBadge}
             </td>
