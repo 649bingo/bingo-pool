@@ -100,6 +100,10 @@
             </span>
           </div>
           <p class="text-xs text-slate-400">Unlimited Players • 50/50 Pot ($20 Entry) • 10 Weekly Draws</p>
+          <div class="mt-1 flex items-center gap-1.5 text-[11px] text-slate-300 leading-none">
+            <i class="fa-regular fa-calendar-days text-emerald-400"></i>
+            <span>Schedule: <strong id="quick-start-date" class="text-white font-bold">--</strong> <span class="text-slate-500">to</span> <strong id="quick-end-date" class="text-white font-bold">--</strong></span>
+          </div>
         </div>
       </div>
 
@@ -155,15 +159,15 @@
     </div>
   </header>
 
-  <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 space-y-6">
+  <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-6 flex-1 space-y-4">
 
     <!-- ========================================== -->
     <!-- PLAYER VIEW CONTAINER (Public Display)    -->
     <!-- ========================================== -->
-    <div id="section-player-view" class="space-y-6">
+    <div id="section-player-view" class="space-y-4">
 
       <!-- Navigation tabs between Bingo Board and Rules -->
-      <div class="flex items-center justify-between gap-3 border-b border-slate-200 pb-3 flex-wrap">
+      <div class="flex items-center gap-2 border-b border-slate-200 pb-2 flex-wrap">
         <div class="flex items-center gap-2">
           <button onclick="switchPlayerViewTab('sheet')" id="player-tab-sheet-btn" class="px-4 py-2 text-xs font-bold rounded-xl bg-slate-900 text-white shadow-sm transition flex items-center gap-2">
             <i class="fa-solid fa-table-cells"></i> Bingo Master Sheet & Draws
@@ -172,12 +176,6 @@
             <i class="fa-solid fa-scroll text-amber-500"></i> Pool Rules & Schedule
             <span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full border border-amber-200">Start / End Dates</span>
           </button>
-        </div>
-
-        <!-- Quick Schedule Pill -->
-        <div class="text-xs bg-white border border-slate-200 text-slate-600 px-3.5 py-1.5 rounded-xl flex items-center gap-2 shadow-sm">
-          <i class="fa-regular fa-calendar-days text-emerald-600"></i>
-          <span>Schedule: <strong id="quick-start-date" class="text-slate-900 font-bold">--</strong> &ndash; <strong id="quick-end-date" class="text-slate-900 font-bold">--</strong></span>
         </div>
       </div>
 
@@ -1519,28 +1517,22 @@
 
       if (!container || !titleEl || !subtitleEl || !tabsSelector) return;
 
-      const drawOptions = draws.map((d, idx) => {
-        const hasNumbers = d.numbers && d.numbers.length === 6;
-        const selected = String(selectedDrawView) === String(idx) ? 'selected' : '';
-        const status = hasNumbers ? ' • Results entered' : ' • Awaiting results';
-        return `<option value="${idx}" ${selected}>Draw #${idx + 1}${status}</option>`;
-      }).join('');
-
-      tabsSelector.innerHTML = `
-        <label for="player-draw-selector" class="sr-only">Select draw results</label>
-        <div class="relative min-w-[220px]">
-          <select
-            id="player-draw-selector"
-            onchange="setDrawView(this.value === 'cumulative' ? 'cumulative' : Number(this.value))"
-            class="w-full appearance-none bg-white border border-rose-200 text-slate-800 text-xs font-bold rounded-xl pl-3 pr-9 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-rose-300 focus:border-rose-400 cursor-pointer"
-            aria-label="Select draw results"
-          >
-            <option value="cumulative" ${selectedDrawView === 'cumulative' ? 'selected' : ''}>ALL 10 DRAWS</option>
-            ${drawOptions}
-          </select>
-          <i class="fa-solid fa-chevron-down pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-rose-600 text-xs"></i>
-        </div>
+      let tabsHtml = `
+        <button onclick="setDrawView('cumulative')" title="Show every unique number drawn across all 10 draws" class="px-3 py-1.5 text-[11px] font-extrabold rounded-lg whitespace-nowrap transition ${selectedDrawView === 'cumulative' ? 'bg-rose-600 shadow text-white ring-2 ring-rose-200' : 'bg-white text-rose-700 border border-rose-200 hover:bg-rose-50'}">
+          <i class="fa-solid fa-layer-group mr-1"></i> ALL 10 DRAWS
+        </button>
       `;
+
+      draws.forEach((d, idx) => {
+        const hasNumbers = d.numbers && d.numbers.length === 6;
+        tabsHtml += `
+          <button onclick="setDrawView(${idx})" class="px-2 py-1 text-xs font-semibold rounded flex items-center gap-1 ${selectedDrawView === idx ? 'bg-white shadow text-rose-700 font-bold' : 'text-slate-600 hover:text-slate-900'}">
+            Draw ${idx + 1}
+            ${hasNumbers ? '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>' : ''}
+          </button>
+        `;
+      });
+      tabsSelector.innerHTML = tabsHtml;
 
       const activeNums = getActiveDrawnNumbers();
 
