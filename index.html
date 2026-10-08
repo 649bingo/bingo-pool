@@ -149,8 +149,11 @@
       <button onclick="switchAdminTab('stats-prizes')" id="admin-tab-stats-prizes" class="admin-tab-btn px-4 py-2.5 text-xs font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition whitespace-nowrap">
         <i class="fa-solid fa-trophy"></i> 50/50 Financial Pot Breakdown
       </button>
+      <button onclick="switchAdminTab('support-summary')" id="admin-tab-support-summary" class="admin-tab-btn px-4 py-2.5 text-xs font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition whitespace-nowrap">
+        <i class="fa-solid fa-people-group"></i> Supporting Player Summary
+      </button>
       <button onclick="switchAdminTab('pool-rules')" id="admin-tab-pool-rules" class="admin-tab-btn px-4 py-2.5 text-xs font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition whitespace-nowrap">
-        <i class="fa-solid fa-scroll text-amber-400"></i> Edit Rules & Pool Start/End Date
+        <i class="fa-solid fa-scroll text-amber-400"></i> Edit Rules & Start/End Date
       </button>
     </div>
   </header>
@@ -209,22 +212,30 @@
                 <!-- Rendered by JS -->
               </div>
             </div>
-
-            <!-- Pot & Bingo Hits Quick Stats for Players -->
-            <div class="flex items-center gap-3 bg-slate-50 rounded-xl p-3 border border-slate-200 text-xs">
-              <div>
-                <p class="text-slate-400 text-[10px] font-semibold uppercase">50% Winner Pot</p>
-                <p id="player-stat-winner-pot" class="text-lg font-extrabold text-emerald-600">$0.00</p>
+          </div>
+          <!-- Full Pool Dashboard -->
+          <div class="mt-5 grid grid-cols-1 xl:grid-cols-[230px_1fr] gap-4">
+            <div class="rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white p-5 shadow-sm">
+              <p class="text-[11px] font-bold uppercase tracking-wider text-emerald-100">50/50 Total Pot</p>
+              <p id="player-stat-total-pot" class="text-3xl font-black mt-1">$0.00</p>
+              <p id="player-stat-paid-cards" class="text-[11px] text-emerald-100 mt-2">0 paid Bingo Cards</p>
+            </div>
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <div class="flex items-center justify-between gap-2 mb-3">
+                <div>
+                  <p class="text-xs font-extrabold uppercase tracking-wider text-slate-700">Bingo Hits Dashboard</p>
+                  <p class="text-[11px] text-slate-500">Registered Bingo Cards by cumulative number of hits</p>
+                </div>
+                <span id="player-stat-registered-cards" class="text-[11px] font-bold text-slate-600 bg-white border border-slate-200 rounded-full px-2.5 py-1">0 registered</span>
               </div>
-              <div class="h-6 w-px bg-slate-200"></div>
-              <div>
-                <p class="text-slate-400 text-[10px] font-semibold uppercase">6/6 Bingo Hits</p>
-                <p id="player-stat-match-6" class="text-lg font-extrabold text-amber-600">0</p>
-              </div>
-              <div class="h-6 w-px bg-slate-200"></div>
-              <div>
-                <p class="text-slate-400 text-[10px] font-semibold uppercase">5/6 Bingo Hits</p>
-                <p id="player-stat-match-5" class="text-lg font-extrabold text-blue-600">0</p>
+              <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
+                <div class="rounded-xl bg-white border border-slate-200 p-3 text-center"><p class="text-[10px] font-bold text-slate-500 uppercase">0/6 Hits</p><p id="player-stat-match-0" class="text-xl font-black text-slate-700">0</p></div>
+                <div class="rounded-xl bg-white border border-slate-200 p-3 text-center"><p class="text-[10px] font-bold text-slate-500 uppercase">1/6 Hits</p><p id="player-stat-match-1" class="text-xl font-black text-sky-600">0</p></div>
+                <div class="rounded-xl bg-white border border-slate-200 p-3 text-center"><p class="text-[10px] font-bold text-slate-500 uppercase">2/6 Hits</p><p id="player-stat-match-2" class="text-xl font-black text-blue-600">0</p></div>
+                <div class="rounded-xl bg-white border border-slate-200 p-3 text-center"><p class="text-[10px] font-bold text-slate-500 uppercase">3/6 Hits</p><p id="player-stat-match-3" class="text-xl font-black text-indigo-600">0</p></div>
+                <div class="rounded-xl bg-white border border-amber-200 p-3 text-center"><p class="text-[10px] font-bold text-amber-700 uppercase">4/6 Hits</p><p id="player-stat-match-4" class="text-xl font-black text-amber-600">0</p></div>
+                <div class="rounded-xl bg-white border border-orange-200 p-3 text-center"><p class="text-[10px] font-bold text-orange-700 uppercase">5/6 Hits</p><p id="player-stat-match-5" class="text-xl font-black text-orange-600">0</p></div>
+                <div class="rounded-xl bg-emerald-50 border border-emerald-300 p-3 text-center"><p class="text-[10px] font-bold text-emerald-800 uppercase">6/6 Bingo</p><p id="player-stat-match-6" class="text-xl font-black text-emerald-700">0</p></div>
               </div>
             </div>
           </div>
@@ -237,10 +248,10 @@
             <div class="flex items-center gap-3 flex-1 min-w-[260px]">
               <div class="relative w-full max-w-sm">
                 <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-xs"></i>
-                <input type="text" id="player-bingo-search" oninput="renderPlayerBingoSheet()" placeholder="Search slot or player name..." class="w-full pl-9 pr-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                <input type="text" id="player-bingo-search" oninput="renderPlayerBingoSheet()" placeholder="Search Bingo Card or player name..." class="w-full pl-9 pr-3 py-2 text-xs rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
               </div>
               <select id="player-bingo-filter-status" onchange="renderPlayerBingoSheet()" class="text-xs px-3 py-2 rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-amber-500">
-                <option value="all">All Slots</option>
+                <option value="all">All Bingo Cards</option>
                 <option value="registered">Registered Players Only</option>
                 <option value="with-matches">With Matches (&gt;= 1)</option>
                 <option value="top-scorers">Top Match Leaders</option>
@@ -266,7 +277,6 @@
                     <th class="py-3 px-4 text-center min-w-[340px]">Chosen 6/49 Numbers (1 - 49)</th>
                     <th class="py-3 px-4 text-center w-28">Status</th>
                     <th class="py-3 px-4 text-center w-24">Total Hits</th>
-                    <th class="py-3 px-4 text-center w-32">Standing</th>
                   </tr>
                 </thead>
                 <tbody id="player-bingo-table-body" class="divide-y divide-slate-200 text-xs">
@@ -321,7 +331,7 @@
                 <span class="text-xs font-bold text-slate-700 uppercase tracking-wide">Entry Fee</span>
                 <i class="fa-solid fa-ticket text-slate-500 text-lg"></i>
               </div>
-              <p class="text-lg font-black text-slate-900 mt-2">$20.00 / Slot</p>
+              <p class="text-lg font-black text-slate-900 mt-2">$20.00 / Bingo Card</p>
               <p class="text-[11px] text-slate-500 mt-0.5">Unlimited participants welcome</p>
             </div>
 
@@ -427,7 +437,7 @@
             <div>
               <p class="text-xs text-slate-500 font-semibold uppercase">Total Pot Collected</p>
               <p id="total-pot-amount" class="text-2xl font-extrabold text-slate-900 mt-1">$0.00</p>
-              <span id="default-entry-fee" class="text-[11px] text-slate-400">At $20.00 / slot</span>
+              <span id="default-entry-fee" class="text-[11px] text-slate-400">At $20.00 / Bingo Card</span>
             </div>
             <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 text-lg">
               <i class="fa-solid fa-sack-dollar"></i>
@@ -609,13 +619,43 @@
         </div>
       </div>
 
-      <!-- ADMIN TAB 5: Edit Rules & Pool Start/End Date -->
+      <!-- ADMIN TAB: Supporting Player Summary -->
+      <div id="admin-view-support-summary" class="admin-tab-view hidden space-y-5">
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h3 class="text-base font-bold text-slate-900 flex items-center gap-2"><i class="fa-solid fa-people-group text-indigo-600"></i> Team Member You're Supporting Summary</h3>
+              <p class="text-xs text-slate-500 mt-1">Tracks submitted Bingo Cards and payment dollars credited to each team member.</p>
+            </div>
+            <div class="flex gap-2">
+              <span id="support-summary-total-entries" class="text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg px-3 py-2">0 entries</span>
+              <span id="support-summary-total-paid" class="text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg px-3 py-2">$0.00 paid</span>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead><tr class="bg-slate-800 text-white text-[11px] uppercase tracking-wider font-semibold">
+                <th class="py-3 px-4 min-w-[240px]">Team Member</th>
+                <th class="py-3 px-4 text-center w-32">Entries</th>
+                <th class="py-3 px-4 text-center w-32">Paid Entries</th>
+                <th class="py-3 px-4 text-right w-40">Funds Collected</th>
+                <th class="py-3 px-4 text-right w-40">Potential Value</th>
+              </tr></thead>
+              <tbody id="support-summary-table-body" class="divide-y divide-slate-200 text-xs"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADMIN TAB 5: Edit Rules & Start/End Date -->
       <div id="admin-view-pool-rules" class="admin-tab-view hidden space-y-5">
         <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-5">
           <div class="flex items-center justify-between flex-wrap gap-3 border-b border-slate-100 pb-4">
             <div>
               <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                <i class="fa-solid fa-scroll text-amber-500"></i> Edit Rules & Pool Start/End Date
+                <i class="fa-solid fa-scroll text-amber-500"></i> Edit Rules & Start/End Date
               </h3>
               <p class="text-xs text-slate-500">Updates here immediately reflect on the public "Rules & Schedule" tab for all players.</p>
             </div>
@@ -625,6 +665,10 @@
           </div>
 
           <!-- Schedule Inputs -->
+          <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+            <h4 class="text-sm font-bold text-slate-800">These are the dates of the first and last draws for the pool</h4>
+            <p class="text-[11px] text-slate-500 mt-1">Use the first official draw date and the final draw date for the 10-draw pool.</p>
+          </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Pool Start Date</label>
@@ -639,7 +683,8 @@
           </div>
 
           <div class="border-t border-slate-100 pt-5">
-              <h4 class="text-sm font-bold text-slate-800 mb-3">Public Registration Window</h4>
+              <h4 class="text-sm font-bold text-slate-800">Public Registration Window</h4>
+              <p class="text-[11px] text-slate-500 mt-1 mb-3">These are the dates when the public can begin to enter the pool and the cutoff date for the pool.</p>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Registration Start Date</label>
@@ -1076,6 +1121,21 @@
     let players = [];
     let draws = [];
 
+    const SUPPORTING_PLAYER_OPTIONS = [
+      'Aisha Ferguson (#13)',
+      'Caleigh Callison (#24)',
+      'Emma Leite (#6)',
+      'Evelyn Yoon (#4)',
+      'Karlee Ross (#11)',
+      'Kayleigh Tsuyuki (#17)',
+      'Maya Koutoulas (#12)',
+      'Mckinley Toye (#8)',
+      'Serena Segovia (#22)',
+      'Siena Duric (#86)',
+      'Sylvie Tanaka (#15)',
+      'FULL TEAM SUPPORTER'
+    ];
+
     // Default Rules and Schedule
     const DEFAULT_RULES = {
       startDate: '2026-10-10',
@@ -1203,9 +1263,9 @@
       }
       renderPlayerBingoSheet();
       if (count === 1) {
-        showToast(`Added new slot ${addedSlots[0].label}!`);
+        showToast(`Added new Bingo Card ${addedSlots[0].label}!`);
       } else {
-        showToast(`Added ${count} new slots (now up to Bingo Card ${players.length})!`);
+        showToast(`Added ${count} new Bingo Cards (now up to Bingo Card ${players.length})!`);
       }
     }
 
@@ -1475,6 +1535,7 @@
         renderHeatmap();
         renderPrizeStats();
       }
+      if (tabId === 'support-summary') renderSupportingPlayerSummary();
       if (tabId === 'pool-rules') {
         renderAdminRulesEditor();
       }
@@ -1557,26 +1618,24 @@
         `).join('');
       }
 
-      let count6 = 0, count5 = 0;
-      players.forEach(p => {
-        if (!p.numbers || p.numbers.length !== 6) return;
+      const hitCounts = [0,0,0,0,0,0,0];
+      const registeredCards = players.filter(p => p.numbers && Array.isArray(p.numbers) && p.numbers.length === 6);
+      registeredCards.forEach(p => {
         const matches = p.numbers.filter(num => activeNums.includes(num)).length;
-        if (matches === 6) count6++;
-        else if (matches === 5) count5++;
+        hitCounts[matches]++;
       });
-
-      const match6El = document.getElementById('player-stat-match-6');
-      const match5El = document.getElementById('player-stat-match-5');
-      const potEl = document.getElementById('player-stat-winner-pot');
-
-      if (match6El) match6El.textContent = count6;
-      if (match5El) match5El.textContent = count5;
-
-      const paidPlayers = players.filter(p => p.paid);
-      const totalCollected = paidPlayers.reduce((acc, p) => acc + (p.amountPaid || entryFee), 0);
-      const winnerPot = totalCollected * 0.5;
-
-      if (potEl) potEl.textContent = `$${winnerPot.toFixed(2)}`;
+      hitCounts.forEach((count,index) => {
+        const el=document.getElementById(`player-stat-match-${index}`);
+        if(el) el.textContent=count;
+      });
+      const paidPlayers=players.filter(p=>p.paid);
+      const totalCollected=paidPlayers.reduce((acc,p)=>acc+Number(p.amountPaid||entryFee),0);
+      const totalPotEl=document.getElementById('player-stat-total-pot');
+      const paidCardsEl=document.getElementById('player-stat-paid-cards');
+      const registeredEl=document.getElementById('player-stat-registered-cards');
+      if(totalPotEl) totalPotEl.textContent=`$${totalCollected.toFixed(2)}`;
+      if(paidCardsEl) paidCardsEl.textContent=`${paidPlayers.length} paid Bingo Card${paidPlayers.length===1?'':'s'}`;
+      if(registeredEl) registeredEl.textContent=`${registeredCards.length} registered`;
     }
 
     function renderPlayerBingoSheet() {
@@ -1619,7 +1678,7 @@
       if (filtered.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="6" class="text-center py-10 text-slate-400">
+            <td colspan="5" class="text-center py-10 text-slate-400">
               <i class="fa-solid fa-filter text-2xl mb-2 text-slate-300"></i>
               <p>No players matched your search.</p>
             </td>
@@ -1717,10 +1776,6 @@
               ` : `
                 <span class="text-slate-300 text-xs font-mono-numbers">-- / 6</span>
               `}
-            </td>
-
-            <td class="py-3 px-4 text-center">
-              ${standingBadge}
             </td>
           </tr>
         `;
@@ -1891,7 +1946,7 @@
 
             <td class="py-3 px-4 text-center">
               <button onclick="openPlayerModal(${p.id})" class="px-2.5 py-1 mr-1 text-xs font-semibold text-amber-700 hover:text-slate-950 hover:bg-amber-400 rounded-lg border border-amber-300 transition" title="Edit entry details"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
-                <button onclick="deletePlayer(${p.id})" class="px-2.5 py-1 text-xs font-semibold text-rose-600 hover:text-white hover:bg-rose-600 rounded-lg border border-rose-200 transition" title="Delete & Reset this Player Slot">
+                <button onclick="deletePlayer(${p.id})" class="px-2.5 py-1 text-xs font-semibold text-rose-600 hover:text-white hover:bg-rose-600 rounded-lg border border-rose-200 transition" title="Delete & Reset this Bingo Card">
                 <i class="fa-solid fa-trash-can"></i>
               </button>
             </td>
@@ -1966,7 +2021,7 @@
               #${String(p.id).padStart(2, '0')}
             </td>
             <td class="py-3 px-4">
-              <div class="font-bold text-slate-800">${p.name ? escapeHtml(p.name) : '<span class="text-slate-400 italic">No Name (Open Slot)</span>'}</div>
+              <div class="font-bold text-slate-800">${p.name ? escapeHtml(p.name) : '<span class="text-slate-400 italic">No Name (Open Bingo Card)</span>'}</div>
               <div class="text-[11px] text-slate-400">${escapeHtml(p.label)}</div>
             </td>
             <td class="py-3 px-4 text-slate-600 font-mono text-[11px]">
@@ -1987,7 +2042,7 @@
                 <button onclick="openPlayerModal(${p.id})" class="px-2.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-sm transition flex items-center gap-1">
                   <i class="fa-solid fa-pen-to-square"></i> Edit
                 </button>
-                <button onclick="deletePlayer(${p.id})" class="px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold border border-rose-200 transition" title="Delete & Reset Player Slot">
+                <button onclick="deletePlayer(${p.id})" class="px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold border border-rose-200 transition" title="Delete & Reset Bingo Card">
                   <i class="fa-solid fa-trash-can"></i>
                 </button>
               </div>
@@ -2000,6 +2055,30 @@
     function getFirstUnfilledPlayerId() {
       const found = players.find(p => !p.name || !p.numbers || p.numbers.length === 0);
       return found ? found.id : 1;
+    }
+
+    function renderSupportingPlayerSummary() {
+      const tbody = document.getElementById('support-summary-table-body');
+      if (!tbody) return;
+      const registered = players.filter(p => (p.name && p.name.trim()) || (p.numbers && p.numbers.length === 6));
+      const summary = SUPPORTING_PLAYER_OPTIONS.map(name => {
+        const entries = registered.filter(p => p.supportingPlayer === name);
+        const paidEntries = entries.filter(p => p.paid);
+        const collected = paidEntries.reduce((sum,p) => sum + Number(p.amountPaid || entryFee), 0);
+        return {name, entries:entries.length, paid:paidEntries.length, collected, potential:entries.length * entryFee};
+      });
+      tbody.innerHTML = summary.map(row => `
+        <tr class="hover:bg-slate-50">
+          <td class="py-3 px-4 font-bold text-slate-800">${escapeHtml(row.name)}</td>
+          <td class="py-3 px-4 text-center font-bold text-indigo-700">${row.entries}</td>
+          <td class="py-3 px-4 text-center text-emerald-700 font-semibold">${row.paid}</td>
+          <td class="py-3 px-4 text-right font-bold text-emerald-700">$${row.collected.toFixed(2)}</td>
+          <td class="py-3 px-4 text-right font-semibold text-slate-700">$${row.potential.toFixed(2)}</td>
+        </tr>`).join('');
+      const totalEntries=registered.length;
+      const totalPaid=registered.filter(p=>p.paid).reduce((sum,p)=>sum+Number(p.amountPaid||entryFee),0);
+      document.getElementById('support-summary-total-entries').textContent=`${totalEntries} entries`;
+      document.getElementById('support-summary-total-paid').textContent=`$${totalPaid.toFixed(2)} paid`;
     }
 
     function renderPrizeStats() {
@@ -2204,7 +2283,7 @@ function updatePlayerAmount(playerId, val) {
 
       document.getElementById('edit-player-id').value = p.id;
       document.getElementById('player-modal-title').textContent = `Admin Number Entry: ${p.label}`;
-      document.getElementById('player-modal-subtitle').textContent = `Slot #${p.id} • ${p.paid ? 'PAID ($20)' : 'UNPAID'}`;
+      document.getElementById('player-modal-subtitle').textContent = `Bingo Card #${p.id} • ${p.paid ? 'PAID ($20)' : 'UNPAID'}`;
       document.getElementById('p-modal-name').value = p.name || '';
       document.getElementById('p-modal-phone').value = p.phone || '';
       document.getElementById('p-modal-email').value = p.email || '';
@@ -2329,7 +2408,16 @@ function updatePlayerAmount(playerId, val) {
     // ==========================================
     let publicSelectedNumbers = [];
 
+    function getRegistrationStatus() {
+      const today=new Date(); today.setHours(0,0,0,0);
+      if(poolRules.registrationStartDate){const start=new Date(poolRules.registrationStartDate+'T00:00:00');if(today<start)return {open:false,message:`Registration opens ${formatDisplayDate(poolRules.registrationStartDate)}.`};}
+      if(poolRules.registrationEndDate){const end=new Date(poolRules.registrationEndDate+'T23:59:59');if(today>end)return {open:false,message:`Registration closed ${formatDisplayDate(poolRules.registrationEndDate)}.`};}
+      return {open:true,message:''};
+    }
+
     function openPlayerSubmissionModal() {
+      const registration=getRegistrationStatus();
+      if(!registration.open){showToast(registration.message,'error');return;}
       publicSelectedNumbers = [];
       const errEl = document.getElementById('pub-modal-error');
       const displayEl = document.getElementById('pub-assigned-slot-display');
