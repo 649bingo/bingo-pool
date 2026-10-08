@@ -189,45 +189,82 @@
             loading="eager"
           >
         </section>
-        <!-- Official Drawn Numbers Display (Public & Read-Only) -->
-        <section class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
-          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-            <div>
-              <div class="flex items-center gap-2 flex-wrap">
-                <span class="text-xs uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-md bg-rose-100 text-rose-700 flex items-center gap-1.5">
-                  <i class="fa-solid fa-bullseye"></i> Official 6/49 Drawn Numbers
-                </span>
-                <div id="player-draw-tabs-selector" class="flex items-center gap-1 bg-slate-100 p-1 rounded-lg">
-                  <!-- Rendered by JS -->
+        <!-- Dashboard + Official Draw Results -->
+        <section class="grid grid-cols-1 xl:grid-cols-[1.55fr_1fr] gap-4 items-stretch">
+          <!-- BINGO POOL DASHBOARD: left on desktop, first on mobile -->
+          <div class="overflow-hidden rounded-2xl border border-blue-200 bg-gradient-to-br from-slate-50 to-blue-50 shadow-sm">
+            <div class="bg-gradient-to-r from-blue-950 via-blue-800 to-sky-700 px-4 sm:px-5 py-3.5 text-white flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center border border-white/20">
+                <i class="fa-solid fa-trophy text-xl"></i>
+              </div>
+              <div>
+                <h2 class="text-lg sm:text-xl font-black tracking-wide">BINGO POOL DASHBOARD</h2>
+                <p class="text-[11px] text-blue-100">Live pool totals and Bingo hits across all registered cards</p>
+              </div>
+            </div>
+
+            <div class="p-3 sm:p-4 space-y-3">
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="rounded-xl bg-white border border-slate-200 p-4 shadow-sm flex items-center gap-3 min-h-[112px]">
+                  <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0"><i class="fa-solid fa-sack-dollar text-xl"></i></div>
+                  <div>
+                    <p class="text-[11px] font-extrabold text-slate-600 uppercase tracking-wide">50/50 Total Pot</p>
+                    <p id="dashboard-total-pot" class="text-3xl font-black text-emerald-600 leading-tight">$0.00</p>
+                    <p class="text-[11px] text-slate-400">Total funds collected</p>
+                  </div>
+                </div>
+                <div class="rounded-xl bg-white border border-slate-200 p-4 shadow-sm flex items-center gap-3 min-h-[112px]">
+                  <div class="w-11 h-11 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0"><i class="fa-solid fa-rectangle-list text-xl"></i></div>
+                  <div>
+                    <p class="text-[11px] font-extrabold text-slate-600 uppercase tracking-wide">Paid Cards</p>
+                    <p id="dashboard-paid-cards" class="text-3xl font-black text-blue-700 leading-tight">0</p>
+                    <p class="text-[11px] text-slate-400">$20 each</p>
+                  </div>
+                </div>
+                <div class="rounded-xl bg-white border border-slate-200 p-4 shadow-sm flex items-center gap-3 min-h-[112px]">
+                  <div class="w-11 h-11 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center shrink-0"><i class="fa-solid fa-users text-xl"></i></div>
+                  <div>
+                    <p class="text-[11px] font-extrabold text-slate-600 uppercase tracking-wide">Registered Players</p>
+                    <p id="dashboard-registered-players" class="text-3xl font-black text-indigo-700 leading-tight">0</p>
+                    <p class="text-[11px] text-slate-400">Total entries</p>
+                  </div>
                 </div>
               </div>
-              <h2 class="text-lg font-bold text-slate-900 mt-1" id="player-active-draw-title">ALL 10 DRAWS Cumulative View</h2>
-              <p class="text-xs text-slate-500" id="player-active-draw-subtitle">Numbers drawn across all 10 weekly draws are automatically circled in gold on each player card.</p>
-            </div>
 
-            <!-- Winning Numbers Display Row (6 Numbers Only - Bonus Ball Removed) -->
-            <div class="flex items-center gap-2 flex-wrap">
-              <div id="player-drawn-balls-container" class="flex items-center gap-2 flex-wrap">
-                <!-- Rendered by JS -->
+              <div class="rounded-xl bg-white border border-slate-200 p-3 sm:p-4 shadow-sm">
+                <div class="flex items-center justify-between gap-2 mb-3">
+                  <div>
+                    <h3 class="text-xs sm:text-sm font-black text-blue-950 uppercase tracking-wide">Bingo Hits Across All Cards</h3>
+                    <p class="text-[10px] sm:text-[11px] text-slate-400">Cumulative matches from all completed draws</p>
+                  </div>
+                </div>
+                <div class="grid grid-cols-4 sm:grid-cols-7 gap-2">
+                  <div class="rounded-xl bg-slate-500 text-white p-2.5 text-center"><p class="text-xs font-bold">0/6</p><p id="dashboard-hit-0" class="text-2xl font-black">0</p></div>
+                  <div class="rounded-xl bg-blue-500 text-white p-2.5 text-center"><p class="text-xs font-bold">1/6</p><p id="dashboard-hit-1" class="text-2xl font-black">0</p></div>
+                  <div class="rounded-xl bg-cyan-500 text-white p-2.5 text-center"><p class="text-xs font-bold">2/6</p><p id="dashboard-hit-2" class="text-2xl font-black">0</p></div>
+                  <div class="rounded-xl bg-green-500 text-white p-2.5 text-center"><p class="text-xs font-bold">3/6</p><p id="dashboard-hit-3" class="text-2xl font-black">0</p></div>
+                  <div class="rounded-xl bg-amber-400 text-slate-900 p-2.5 text-center"><p class="text-xs font-bold">4/6</p><p id="dashboard-hit-4" class="text-2xl font-black">0</p></div>
+                  <div class="rounded-xl bg-orange-500 text-white p-2.5 text-center"><p class="text-xs font-bold">5/6</p><p id="dashboard-hit-5" class="text-2xl font-black">0</p></div>
+                  <div class="rounded-xl bg-rose-600 text-white p-2.5 text-center col-span-2 sm:col-span-1"><p class="text-xs font-bold">6/6</p><p id="dashboard-hit-6" class="text-2xl font-black">0</p></div>
+                </div>
               </div>
             </div>
+          </div>
 
-            <!-- Pot & Bingo Hits Quick Stats for Players -->
-            <div class="flex items-center gap-3 bg-slate-50 rounded-xl p-3 border border-slate-200 text-xs">
-              <div>
-                <p class="text-slate-400 text-[10px] font-semibold uppercase">50% Winner Pot</p>
-                <p id="player-stat-winner-pot" class="text-lg font-extrabold text-emerald-600">$0.00</p>
+          <!-- Official Draw Results: right on desktop -->
+          <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200 flex flex-col">
+            <div class="flex items-start justify-between gap-3 flex-wrap">
+              <div class="min-w-0">
+                <span class="text-xs uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-md bg-rose-100 text-rose-700 inline-flex items-center gap-1.5">
+                  <i class="fa-solid fa-bullseye"></i> Official 6/49 Drawn Numbers
+                </span>
+                <h2 class="text-base sm:text-lg font-bold text-slate-900 mt-2" id="player-active-draw-title">ALL 10 DRAWS Cumulative View</h2>
               </div>
-              <div class="h-6 w-px bg-slate-200"></div>
-              <div>
-                <p class="text-slate-400 text-[10px] font-semibold uppercase">6/6 Bingo Hits</p>
-                <p id="player-stat-match-6" class="text-lg font-extrabold text-amber-600">0</p>
-              </div>
-              <div class="h-6 w-px bg-slate-200"></div>
-              <div>
-                <p class="text-slate-400 text-[10px] font-semibold uppercase">5/6 Bingo Hits</p>
-                <p id="player-stat-match-5" class="text-lg font-extrabold text-blue-600">0</p>
-              </div>
+              <div id="player-draw-tabs-selector" class="w-full sm:w-auto bg-slate-100 p-1 rounded-lg"><!-- Rendered by JS --></div>
+            </div>
+            <p class="text-xs text-slate-500 mt-1" id="player-active-draw-subtitle">Numbers drawn across all 10 weekly draws are automatically circled in gold on each player card.</p>
+            <div class="mt-5 rounded-xl bg-slate-50 border border-slate-200 p-4 flex-1 flex items-center justify-center min-h-[150px]">
+              <div id="player-drawn-balls-container" class="flex items-center justify-center gap-2 flex-wrap"><!-- Rendered by JS --></div>
             </div>
           </div>
         </section>
@@ -1572,26 +1609,32 @@
         `).join('');
       }
 
-      let count6 = 0, count5 = 0;
-      players.forEach(p => {
-        if (!p.numbers || p.numbers.length !== 6) return;
-        const matches = p.numbers.filter(num => activeNums.includes(num)).length;
-        if (matches === 6) count6++;
-        else if (matches === 5) count5++;
+      // Full dashboard summarizes the complete pool, independent of the selected draw view.
+      const cumulativeNumbers = new Set();
+      draws.forEach(d => (d.numbers || []).forEach(n => cumulativeNumbers.add(Number(n))));
+      const allDrawnNumbers = Array.from(cumulativeNumbers);
+      const registeredPlayers = players.filter(p =>
+        (p.name && p.name.trim()) || (Array.isArray(p.numbers) && p.numbers.length === 6)
+      );
+      const hitCounts = [0, 0, 0, 0, 0, 0, 0];
+      registeredPlayers.forEach(p => {
+        if (!Array.isArray(p.numbers) || p.numbers.length !== 6) return;
+        const matches = p.numbers.filter(num => allDrawnNumbers.includes(Number(num))).length;
+        hitCounts[Math.max(0, Math.min(6, matches))]++;
       });
 
-      const match6El = document.getElementById('player-stat-match-6');
-      const match5El = document.getElementById('player-stat-match-5');
-      const potEl = document.getElementById('player-stat-winner-pot');
-
-      if (match6El) match6El.textContent = count6;
-      if (match5El) match5El.textContent = count5;
-
       const paidPlayers = players.filter(p => p.paid);
-      const totalCollected = paidPlayers.reduce((acc, p) => acc + (p.amountPaid || entryFee), 0);
-      const winnerPot = totalCollected * 0.5;
-
-      if (potEl) potEl.textContent = `$${winnerPot.toFixed(2)}`;
+      const totalCollected = paidPlayers.reduce((acc, p) => acc + Number(p.amountPaid || entryFee), 0);
+      const totalPotEl = document.getElementById('dashboard-total-pot');
+      const paidCardsEl = document.getElementById('dashboard-paid-cards');
+      const registeredPlayersEl = document.getElementById('dashboard-registered-players');
+      if (totalPotEl) totalPotEl.textContent = `$${totalCollected.toFixed(2)}`;
+      if (paidCardsEl) paidCardsEl.textContent = paidPlayers.length;
+      if (registeredPlayersEl) registeredPlayersEl.textContent = registeredPlayers.length;
+      hitCounts.forEach((count, index) => {
+        const el = document.getElementById(`dashboard-hit-${index}`);
+        if (el) el.textContent = count;
+      });
     }
 
     function renderPlayerBingoSheet() {
