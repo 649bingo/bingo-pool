@@ -190,62 +190,52 @@
           >
         </section>
         <!-- Dashboard + Official Draw Results -->
-        <section class="grid grid-cols-1 xl:grid-cols-[1.55fr_1fr] gap-4 items-stretch">
-          <!-- BINGO POOL DASHBOARD: left on desktop, first on mobile -->
-          <div class="overflow-hidden rounded-2xl border border-blue-200 bg-gradient-to-br from-slate-50 to-blue-50 shadow-sm">
-            <div class="bg-gradient-to-r from-blue-950 via-blue-800 to-sky-700 px-4 sm:px-5 py-3.5 text-white flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center border border-white/20">
-                <i class="fa-solid fa-trophy text-xl"></i>
+        <section class="grid grid-cols-1 xl:grid-cols-[1.35fr_1fr] gap-3 items-stretch">
+          <!-- COMPACT BINGO POOL DASHBOARD: left on desktop, first on mobile -->
+          <div class="overflow-hidden rounded-2xl border border-blue-200 bg-white shadow-sm">
+            <div class="bg-gradient-to-r from-blue-950 via-blue-800 to-sky-700 px-3.5 py-2.5 text-white flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center border border-white/20 shrink-0">
+                <i class="fa-solid fa-trophy text-sm"></i>
               </div>
-              <div>
-                <h2 class="text-lg sm:text-xl font-black tracking-wide">BINGO POOL DASHBOARD</h2>
-                <p class="text-[11px] text-blue-100">Live pool totals and Bingo hits across all registered cards</p>
+              <div class="min-w-0">
+                <h2 class="text-sm sm:text-base font-black tracking-wide leading-tight">BINGO POOL DASHBOARD</h2>
+                <p class="hidden sm:block text-[10px] text-blue-100">Live totals and cumulative hits</p>
               </div>
             </div>
 
-            <div class="p-3 sm:p-4 space-y-3">
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div class="rounded-xl bg-white border border-slate-200 p-4 shadow-sm flex items-center gap-3 min-h-[112px]">
-                  <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0"><i class="fa-solid fa-sack-dollar text-xl"></i></div>
-                  <div>
-                    <p class="text-[11px] font-extrabold text-slate-600 uppercase tracking-wide">50/50 Total Pot</p>
-                    <p id="dashboard-total-pot" class="text-3xl font-black text-emerald-600 leading-tight">$0.00</p>
-                    <p class="text-[11px] text-slate-400">Total funds collected</p>
-                  </div>
+            <div class="p-2.5 sm:p-3 space-y-2.5">
+              <!-- Compact KPI strip: always 3 columns -->
+              <div class="grid grid-cols-3 gap-2">
+                <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-2 py-2 text-center min-w-0">
+                  <div class="flex items-center justify-center gap-1 text-emerald-700"><i class="fa-solid fa-sack-dollar text-xs"></i><span class="text-[9px] sm:text-[10px] font-extrabold uppercase leading-none">Total Pot</span></div>
+                  <p id="dashboard-total-pot" class="mt-1 text-lg sm:text-2xl font-black text-emerald-700 leading-none truncate">$0.00</p>
                 </div>
-                <div class="rounded-xl bg-white border border-slate-200 p-4 shadow-sm flex items-center gap-3 min-h-[112px]">
-                  <div class="w-11 h-11 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0"><i class="fa-solid fa-rectangle-list text-xl"></i></div>
-                  <div>
-                    <p class="text-[11px] font-extrabold text-slate-600 uppercase tracking-wide">Paid Cards</p>
-                    <p id="dashboard-paid-cards" class="text-3xl font-black text-blue-700 leading-tight">0</p>
-                    <p class="text-[11px] text-slate-400">$20 each</p>
-                  </div>
+                <div class="rounded-lg border border-blue-200 bg-blue-50 px-2 py-2 text-center min-w-0">
+                  <div class="flex items-center justify-center gap-1 text-blue-700"><i class="fa-solid fa-rectangle-list text-xs"></i><span class="text-[9px] sm:text-[10px] font-extrabold uppercase leading-none">Paid Cards</span></div>
+                  <p id="dashboard-paid-cards" class="mt-1 text-lg sm:text-2xl font-black text-blue-700 leading-none">0</p>
+                  <p class="hidden sm:block text-[9px] text-blue-500 mt-1">$20 each</p>
                 </div>
-                <div class="rounded-xl bg-white border border-slate-200 p-4 shadow-sm flex items-center gap-3 min-h-[112px]">
-                  <div class="w-11 h-11 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center shrink-0"><i class="fa-solid fa-users text-xl"></i></div>
-                  <div>
-                    <p class="text-[11px] font-extrabold text-slate-600 uppercase tracking-wide">Registered Players</p>
-                    <p id="dashboard-registered-players" class="text-3xl font-black text-indigo-700 leading-tight">0</p>
-                    <p class="text-[11px] text-slate-400">Total entries</p>
-                  </div>
+                <div class="rounded-lg border border-indigo-200 bg-indigo-50 px-2 py-2 text-center min-w-0">
+                  <div class="flex items-center justify-center gap-1 text-indigo-700"><i class="fa-solid fa-users text-xs"></i><span class="text-[9px] sm:text-[10px] font-extrabold uppercase leading-none">Registered</span></div>
+                  <p id="dashboard-registered-players" class="mt-1 text-lg sm:text-2xl font-black text-indigo-700 leading-none">0</p>
+                  <p class="hidden sm:block text-[9px] text-indigo-500 mt-1">Players</p>
                 </div>
               </div>
 
-              <div class="rounded-xl bg-white border border-slate-200 p-3 sm:p-4 shadow-sm">
-                <div class="flex items-center justify-between gap-2 mb-3">
-                  <div>
-                    <h3 class="text-xs sm:text-sm font-black text-blue-950 uppercase tracking-wide">Bingo Hits Across All Cards</h3>
-                    <p class="text-[10px] sm:text-[11px] text-slate-400">Cumulative matches from all completed draws</p>
-                  </div>
+              <!-- Compact hit strip; horizontal scroll on narrow phones -->
+              <div class="rounded-lg border border-slate-200 bg-slate-50 p-2">
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <h3 class="text-[10px] sm:text-xs font-black text-blue-950 uppercase tracking-wide">Bingo Hits Across All Cards</h3>
+                  <span class="hidden sm:inline text-[9px] text-slate-400">Cumulative</span>
                 </div>
-                <div class="grid grid-cols-4 sm:grid-cols-7 gap-2">
-                  <div class="rounded-xl bg-slate-500 text-white p-2.5 text-center"><p class="text-xs font-bold">0/6</p><p id="dashboard-hit-0" class="text-2xl font-black">0</p></div>
-                  <div class="rounded-xl bg-blue-500 text-white p-2.5 text-center"><p class="text-xs font-bold">1/6</p><p id="dashboard-hit-1" class="text-2xl font-black">0</p></div>
-                  <div class="rounded-xl bg-cyan-500 text-white p-2.5 text-center"><p class="text-xs font-bold">2/6</p><p id="dashboard-hit-2" class="text-2xl font-black">0</p></div>
-                  <div class="rounded-xl bg-green-500 text-white p-2.5 text-center"><p class="text-xs font-bold">3/6</p><p id="dashboard-hit-3" class="text-2xl font-black">0</p></div>
-                  <div class="rounded-xl bg-amber-400 text-slate-900 p-2.5 text-center"><p class="text-xs font-bold">4/6</p><p id="dashboard-hit-4" class="text-2xl font-black">0</p></div>
-                  <div class="rounded-xl bg-orange-500 text-white p-2.5 text-center"><p class="text-xs font-bold">5/6</p><p id="dashboard-hit-5" class="text-2xl font-black">0</p></div>
-                  <div class="rounded-xl bg-rose-600 text-white p-2.5 text-center col-span-2 sm:col-span-1"><p class="text-xs font-bold">6/6</p><p id="dashboard-hit-6" class="text-2xl font-black">0</p></div>
+                <div class="grid grid-cols-7 gap-1 min-w-[330px]">
+                  <div class="rounded-md bg-slate-500 text-white py-1.5 text-center"><p class="text-[9px] font-bold">0/6</p><p id="dashboard-hit-0" class="text-base sm:text-lg font-black leading-tight">0</p></div>
+                  <div class="rounded-md bg-blue-500 text-white py-1.5 text-center"><p class="text-[9px] font-bold">1/6</p><p id="dashboard-hit-1" class="text-base sm:text-lg font-black leading-tight">0</p></div>
+                  <div class="rounded-md bg-cyan-500 text-white py-1.5 text-center"><p class="text-[9px] font-bold">2/6</p><p id="dashboard-hit-2" class="text-base sm:text-lg font-black leading-tight">0</p></div>
+                  <div class="rounded-md bg-green-500 text-white py-1.5 text-center"><p class="text-[9px] font-bold">3/6</p><p id="dashboard-hit-3" class="text-base sm:text-lg font-black leading-tight">0</p></div>
+                  <div class="rounded-md bg-amber-400 text-slate-900 py-1.5 text-center"><p class="text-[9px] font-bold">4/6</p><p id="dashboard-hit-4" class="text-base sm:text-lg font-black leading-tight">0</p></div>
+                  <div class="rounded-md bg-orange-500 text-white py-1.5 text-center"><p class="text-[9px] font-bold">5/6</p><p id="dashboard-hit-5" class="text-base sm:text-lg font-black leading-tight">0</p></div>
+                  <div class="rounded-md bg-rose-600 text-white py-1.5 text-center"><p class="text-[9px] font-bold">6/6</p><p id="dashboard-hit-6" class="text-base sm:text-lg font-black leading-tight">0</p></div>
                 </div>
               </div>
             </div>
