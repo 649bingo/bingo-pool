@@ -1159,7 +1159,7 @@
         <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-[11px] text-amber-900 flex items-start gap-2">
           <i class="fa-solid fa-circle-info text-amber-600 text-sm mt-0.5"></i>
           <div>
-            <strong>Important:</strong> To complete your entry, payment of <strong>$20</strong> must be received. You can e-transfer to <strong>Ladyjays2011@gmail.com</strong> and reference your Bingo Card number, or you can pay cash to a team member. Your entry will be marked as paid online once the administrator receives payment.
+            <strong>Important 50/50 Rules:</strong> Entry fee is exactly <strong>$20.00</strong>. Your entry will be officially marked on the public ledger and locked once payment is confirmed with the pool administrator.
           </div>
         </div>
 
@@ -1172,38 +1172,6 @@
         </button>
         <button id="pub-submit-entry-btn" onclick="submitPlayerRegistrationForm()" class="px-6 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 rounded-xl shadow-md transition flex items-center gap-2">
           <i class="fa-solid fa-paper-plane"></i> Submit Entry ($20)
-        </button>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- ENTRY SUBMISSION PAYMENT CONFIRMATION DIALOG -->
-  <div id="entry-payment-confirmation-modal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-[70] hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="entry-payment-confirmation-title">
-    <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
-      <div class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white px-5 py-4 flex items-center gap-3">
-        <div class="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center text-xl flex-shrink-0">
-          <i class="fa-solid fa-circle-check"></i>
-        </div>
-        <div>
-          <p class="text-xs font-bold text-emerald-100 uppercase tracking-wide">Entry Submitted</p>
-          <h3 id="entry-payment-confirmation-title" class="text-lg font-extrabold">Your Bingo Card Has Been Assigned</h3>
-        </div>
-      </div>
-      <div class="p-5 sm:p-6 space-y-4">
-        <div class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-center">
-          <p class="text-xs font-bold text-emerald-700 uppercase tracking-wide">Your Bingo Card Number</p>
-          <p id="entry-confirmation-card-number" class="text-3xl font-black text-emerald-900 mt-1">Bingo Card --</p>
-        </div>
-        <div class="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm leading-relaxed text-amber-950">
-          <p><strong>To complete your entry, payment of $20 must be received.</strong></p>
-          <p class="mt-2">You can e-transfer to <strong>Ladyjays2011@gmail.com</strong> and reference your Bingo Card number.</p>
-        </div>
-        <p class="text-xs text-slate-500 text-center">Your entry will be marked as paid online once the administrator receives payment.</p>
-      </div>
-      <div class="px-5 pb-5 sm:px-6 sm:pb-6">
-        <button id="entry-payment-confirmation-close" type="button" onclick="closeEntryPaymentConfirmation()" class="w-full px-5 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold shadow-md transition">
-          I Have Saved My Bingo Card Number
         </button>
       </div>
     </div>
@@ -2658,33 +2626,11 @@ function updatePlayerAmount(playerId, val) {
       updatePublicSelectedDisplay();
     }
 
-
-    function openEntryPaymentConfirmation(cardNumber) {
-      const modal = document.getElementById('entry-payment-confirmation-modal');
-      const cardEl = document.getElementById('entry-confirmation-card-number');
-      if (cardEl) cardEl.textContent = `Bingo Card ${cardNumber}`;
-      if (modal) {
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-        document.body.classList.add('overflow-hidden');
-        setTimeout(() => document.getElementById('entry-payment-confirmation-close')?.focus(), 0);
-      }
-    }
-
-    function closeEntryPaymentConfirmation() {
-      const modal = document.getElementById('entry-payment-confirmation-modal');
-      if (modal) {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-      }
-      document.body.classList.remove('overflow-hidden');
-    }
-
     async function submitPlayerRegistrationForm(){
       const errEl=document.getElementById('pub-modal-error'); const name=document.getElementById('pub-player-name').value.trim(); const phone=document.getElementById('pub-player-phone').value.trim(); const email=document.getElementById('pub-player-email').value.trim(); const supportingPlayer=document.getElementById('pub-supporting-player').value; const emailRegex=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       function fail(msg){errEl.textContent=msg;errEl.classList.remove('hidden');}
       if(!name)return fail('Please enter your full legal name.'); if(!phone)return fail('Please enter your contact phone number.'); if(!email||!emailRegex.test(email))return fail('Please enter a valid email address.'); if(!supportingPlayer)return fail("Please select the team member you're supporting."); if(publicSelectedNumbers.length!==6)return fail('Please select exactly 6 lottery numbers.');
-      const btn=document.getElementById('pub-submit-entry-btn');btn.disabled=true;btn.classList.add('opacity-60'); const {data,error}=await db.rpc('submit_player_entry',{p_name:name,p_phone:phone,p_email:email,p_supporting_player:supportingPlayer,p_numbers:publicSelectedNumbers}); btn.disabled=false;btn.classList.remove('opacity-60'); if(error)return fail('Submission failed: '+error.message); await loadState();closePlayerSubmissionModal();renderPlayerBingoSheet();renderPlayerHeader();openEntryPaymentConfirmation(data);
+      const btn=document.getElementById('pub-submit-entry-btn');btn.disabled=true;btn.classList.add('opacity-60'); const {data,error}=await db.rpc('submit_player_entry',{p_name:name,p_phone:phone,p_email:email,p_supporting_player:supportingPlayer,p_numbers:publicSelectedNumbers}); btn.disabled=false;btn.classList.remove('opacity-60'); if(error)return fail('Submission failed: '+error.message); await loadState();closePlayerSubmissionModal();renderPlayerBingoSheet();renderPlayerHeader();showToast(`Success! You have been assigned Bingo Card ${data}. Remember to submit your $20 entry fee!`); db.functions.invoke('send-entry-confirmation',{body:{cardNumber:Number(data)}}).then(({error})=>{if(error)console.error('Confirmation email failed:',error)}).catch(error=>console.error('Confirmation email failed:',error));
     }
     function renderHeatmap() {
       const container = document.getElementById('number-heatmap');
