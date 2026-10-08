@@ -99,7 +99,7 @@
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Player View
             </span>
           </div>
-          <p class="text-xs text-slate-400">Unlimited Players • 50/50 Pot ($20 Entry) • 6 Weekly Draws</p>
+          <p class="text-xs text-slate-400">Unlimited Players • 50/50 Pot ($20 Entry) • 10 Weekly Draws</p>
         </div>
       </div>
 
@@ -140,8 +140,8 @@
         <span id="paid-badge-counter" class="bg-emerald-950 text-emerald-300 text-[10px] px-1.5 py-0.5 rounded-full border border-emerald-700/50">0/0</span>
       </button>
       <button onclick="switchAdminTab('draw-manager')" id="admin-tab-draw-manager" class="admin-tab-btn px-4 py-2.5 text-xs font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition whitespace-nowrap">
-        <i class="fa-solid fa-list-check"></i> Enter 6 Weekly Draws
-        <span id="draws-completed-badge" class="bg-rose-950 text-rose-300 text-[10px] px-1.5 py-0.5 rounded-full border border-rose-700/50">0/6 Drawn</span>
+        <i class="fa-solid fa-list-check"></i> Enter 10 Weekly Draws
+        <span id="draws-completed-badge" class="bg-rose-950 text-rose-300 text-[10px] px-1.5 py-0.5 rounded-full border border-rose-700/50">0/10 Drawn</span>
       </button>
       <button onclick="switchAdminTab('player-numbers')" id="admin-tab-player-numbers" class="admin-tab-btn px-4 py-2.5 text-xs font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition whitespace-nowrap">
         <i class="fa-solid fa-users-gear"></i> Edit Player 6/49 Numbers
@@ -183,6 +183,10 @@
 
       <!-- SUBVIEW 1: Bingo Master Sheet & Live Draws -->
       <div id="player-subview-sheet" class="space-y-6">
+        <!-- Fundraiser Introduction -->
+        <div class="bg-gradient-to-r from-sky-50 to-blue-50 border border-sky-200 rounded-2xl px-5 py-4 text-center shadow-sm">
+          <p class="text-base sm:text-lg font-bold text-slate-900">Support the U17 Mississauga Lady Jays Softball team by participating in our 50/50 Bingo pool</p>
+        </div>
         <!-- Official Drawn Numbers Display (Public & Read-Only) -->
         <section class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
           <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
@@ -195,8 +199,8 @@
                   <!-- Rendered by JS -->
                 </div>
               </div>
-              <h2 class="text-lg font-bold text-slate-900 mt-1" id="player-active-draw-title">All 6 Draws Cumulative View</h2>
-              <p class="text-xs text-slate-500" id="player-active-draw-subtitle">Numbers drawn across all 6 weekly draws are automatically circled in gold on each player card.</p>
+              <h2 class="text-lg font-bold text-slate-900 mt-1" id="player-active-draw-title">All 10 Draws Cumulative View</h2>
+              <p class="text-xs text-slate-500" id="player-active-draw-subtitle">Numbers drawn across all 10 weekly draws are automatically circled in gold on each player card.</p>
             </div>
 
             <!-- Winning Numbers Display Row (6 Numbers Only - Bonus Ball Removed) -->
@@ -219,7 +223,7 @@
               </div>
               <div class="h-6 w-px bg-slate-200"></div>
               <div>
-                <p class="text-slate-400 text-[10px] font-semibold uppercase">5/6 Hits</p>
+                <p class="text-slate-400 text-[10px] font-semibold uppercase">5/6 Bingo Hits</p>
                 <p id="player-stat-match-5" class="text-lg font-extrabold text-blue-600">0</p>
               </div>
             </div>
@@ -309,7 +313,7 @@
                 <i class="fa-regular fa-calendar-xmark text-rose-600 text-lg"></i>
               </div>
               <p id="rules-card-end-date" class="text-lg font-black text-rose-900 mt-2">--</p>
-              <p class="text-[11px] text-rose-700 mt-0.5">After Draw #6 completion</p>
+              <p class="text-[11px] text-rose-700 mt-0.5">After Draw #10 completion</p>
             </div>
 
             <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
@@ -326,7 +330,7 @@
                 <span class="text-xs font-bold text-amber-800 uppercase tracking-wide">50/50 Pot Split</span>
                 <i class="fa-solid fa-sack-dollar text-amber-600 text-lg"></i>
               </div>
-              <p class="text-lg font-black text-amber-900 mt-2">50% Winner / 50% Org</p>
+              <p class="text-lg font-black text-amber-900 mt-2">50% Winner / 50% Lady Jays</p>
               <p class="text-[11px] text-amber-700 mt-0.5">Equal split of all collected entry fees</p>
             </div>
           </div>
@@ -497,19 +501,19 @@
         </div>
       </div>
 
-      <!-- ADMIN TAB 2: 6 Weekly Draws Manager -->
+      <!-- ADMIN TAB 2: 10 Weekly Draws Manager -->
       <div id="admin-view-draw-manager" class="admin-tab-view hidden space-y-4">
         <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h3 class="text-base font-bold text-slate-800">Total 6 6/49 Entries Schedule & Results</h3>
-            <p class="text-xs text-slate-500">Enter each of the 6 official 6/49 weekly draws. Every drawn number automatically updates player Bingo cards.</p>
+            <h3 class="text-base font-bold text-slate-800">Total 10 6/49 Entries Schedule & Results</h3>
+            <p class="text-xs text-slate-500">Enter each of the 10 official 6/49 weekly draws. Every drawn number automatically updates player Bingo cards.</p>
           </div>
           <div class="flex items-center gap-2">
             <button onclick="randomizeAll6Draws()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg border border-slate-300 transition flex items-center gap-1.5">
-              <i class="fa-solid fa-dice text-rose-600"></i> Simulate All 6 Draws
+              <i class="fa-solid fa-dice text-rose-600"></i> Simulate All 10 Draws
             </button>
             <button onclick="resetAllDraws()" class="px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold rounded-lg border border-rose-200 transition flex items-center gap-1.5">
-              <i class="fa-solid fa-trash-can"></i> Clear All 6 Draws
+              <i class="fa-solid fa-trash-can"></i> Clear All 10 Draws
             </button>
           </div>
         </div>
@@ -571,7 +575,7 @@
                   <span class="font-bold text-amber-900">Winner(s) Share (50%)</span>
                   <span id="prize-calc-winner" class="font-extrabold text-amber-700 text-sm">$0.00</span>
                 </div>
-                <p class="text-[11px] text-amber-700 mt-1">Awarded to player(s) with the most matches or 6/6 Bingo after all 6 draws.</p>
+                <p class="text-[11px] text-amber-700 mt-1">Awarded to player(s) with the most matches or 6/6 Bingo after all 10 draws.</p>
               </div>
 
               <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-200">
@@ -776,6 +780,10 @@
               <option value="3">Draw #4</option>
               <option value="4">Draw #5</option>
               <option value="5">Draw #6</option>
+              <option value="6">Draw #7</option>
+              <option value="7">Draw #8</option>
+              <option value="8">Draw #9</option>
+              <option value="9">Draw #10</option>
             </select>
           </div>
           <div>
@@ -938,6 +946,23 @@
             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Email Address <span class="text-rose-500">*</span></label>
             <input type="email" id="pub-player-email" placeholder="e.g. name@example.com" class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-500">
           </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1">Team Member You're Supporting <span class="text-rose-500">*</span></label>
+            <select id="pub-supporting-player" class="w-full text-xs font-semibold px-3 py-2 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+              <option value="">Select a team member</option>
+              <option value="Aisha Ferguson (#13)">Aisha Ferguson (#13)</option>
+              <option value="Caleigh Callison (#24)">Caleigh Callison (#24)</option>
+              <option value="Emma Leite (#6)">Emma Leite (#6)</option>
+              <option value="Evelyn Yoon (#4)">Evelyn Yoon (#4)</option>
+              <option value="Karlee Ross (#11)">Karlee Ross (#11)</option>
+              <option value="Kayleigh Tsuyuki (#17)">Kayleigh Tsuyuki (#17)</option>
+              <option value="Maya Koutoulas (#12)">Maya Koutoulas (#12)</option>
+              <option value="Mckinley Toye (#8)">Mckinley Toye (#8)</option>
+              <option value="Serena Segovia (#22)">Serena Segovia (#22)</option>
+              <option value="Siena Duric (#86)">Siena Duric (#86)</option>
+              <option value="Sylvie Tanaka (#15)">Sylvie Tanaka (#15)</option>
+            </select>
+          </div>
         </div>
 
         <!-- Number Selection Area -->
@@ -1026,11 +1051,11 @@
       rulesText: `1. Entry Fee: Exactly $20.00 per slot (unlimited players welcome - no cap on participation).
 2. 50/50 Pot Allocation: 50% of all collected entry fees forms the Winner Prize Pot. The remaining 50% is retained by the organization hosting the pool.
 3. Card Selection: Each player picks 6 unique numbers between 1 and 49 for their card.
-4. Duration: The pool runs across exactly 6 official weekly 6/49 draws.
+4. Duration: The pool runs across exactly 10 official weekly 6/49 draws.
 5. Automatic Hit Matching: As each official draw is entered, numbers matching your card are stamped in gold/red.
 6. How to Win (Bingo):
    - Any player who matches all 6/6 numbers on their card achieves BINGO!
-   - If no player matches 6/6 after all 6 draws, the player(s) with the highest total match count wins the entire 50% prize pot.
+   - If no player matches 6/6 after all 10 draws, the player(s) with the highest total match count wins the entire 50% prize pot.
 7. Tie Breaker: If multiple players tie with the same highest number of hits, the 50% prize pot is split equally between them.
 8. Registration & Payment: Your slot and legal name are locked into the ledger once payment has been verified by the administrator.`
     };
@@ -1068,16 +1093,8 @@
     }
 
     function initializeDefaultDraws() {
-      return [
-        { id: 1, name: 'Draw #1', date: '', numbers: [] },
-        { id: 2, name: 'Draw #2', date: '', numbers: [] },
-        { id: 3, name: 'Draw #3', date: '', numbers: [] },
-        { id: 4, name: 'Draw #4', date: '', numbers: [] },
-        { id: 5, name: 'Draw #5', date: '', numbers: [] },
-        { id: 6, name: 'Draw #6', date: '', numbers: [] }
-      ];
+      return Array.from({ length: 10 }, (_, i) => ({ id: i + 1, name: `Draw #${i + 1}`, date: '', numbers: [] }));
     }
-
     function initializeDefaultPlayers() {
       const list = [];
       for (let i = 1; i <= 50; i++) {
@@ -1087,6 +1104,7 @@
           name: '',
           phone: '',
           email: '',
+          supportingPlayer: '',
           paid: false,
           amountPaid: 0,
           paymentMethod: 'Cash',
@@ -1133,6 +1151,7 @@
           name: '',
           phone: '',
           email: '',
+          supportingPlayer: '',
           paid: false,
           amountPaid: 0,
           paymentMethod: 'Cash',
@@ -1157,64 +1176,24 @@
     }
 
     function playerFromRow(row) {
-      return {
-        id: Number(row.slot ?? row.id),
-        label: `Play ${Number(row.slot ?? row.id)}`,
-        name: row.name || '', phone: row.phone || '', email: row.email || '',
-        paid: Boolean(row.paid), amountPaid: Number(row.amount_paid || 0),
-        paymentMethod: row.payment_method || 'Cash', paymentDate: row.payment_date || '',
-        notes: row.notes || '', numbers: Array.isArray(row.numbers) ? row.numbers.map(Number) : []
-      };
+      return { id:Number(row.slot ?? row.id), label:`Play ${Number(row.slot ?? row.id)}`, name:row.name||'', phone:row.phone||'', email:row.email||'', supportingPlayer:row.supporting_player||'', paid:Boolean(row.paid), amountPaid:Number(row.amount_paid||0), paymentMethod:row.payment_method||'Cash', paymentDate:row.payment_date||'', notes:row.notes||'', numbers:Array.isArray(row.numbers)?row.numbers.map(Number):[] };
     }
     function playerToRow(p) {
-      return { id: p.id, slot: p.id, name: p.name || '', phone: p.phone || '', email: p.email || '',
-        paid: Boolean(p.paid), amount_paid: Number(p.amountPaid || 0), payment_method: p.paymentMethod || 'Cash',
-        payment_date: p.paymentDate || null, notes: p.notes || '', numbers: p.numbers || [] };
+      return { id:p.id, slot:p.id, name:p.name||'', phone:p.phone||'', email:p.email||'', supporting_player:p.supportingPlayer||'', paid:Boolean(p.paid), amount_paid:Number(p.amountPaid||0), payment_method:p.paymentMethod||'Cash', payment_date:p.paymentDate||null, notes:p.notes||'', numbers:p.numbers||[] };
     }
     async function loadState() {
       try {
-        const { data: sessionData } = await db.auth.getSession();
-        supabaseSession = sessionData.session;
-        isAdminLoggedIn = Boolean(supabaseSession);
-        const [playerResult, drawResult, ruleResult] = await Promise.all([
-          db.from('players').select('*').order('slot'),
-          db.from('draws').select('*').order('draw_number'),
-          db.from('rules').select('*').eq('id', 1).maybeSingle()
-        ]);
-        if (playerResult.error) throw playerResult.error;
-        if (drawResult.error) throw drawResult.error;
-        if (ruleResult.error) throw ruleResult.error;
-        players = (playerResult.data || []).map(playerFromRow);
-        if (!players.length) players = initializeDefaultPlayers();
-        draws = (drawResult.data || []).map(r => ({ id: Number(r.draw_number), name: `Draw #${r.draw_number}`, date: r.draw_date || '', numbers: Array.isArray(r.numbers) ? r.numbers.map(Number) : [] }));
-        if (draws.length !== 6) draws = initializeDefaultDraws();
-        poolRules = ruleResult.data ? { startDate: ruleResult.data.start_date || '', endDate: ruleResult.data.end_date || '', rulesText: ruleResult.data.rules_text || '' } : { ...DEFAULT_RULES };
-      } catch (e) {
-        console.error('Supabase load failed:', e);
-        players = initializeDefaultPlayers(); draws = initializeDefaultDraws(); poolRules = { ...DEFAULT_RULES };
-        setTimeout(() => showToast('Could not load shared database. Check Supabase setup and RLS policies.', 'error'), 200);
-      }
+        const {data:sessionData}=await db.auth.getSession(); supabaseSession=sessionData.session; isAdminLoggedIn=Boolean(supabaseSession);
+        const [pr,dr,rr]=await Promise.all([db.from('players').select('*').order('slot'),db.from('draws').select('*').order('draw_number'),db.from('rules').select('*').eq('id',1).maybeSingle()]);
+        if(pr.error) throw pr.error; if(dr.error) throw dr.error; if(rr.error) throw rr.error;
+        players=(pr.data||[]).map(playerFromRow); if(!players.length) players=initializeDefaultPlayers();
+        draws=(dr.data||[]).map(r=>({id:Number(r.draw_number),name:`Draw #${r.draw_number}`,date:r.draw_date||'',numbers:Array.isArray(r.numbers)?r.numbers.map(Number):[]})); if(draws.length!==10) draws=initializeDefaultDraws();
+        poolRules=rr.data?{startDate:rr.data.start_date||'',endDate:rr.data.end_date||'',rulesText:rr.data.rules_text||''}:{...DEFAULT_RULES};
+      } catch(e) { console.error('Supabase load failed:',e); players=initializeDefaultPlayers(); draws=initializeDefaultDraws(); poolRules={...DEFAULT_RULES}; setTimeout(()=>showToast('Could not load shared database. Check Supabase setup and RLS policies.','error'),200); }
     }
-    let saveTimer = null;
-    function saveState() {
-      clearTimeout(saveTimer);
-      saveTimer = setTimeout(syncStateToSupabase, 150);
-    }
-    async function syncStateToSupabase() {
-      if (!supabaseSession) return;
-      try {
-        const playerRows = players.map(playerToRow);
-        const drawRows = draws.map(d => ({ id: d.id, draw_number: d.id, draw_date: d.date || null, numbers: d.numbers || [] }));
-        const ruleRow = { id: 1, start_date: poolRules.startDate || null, end_date: poolRules.endDate || null, rules_text: poolRules.rulesText || '' };
-        const results = await Promise.all([
-          db.from('players').upsert(playerRows, { onConflict: 'slot' }),
-          db.from('draws').upsert(drawRows, { onConflict: 'draw_number' }),
-          db.from('rules').upsert(ruleRow, { onConflict: 'id' })
-        ]);
-        const failed = results.find(r => r.error);
-        if (failed) throw failed.error;
-      } catch (e) { console.error('Supabase save failed:', e); showToast('Database save failed: ' + e.message, 'error'); }
-    }
+    let saveTimer=null;
+    function saveState(){clearTimeout(saveTimer);saveTimer=setTimeout(syncStateToSupabase,150);}
+    async function syncStateToSupabase(){if(!supabaseSession)return;try{const results=await Promise.all([db.from('players').upsert(players.map(playerToRow),{onConflict:'slot'}),db.from('draws').upsert(draws.map(d=>({id:d.id,draw_number:d.id,draw_date:d.date||null,numbers:d.numbers||[]})),{onConflict:'draw_number'}),db.from('rules').upsert({id:1,start_date:poolRules.startDate||null,end_date:poolRules.endDate||null,rules_text:poolRules.rulesText||''},{onConflict:'id'})]);const failed=results.find(r=>r.error);if(failed)throw failed.error;}catch(e){console.error('Supabase save failed:',e);showToast('Database save failed: '+e.message,'error');}}
     function showToast(message, type = 'success') {
       const toast = document.getElementById('toast');
       const toastMsg = document.getElementById('toast-message');
@@ -1240,8 +1219,7 @@
       const input = document.getElementById('admin-pin-input');
       const err = document.getElementById('admin-login-error');
       if (input) input.value = '';
-      const emailInput = document.getElementById('admin-email-input');
-      if (emailInput) emailInput.value = '';
+      const emailInput=document.getElementById('admin-email-input'); if(emailInput) emailInput.value='';
       if (err) err.classList.add('hidden');
       document.getElementById('admin-login-modal').classList.remove('hidden');
       setTimeout(() => input && input.focus(), 100);
@@ -1251,18 +1229,8 @@
       document.getElementById('admin-login-modal').classList.add('hidden');
     }
 
-    async function submitAdminLogin() {
-      const email = document.getElementById('admin-email-input').value.trim();
-      const password = document.getElementById('admin-pin-input').value;
-      const err = document.getElementById('admin-login-error');
-      err.classList.add('hidden');
-      const { data, error } = await db.auth.signInWithPassword({ email, password });
-      if (error) { err.textContent = error.message; err.classList.remove('hidden'); return; }
-      supabaseSession = data.session; isAdminLoggedIn = true; closeAdminLoginModal(); await loadState(); applyViewMode(); showToast('Admin signed in securely.');
-    }
-    async function exitAdminMode() {
-      await db.auth.signOut(); supabaseSession = null; isAdminLoggedIn = false; applyViewMode(); showToast('Returned to Public Player View', 'info');
-    }
+    async function submitAdminLogin(){const email=document.getElementById('admin-email-input').value.trim();const password=document.getElementById('admin-pin-input').value;const err=document.getElementById('admin-login-error');err.classList.add('hidden');const {data,error}=await db.auth.signInWithPassword({email,password});if(error){err.textContent=error.message;err.classList.remove('hidden');return;}supabaseSession=data.session;isAdminLoggedIn=true;closeAdminLoginModal();await loadState();applyViewMode();showToast('Admin signed in securely.');}
+    async function exitAdminMode(){await db.auth.signOut();supabaseSession=null;isAdminLoggedIn=false;applyViewMode();showToast('Returned to Public Player View','info');}
     function openChangePinModal() {
       document.getElementById('cur-pin-input').value = '';
       document.getElementById('new-pin-input').value = '';
@@ -1275,10 +1243,7 @@
       document.getElementById('change-pin-modal').classList.add('hidden');
     }
 
-    function submitChangePin() {
-      closeChangePinModal();
-      showToast('Change the administrator password in Supabase Authentication > Users.', 'info');
-    }
+    function submitChangePin(){closeChangePinModal();showToast('Change the administrator password in Supabase Authentication > Users.','info');}
     function deletePlayer(playerId) {
       const player = players.find(p => p.id === playerId);
       if (!player) return;
@@ -1290,6 +1255,7 @@
       player.name = '';
       player.phone = '';
       player.email = '';
+      player.supportingPlayer = '';
       player.paid = false;
       player.amountPaid = 0;
       player.paymentDate = '';
@@ -1501,7 +1467,7 @@
 
       let tabsHtml = `
         <button onclick="setDrawView('cumulative')" class="px-2.5 py-1 text-xs font-bold rounded ${selectedDrawView === 'cumulative' ? 'bg-white shadow text-rose-700' : 'text-slate-600 hover:text-slate-900'}">
-          All 6 Draws
+          All 10 Draws
         </button>
       `;
 
@@ -1520,8 +1486,8 @@
 
       if (selectedDrawView === 'cumulative') {
         const completedCount = draws.filter(d => d.numbers && d.numbers.length === 6).length;
-        titleEl.textContent = `All 6 Draws Cumulative View (${completedCount}/6 Entered)`;
-        subtitleEl.textContent = `Numbers drawn across all 6 weekly draws are automatically circled in gold on each player card.`;
+        titleEl.textContent = `All 10 Draws Cumulative View (${completedCount}/10 Entered)`;
+        subtitleEl.textContent = `Numbers drawn across all 10 weekly draws are automatically circled in gold on each player card.`;
       } else {
         const idx = parseInt(selectedDrawView, 10);
         const d = draws[idx];
@@ -1890,7 +1856,7 @@
 
       const completedDrawsCount = draws.filter(d => d.numbers && d.numbers.length === 6).length;
       const drawsBadge = document.getElementById('draws-completed-badge');
-      if (drawsBadge) drawsBadge.textContent = `${completedDrawsCount}/6 Drawn`;
+      if (drawsBadge) drawsBadge.textContent = `${completedDrawsCount}/10 Drawn`;
 
       container.innerHTML = draws.map((d, index) => {
         const hasNumbers = d.numbers && d.numbers.length === 6;
@@ -1907,7 +1873,7 @@
             <div class="flex items-center justify-between">
               <div>
                 <span class="text-[10px] font-bold uppercase tracking-wider ${hasNumbers ? 'text-emerald-700 bg-emerald-50' : 'text-slate-500 bg-slate-100'} px-2 py-0.5 rounded">
-                  Entry #${d.id} of 6
+                  Entry #${d.id} of 10
                 </span>
                 <h4 class="text-base font-extrabold text-slate-900 mt-1">${d.name}</h4>
               </div>
@@ -2163,7 +2129,7 @@
       renderDrawManager();
       renderPlayerHeader();
       renderPlayerBingoSheet();
-      showToast('Generated sample results for all 6 6/49 draws!');
+      showToast('Generated sample results for all 10 6/49 draws!');
     }
 
     function resetAllDraws() {
@@ -2175,7 +2141,7 @@
       renderDrawManager();
       renderPlayerHeader();
       renderPlayerBingoSheet();
-      showToast('All 6 draws cleared.', 'info');
+      showToast('All 10 draws cleared.', 'info');
     }
 
     function openPlayerModal(playerId) {
@@ -2317,6 +2283,7 @@
       document.getElementById('pub-player-name').value = '';
       document.getElementById('pub-player-phone').value = '';
       document.getElementById('pub-player-email').value = '';
+      document.getElementById('pub-supporting-player').value = '';
 
       const nextSlot = getNextAvailablePlayerSlot();
 
@@ -2405,23 +2372,11 @@
       updatePublicSelectedDisplay();
     }
 
-    async function submitPlayerRegistrationForm() {
-      const errEl = document.getElementById('pub-modal-error');
-      const name = document.getElementById('pub-player-name').value.trim();
-      const phone = document.getElementById('pub-player-phone').value.trim();
-      const email = document.getElementById('pub-player-email').value.trim();
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!name) return showPublicError('Please enter your full legal name.');
-      if (!phone) return showPublicError('Please enter your contact phone number.');
-      if (!email || !emailRegex.test(email)) return showPublicError('Please enter a valid email address.');
-      if (publicSelectedNumbers.length !== 6) return showPublicError('Please select exactly 6 lottery numbers.');
-      const btn = document.getElementById('pub-submit-entry-btn'); btn.disabled = true; btn.classList.add('opacity-60');
-      const { data, error } = await db.rpc('submit_player_entry', { p_name: name, p_phone: phone, p_email: email, p_numbers: publicSelectedNumbers });
-      btn.disabled = false; btn.classList.remove('opacity-60');
-      if (error) return showPublicError('Submission failed: ' + error.message);
-      await loadState(); closePlayerSubmissionModal(); renderPlayerBingoSheet(); renderPlayerHeader();
-      showToast(`Success! You have been assigned Play ${data}. Remember to submit your $20 entry fee!`);
-      function showPublicError(msg) { errEl.textContent = msg; errEl.classList.remove('hidden'); }
+    async function submitPlayerRegistrationForm(){
+      const errEl=document.getElementById('pub-modal-error'); const name=document.getElementById('pub-player-name').value.trim(); const phone=document.getElementById('pub-player-phone').value.trim(); const email=document.getElementById('pub-player-email').value.trim(); const supportingPlayer=document.getElementById('pub-supporting-player').value; const emailRegex=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      function fail(msg){errEl.textContent=msg;errEl.classList.remove('hidden');}
+      if(!name)return fail('Please enter your full legal name.'); if(!phone)return fail('Please enter your contact phone number.'); if(!email||!emailRegex.test(email))return fail('Please enter a valid email address.'); if(!supportingPlayer)return fail("Please select the team member you're supporting."); if(publicSelectedNumbers.length!==6)return fail('Please select exactly 6 lottery numbers.');
+      const btn=document.getElementById('pub-submit-entry-btn');btn.disabled=true;btn.classList.add('opacity-60'); const {data,error}=await db.rpc('submit_player_entry',{p_name:name,p_phone:phone,p_email:email,p_supporting_player:supportingPlayer,p_numbers:publicSelectedNumbers}); btn.disabled=false;btn.classList.remove('opacity-60'); if(error)return fail('Submission failed: '+error.message); await loadState();closePlayerSubmissionModal();renderPlayerBingoSheet();renderPlayerHeader();showToast(`Success! You have been assigned Play ${data}. Remember to submit your $20 entry fee!`);
     }
     function renderHeatmap() {
       const container = document.getElementById('number-heatmap');
@@ -2466,7 +2421,7 @@
 
     function exportToCSV() {
       const activeNums = getActiveDrawnNumbers();
-      let csv = 'Slot ID,Label,Real Name,Phone,Email,Paid Status,Amount Paid,Payment Method,Payment Date,Notes,Ball 1,Ball 2,Ball 3,Ball 4,Ball 5,Ball 6,Matches (Active View)\n';
+      let csv = 'Slot ID,Label,Real Name,Phone,Email,Supporting Player,Paid Status,Amount Paid,Payment Method,Payment Date,Notes,Ball 1,Ball 2,Ball 3,Ball 4,Ball 5,Ball 6,Matches (Active View)\n';
 
       players.forEach(p => {
         const hasNumbers = p.numbers && Array.isArray(p.numbers) && p.numbers.length === 6;
@@ -2478,6 +2433,7 @@
           `"${(p.name || '').replace(/"/g, '""')}"`,
           `"${(p.phone || '').replace(/"/g, '""')}"`,
           `"${(p.email || '').replace(/"/g, '""')}"`,
+          `"${(p.supportingPlayer || '').replace(/"/g, '""')}"`,
           p.paid ? 'PAID' : 'UNPAID',
           p.amountPaid || 0,
           `"${p.paymentMethod || 'Cash'}"`,
@@ -2510,15 +2466,7 @@
         .replace(/'/g, '&#039;');
     }
 
-    window.onload = async function () {
-      await loadState();
-      applyViewMode();
-      db.channel('bingo-live')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'players' }, async () => { await loadState(); applyViewMode(); })
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'draws' }, async () => { await loadState(); applyViewMode(); })
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'rules' }, async () => { await loadState(); applyViewMode(); })
-        .subscribe();
-    };
+    window.onload=async function(){await loadState();applyViewMode();db.channel('bingo-live').on('postgres_changes',{event:'*',schema:'public',table:'players'},async()=>{await loadState();applyViewMode();}).on('postgres_changes',{event:'*',schema:'public',table:'draws'},async()=>{await loadState();applyViewMode();}).on('postgres_changes',{event:'*',schema:'public',table:'rules'},async()=>{await loadState();applyViewMode();}).subscribe();};
   </script>
 </body>
 </html>
